@@ -1,0 +1,260 @@
+\newif\ifbeamer\beamerfalse
+
+\documentclass[11pt]{article}
+
+\usepackage{../tex/jnf}
+\usepackage{../tex/angle}
+
+\solutionfalse
+
+\renewcommand{\labelenumi}{\textbf{(\alph{enumi})}}
+
+\begin{document}
+
+\bigredheader{Homework \#2}
+
+\vspace*{-1.25\bigskipamount}
+
+\paragraph{} 
+%
+Ameya Acharya (apa52) and Quinn Beightol (qeb2)
+
+\begin{exercise}
+Prove the following theorem using the large-step semantics:
+
+\begin{theorem*}
+If $\sigma(i)$ is even and $\CONFIG{\sigma}{\while{b}{i := i+2}}
+\stepsto \sigma'$ then $\sigma'(i)$ is also even.
+\end{theorem*}
+\end{exercise}
+
+We prove the theorem by induction, as follows:\\
+
+Base case: $\sigma(i)$ is even (given). $\checkmark$\\
+
+Inductive step:\\
+
+Consider the following $\sigma[i \rightarrow n]$, where $n = 2x$ for some $x \in \mathbb{Z}$ (since $\sigma(i)$ is even).\\
+
+$\emph{Case 1}$: $b$ is false.
+
+\begin{mathpar}
+
+
+\inferrule*[right=WHILE-F]{\inferrule *[right=VAR] {false = \sigma(b)}{ \CONFIG{\sigma}{b} \stepsto \CONFIG{\sigma}{false} 
+}}{
+\CONFIG{\sigma}{\while{b}{i := i+2}} \stepsto \sigma 
+}
+\end{mathpar}
+
+In this case, since $\CONFIG{\sigma}{\while{b}{i := i+2}} \stepsto \sigma$, $\sigma' = \sigma$.\\
+
+Therefore, $\sigma'(i) = \sigma(i) = n$, so $\sigma'(i)$ is even because $\sigma(i)$ is even.\\
+ 
+$\emph{Case 2}$: $b$ is true.\\
+
+\begin{mathpar}
+
+
+ { \inferrule *[right=WHILE-T] { {\inferrule *[right=VAR] {true = \sigma(b)}{ \CONFIG{\sigma}{b} \stepsto \CONFIG{\sigma}{true} 
+}} {\inferrule *[right=ASSGN] {\inferrule *[right=VAR]{n = \sigma(i)}{\CONFIG{\sigma}{i + 2} \stepsto {n + 2}}}{\CONFIG{\sigma}{i := i+2} \stepsto \sigma'}}}
+{\CONFIG{\sigma}{\while{b}{i := i+2}} \stepsto \sigma''}}
+\end{mathpar}
+
+TODO: is this induction? is this the right approach? Figure out.
+
+
+\begin{exercise}
+Recall that IMP commands are equivalent if they always evaluate to the
+same result:
+\[
+c_1 \sim c_2 ~~\defeq~~\forall \sigma,\sigma' \in \Set{Store}.~ <\sigma,c_1> \Downarrow \sigma' \Longleftrightarrow <\sigma,c_2> \Downarrow \sigma'.
+\]
+%
+For each of the following pair of IMP commands, either use the
+large-step operational semantics to prove they are equivalent or give
+a concrete counter-example showing that they are not equivalent. You
+may assume that the language has been extended with operators such as
+$x != 0$.
+
+\begin{enumerate}
+\item 
+$\assign{x}{a};~\assign{y}{a}$
+\qquad and \qquad
+$\assign{y}{a};~\assign{x}{a}$,\\
+where $a$ is an arbitrary arithmetic expression\\
+
+We show that these commands are not equivalent with the following counter-example.
+
+Consider a store $\sigma$ with $x = 3, y = 4$. Let our expression $a$ be $x + y$.\\
+
+Evaluating $ x := a; \hspace{1mm} y := a$:
+
+$\CONFIG{\sigma}{x := x + y; y := x + y}\\
+\rightarrow \CONFIG{\sigma}{x := x + y; y := x + y}\\
+\rightarrow \CONFIG{\sigma}{x := 3 + y; y := x + y}\\
+\rightarrow \CONFIG{\sigma}{x := 3 + 4; y := x + y}\\
+\rightarrow \CONFIG{\sigma}{x := 7; y := x + y}\\
+\rightarrow \CONFIG{\sigma'[x \rightarrow 7]}{y := x + y}\\
+\rightarrow \CONFIG{\sigma'}{y := 7 + y}\\
+\rightarrow \CONFIG{\sigma'}{y := 7 + 4}\\
+\rightarrow \CONFIG{\sigma'}{y := 11}\\
+\rightarrow \sigma''[x \rightarrow 7, y \rightarrow 11]$\\
+
+Evaluating $ y := a; \hspace{1mm} x := a$:
+
+$\CONFIG{\sigma}{y := x + y; x := x + y}\\
+\rightarrow \CONFIG{\sigma}{y := 3 + y; x := x + y}\\
+\rightarrow \CONFIG{\sigma}{y := 3 + 4; x := x + y}\\
+\rightarrow \CONFIG{\sigma}{y := 7; x := x + y}\\
+\rightarrow \CONFIG{\sigma'[y \rightarrow 7]}{x := x + y}\\
+\rightarrow \CONFIG{\sigma'}{x := 3 + y}\\
+\rightarrow \CONFIG{\sigma'}{x := 3 + 7}\\
+\rightarrow \CONFIG{\sigma'}{x := 10}\\
+\rightarrow \sigma''[x \rightarrow 10, y \rightarrow 7]$\\
+
+We see that these two do $\emph{not}$ produce the same results. Therefore, the above IMP commands are not equivalent.\\
+
+\item 
+$\WHILE~b~\DO~c$ 
+\qquad and \qquad
+$\IF~b~\THEN~(\WHILE~b~\DO~c); c~\ELSE~\SKIP$,\\
+where $b$ is an arbitrary boolean expression and $c$ an arbitrary
+command.
+
+We show that these commands are not equivalent with the following counter-example.
+
+Consider a store $\sigma$ with $i = 2$. Let $b$ be $i = 2$ and $c$ be $i := i + 2$.\\
+
+Evaluating $\WHILE~i = 2~\DO~i := i + 2$:\\
+ 
+$ \CONFIG{\sigma}{\WHILE~i = 2~\DO~i := i + 2}\\
+\stepsone \CONFIG{\sigma}{\WHILE~2 = 2~\DO~i := i + 2}\\
+\stepsone \CONFIG{\sigma}{i := i + 2; \WHILE~i = 2~\DO~i := i + 2}\\
+\stepsone \CONFIG{\sigma}{i := 2 + 2; \WHILE~i = 2~\DO~i := i + 2}\\
+\stepsone \CONFIG{\sigma}{i := 4; \WHILE~i = 2~\DO~i := i + 2}\\
+\stepsone \CONFIG{\sigma'[i \rightarrow 4]}{\WHILE~i = 2~\DO~i := i + 2}\\
+\stepsone \CONFIG{\sigma'}{\WHILE~4 = 2~\DO~i := i + 2}\\
+\stepsone{\sigma'[i \rightarrow 4]}$\\
+
+Evaluating $\IF~i  = 2~\THEN~(\WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2~\ELSE~\SKIP$:\\
+
+$ \CONFIG{\sigma}{\IF~i  = 2~\THEN~(\WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2~\ELSE~\SKIP}\\
+\stepsone  \CONFIG{\sigma}{\IF~2  = 2~\THEN~(\WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2~\ELSE~\SKIP}\\
+\stepsone  \CONFIG{\sigma}{(\WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2}\\
+\stepsone  \CONFIG{\sigma}{(i := i + 2; \WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2}\\
+\stepsone  \CONFIG{\sigma}{(i := 2 + 2; \WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2}\\
+\stepsone  \CONFIG{\sigma}{(i := 4; \WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2}\\
+\stepsone  \CONFIG{\sigma'[i \rightarrow 4]}{(\WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2}\\
+\stepsone  \CONFIG{\sigma'[i \rightarrow 4]}{(\WHILE~ 4 = 2~\DO~ i := i + 2);  i := i + 2}\\
+\stepsone  \CONFIG{\sigma'[i \rightarrow 4]}{i := i + 2}\\
+\stepsone  \CONFIG{\sigma'[i \rightarrow 4]}{i := 4 + 2}\\
+\stepsone  \CONFIG{\sigma'[i \rightarrow 4]}{i := 6}\\
+\stepsone \sigma''[i \rightarrow 6]\\
+$\\
+
+We see that these two do $\emph{not}$ produce the same results. Therefore, the above IMP commands are not equivalent.\\
+
+
+\item $\while{x~\mathord{!}\mathord{=}~0}{x := 0}$\qquad and \qquad $x:= 0 * x$\\
+
+TODO: do this exercise 
+
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Let $\CONFIG{\sigma}{c} \stepsone \CONFIG{\sigma'}{c'}$ be the
+small-step operational semantics relation for IMP. Consider the
+following definition of the multi-step relation:
+
+\begin{mathpar}
+\inferrule*[right=R1]{ 
+}{
+\CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma}{c}
+}
+
+\inferrule*[right=R2]{
+\CONFIG{\sigma}{c} \stepsone \CONFIG{\sigma'}{c'} \qquad
+\CONFIG{\sigma'}{c'} \stepsone\kleenestar \CONFIG{\sigma''}{c''}
+}{ \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} 
+}
+\end{mathpar}
+
+\noindent Prove the following theorem, which states that
+$\stepsone\kleenestar$ is transitive.
+
+\begin{theorem*} If \( \CONFIG{\sigma}{c} \stepsone\kleenestar
+\CONFIG{\sigma'}{c'} \) and \( \CONFIG{\sigma'}{c'}
+\stepsone\kleenestar \CONFIG{\sigma''}{c''} \) then \(
+\CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \).
+\end{theorem*}
+
+TODO: type this up.
+\end{exercise}
+
+\begin{exercise}
+
+\newcommand{\THROW}[1]{\ensuremath{\impfnt{throw}~#1}}
+\newcommand{\TRYCATCH}[3]{\ensuremath{\impfnt{try}~#1~\impfnt{with}~#2~\DO~#3}}
+
+In this exercise, you will extend the IMP language with
+exceptions. These exceptions are intended to behave like the analogous
+constructs found in languages such as Java. We will proceed in several
+steps.
+
+First, we fix a set of exceptions, which will ranged over by
+metavariables $e$, and we extend the syntax of the language with new
+commands for throwing and handling exceptions:
+%
+\[
+\begin{array}{r@{~}c@{~}l}
+ c & ::= & \SKIP \\
+& \mid & x := a\\
+& \mid & c_1 ; c_2\\
+& \mid & \cond{b}{c_1}{c_2} \\
+& \mid & \while{b}{c} \\
+& \mid & \shade{\THROW{e}} \\
+& \mid & \shade{\TRYCATCH{c_1}{e}{c_2}}
+\end{array}
+\]
+%
+Intuitively, evaluating a command either yields a modified store or a
+pair comprising a modified store and an (uncaught) exception. We let
+metavariables $r$ range over such results:
+%
+\[
+r ::= \sigma \mid (\sigma,e)
+\]
+%
+
+Second, we change the type of the large-step evaluation relation so it
+yields a result instead of a store: $<\sigma,c> \stepsto r$.
+
+Third, we will extend the large-step semantics rules so they handle
+\impfnt{throw} and \impfnt{try} commands. This is your task in this
+exercise. 
+
+Informally, $\THROW~e$ should return exception $e$, and
+$\TRYCATCH{c_1}{e}{c_2}$ should execute $c_1$ and return the result it
+produces, unless the result contains an exception $e$, in which case
+it should discard $e$ executes the handler $c_2$. You will also need
+to modify many other rules so they have the right type and also
+propagate exceptions.
+
+TODO: type this up.
+
+\end{exercise}
+
+\begin{debriefing} \hfill\\[-4ex]
+\begin{enumerate*}
+\item How many hours did you spend on this assignment? 
+\item Would you rate it as easy, moderate, or difficult? 
+\item How deeply do you feel you understand the material it covers (0\%–100\%)? 
+\item If you have any other comments, we would like to hear them!
+  Please write them here or send email to
+  \mtt{jnfoster@cs.cornell.edu}.
+\end{enumerate*}
+\end{debriefing}
+\end{document}
+

@@ -1,0 +1,28 @@
+\documentclass[10pt, oneside]{article}
+\usepackage{geometry}
+\geometry{letterpaper}
+\usepackage{amssymb, amsmath, enumerate}
+
+
+\begin{document}
+
+\begin{enumerate}[1.]
+	\item PROOF
+	\item 
+	\begin{enumerate} [(a)]
+		\item i guess i should look more closely at the definition of arbitrary arithmetic expression--if arithmetic expressions can reference values, then it definitely seems like the expressions aren't equivalent. e.g. imagine an expression like (x+y). Even if we assume that the x and y have values in the store (say x=3, y=4), then you could get different answers (x = 7, y = 11 vs. x = 10, y = 7) 
+		\item def. seems off (it looks like it might not terminate for the second expression... I should take a closer look at the lecture notes to see how while is defined  using if statements)
+		\item these should be equivalent. I'm guessing the easiest way to approach this problem is to show that ... well, I was going to say that both step to the same store, but its important to emphasize that both start with the same store. I guess I'll need to take a look at the large step rules, and see what I can prove for arbitrary sigma. (that being said, I don't think it makes sense to do a two-direction proof of the biconditional)
+	\end{enumerate}
+	\item tricky--you have single step transitions appearing in R2. I'm kind of tempted to say if something multisteps than either R1 or R2 was used to generate that expression. So you could either conclude that the items on each side of the multistep relation are the same, or that the transition can be broken down into two parts, one of them involving a single step. So to prove transitivity, I guess you could work backwards, and show that one (or both) of the multistep relations can be broken down (which allows you to invoke r2). Or $\left< \sigma, c \right>$ is $\left< \sigma'',c''\right>$, which allows you to invoke r1. But that seems pretty backward.
+	\item EXTENSIONS
+\end{enumerate}
+
+\paragraph{Debriefing}
+\begin{enumerate}
+	\item time spent 30 min so far
+	\item difficulty rating
+	\item understanding of the material
+\end{enumerate}
+
+\end{document}
