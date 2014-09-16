@@ -11,13 +11,13 @@
 
 \begin{document}
 
-\bigredheader{Homework \#2}
 
 \vspace*{-1.25\bigskipamount}
 
-\paragraph{} 
-%
-Ameya Acharya (apa52) and Quinn Beightol (qeb2)
+\begin{center}\LARGE CS 4110\\ \Large Homework 2\\ 
+\vspace{1mm}
+\large Ameya Acharya (apa52) and Quinn Beightol (qeb2)\\ \end{center}
+
 
 \begin{exercise}
 Prove the following theorem using the large-step semantics:
@@ -28,13 +28,14 @@ If $\sigma(i)$ is even and $\CONFIG{\sigma}{\while{b}{i := i+2}}
 \end{theorem*}
 \end{exercise}
 
-We prove the theorem by induction, as follows:\\
+We prove this by induction on $\CONFIG{\sigma}{\while{b}{i := i+2}} \stepsto \sigma'$.
 
-Base case: $\sigma(i)$ is even (given). $\checkmark$\\
+%Base case: $\sigma(i)$ is even (given). $\checkmark$\\
 
-Inductive step:\\
+%Inductive step:\\
+Let  $\sigma$ be some arbitrary store. We know that $\sigma(i)$ is even (given); let $\sigma(i) = n$.\\
 
-Consider the following $\sigma[i \mapsto n]$, where $n = 2x$ for some $x \in \mathbb{Z}$ (since $\sigma(i)$ is even).\\
+%Consider the following $\sigma[i \mapsto n]$, where $n = 2x$ for some $x \in \mathbb{Z}$ (since $\sigma(i)$ is even).\\
 
 $\emph{Case 1}$: $b$ is false.
 
@@ -47,21 +48,31 @@ $\emph{Case 1}$: $b$ is false.
 }
 \end{mathpar}
 
-In this case, since $\CONFIG{\sigma}{\while{b}{i := i+2}} \stepsto \sigma$, $\sigma' = \sigma$.\\
-
-Therefore, $\sigma'(i) = \sigma(i) = n$, so $\sigma'(i)$ is even because $\sigma(i)$ is even.\\
+Since $\CONFIG{\sigma}{\while{b}{i := i+2}} \stepsto \sigma'$, $\sigma' = \sigma$. Therefore, $\sigma'(i) = \sigma(i)$, so $\sigma'(i)$ is even. \checkmark \\
  
 $\emph{Case 2}$: $b$ is true.\\
 
 \begin{mathpar}
 
 
- { \inferrule *[right=WHILE-T] { { \CONFIG{\sigma}{b} \stepsto \CONFIG{\sigma}{true} 
-} {\inferrule *[right=ASSGN] {\inferrule *[right=VAR]{n = \sigma(i)}{\CONFIG{\sigma}{i + 2} \stepsto {n + 2}}}{\CONFIG{\sigma}{i := i+2} \stepsto \sigma'}}}
+ { \inferrule *[right=WHILE-T] { { \CONFIG{\sigma}{b} \stepsto {true} 
+} {\inferrule *[right=ASSGN] {\inferrule *[right=VAR]{n = \sigma(i)}{\CONFIG{\sigma}{i + 2} \stepsto {n + 2}}}{\CONFIG{\sigma}{i := n+2} \stepsto \sigma'}} {\inferrule {\CONFIG{\sigma'}{\while{b}{i := i+2}} \stepsto \sigma''}{}}}
 {\CONFIG{\sigma}{\while{b}{i := i+2}} \stepsto \sigma''}}
 \end{mathpar}
 
-TODO: is this induction? is this the right approach? Figure out.
+By the inductive hypothesis applied to ${\CONFIG{\sigma'}{\while{b}{i := i+2}}} \stepsto \sigma''$:\\
+
+\indent If $b$ is false, then we may apply Case 1, and conclude that $\sigma' = \sigma''$. By the ASSGN rule used above, we know that $\sigma'$ = $\sigma [i \mapsto n + 2]$. Since $n$ is even (given), we know that $n + 2$ is even. \checkmark \\ 
+
+\indent If $b$ is true, then we may recursively apply the above argument. Because we know that\\ ${\CONFIG{\sigma'}{\while{b}{i := i+2}}} \stepsto \sigma''$, we know that evaluation of ${\CONFIG{\sigma'}{\while{b}{i := i+2}}}$ terminates.\\
+Therefore, we know that there exists some intermediate $\sigma_n$ such that $$\CONFIG{\sigma_n}{b}\stepsto false.$$
+
+When we evaluate ${\CONFIG{\sigma_n}{\while{b}{i := i+2}}}$, we will apply Case 1. From the induction hypothesis, we know that before we arrived at $\sigma_n$, $i := i + 2$ occurred some $m$ times. Therefore, $\sigma_n$ = $\sigma [i \mapsto n + 2m]$, which is even. \checkmark
+
+This concludes the case, and the proof. $\blacksquare$
+
+%, and conclude that $\sigma' = \sigma''$. By the ASSGN rule used above, we know that $\sigma'$ = $\sigma [i \mapsto n + 2]$. Since $n$ is even (given), we know that $n + 2$ is even. \checkmark \\ 
+
 
 
 \begin{exercise}
@@ -95,11 +106,11 @@ $\CONFIG{\sigma}{x := x + y; y := x + y}\\
 \rightarrow \CONFIG{\sigma}{x := 3 + y; y := x + y}\\
 \rightarrow \CONFIG{\sigma}{x := 3 + 4; y := x + y}\\
 \rightarrow \CONFIG{\sigma}{x := 7; y := x + y}\\
-\rightarrow \CONFIG{\sigma'[x \rightarrow 7]}{y := x + y}\\
+\rightarrow \CONFIG{\sigma'}{y := x + y}, \mathrm{where} \hspace{1mm} \sigma' = \sigma[x \mapsto 7]\\
 \rightarrow \CONFIG{\sigma'}{y := 7 + y}\\
 \rightarrow \CONFIG{\sigma'}{y := 7 + 4}\\
 \rightarrow \CONFIG{\sigma'}{y := 11}\\
-\rightarrow \sigma''[x \mapsto 7, y \mapsto 11]$\\
+\rightarrow \sigma'', \mathrm{where} \hspace{1mm} \sigma'' = \sigma [x \mapsto 7, y \mapsto 11]$\\
 
 Evaluating $ y := a; \hspace{1mm} x := a$:
 
@@ -107,11 +118,11 @@ $\CONFIG{\sigma}{y := x + y; x := x + y}\\
 \rightarrow \CONFIG{\sigma}{y := 3 + y; x := x + y}\\
 \rightarrow \CONFIG{\sigma}{y := 3 + 4; x := x + y}\\
 \rightarrow \CONFIG{\sigma}{y := 7; x := x + y}\\
-\rightarrow \CONFIG{\sigma'[y \rightarrow 7]}{x := x + y}\\
+\rightarrow \CONFIG{\sigma'}{x := x + y}, \mathrm{where} \hspace{1mm} \sigma' = \sigma[y \mapsto 7]\\
 \rightarrow \CONFIG{\sigma'}{x := 3 + y}\\
 \rightarrow \CONFIG{\sigma'}{x := 3 + 7}\\
 \rightarrow \CONFIG{\sigma'}{x := 10}\\
-\rightarrow \sigma''[x \mapsto 10, y \mapsto 7]$\\
+\rightarrow \sigma'',\mathrm{where} \hspace{1mm} \sigma'' = \sigma [x \mapsto 10, y \mapsto 7]$\\
 
 We see that these two do $\emph{not}$ produce the same results. Therefore, the above IMP commands are not equivalent.\\
 
@@ -133,9 +144,9 @@ $ \CONFIG{\sigma}{\WHILE~i = 2~\DO~i := i + 2}\\
 \stepsone \CONFIG{\sigma}{i := i + 2; \WHILE~i = 2~\DO~i := i + 2}\\
 \stepsone \CONFIG{\sigma}{i := 2 + 2; \WHILE~i = 2~\DO~i := i + 2}\\
 \stepsone \CONFIG{\sigma}{i := 4; \WHILE~i = 2~\DO~i := i + 2}\\
-\stepsone \CONFIG{\sigma'[i \mapsto 4]}{\WHILE~i = 2~\DO~i := i + 2}\\
+\stepsone \CONFIG{\sigma'}{\WHILE~i = 2~\DO~i := i + 2}, \mathrm{where} \hspace{1mm} \sigma' = \sigma[i \mapsto 4]\\
 \stepsone \CONFIG{\sigma'}{\WHILE~4 = 2~\DO~i := i + 2}\\
-\stepsone{\sigma'[i \rightarrow 4]}$\\
+\stepsone{\sigma', \mathrm{where} \hspace{1mm} \sigma' = \sigma[i \mapsto 4]}$\\
 
 Evaluating $\IF~i  = 2~\THEN~(\WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2~\ELSE~\SKIP$:\\
 
@@ -145,13 +156,13 @@ $ \CONFIG{\sigma}{\IF~i  = 2~\THEN~(\WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2~
 \stepsone  \CONFIG{\sigma}{(i := i + 2; \WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2}\\
 \stepsone  \CONFIG{\sigma}{(i := 2 + 2; \WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2}\\
 \stepsone  \CONFIG{\sigma}{(i := 4; \WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2}\\
-\stepsone  \CONFIG{\sigma'[i \mapsto 4]}{(\WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2}\\
-\stepsone  \CONFIG{\sigma'[i \mapsto 4]}{(\WHILE~ 4 = 2~\DO~ i := i + 2);  i := i + 2}\\
-\stepsone  \CONFIG{\sigma'[i \mapsto 4]}{i := i + 2}\\
-\stepsone  \CONFIG{\sigma'[i \mapsto 4]}{i := 4 + 2}\\
-\stepsone  \CONFIG{\sigma'[i \mapsto 4]}{i := 6}\\
-\stepsone \sigma''[i \mapsto 6]\\
-$\\
+\stepsone  \CONFIG{\sigma'}{(\WHILE~ i = 2~\DO~ i := i + 2);  i := i + 2}, \mathrm{where} \hspace{1mm} \sigma' = \sigma[i \mapsto 4]\\
+\stepsone  \CONFIG{\sigma'}{(\WHILE~ 4 = 2~\DO~ i := i + 2);  i := i + 2}\\
+\stepsone  \CONFIG{\sigma'}{i := i + 2}\\
+\stepsone  \CONFIG{\sigma'}{i := 4 + 2}\\
+\stepsone  \CONFIG{\sigma'}{i := 6}\\
+\stepsone \sigma'', \mathrm{where} \hspace{1mm} \sigma' = \sigma[i \mapsto 6]\\
+$
 
 We see that these two do $\emph{not}$ produce the same results. Therefore, the above IMP commands are not equivalent.\\
 
