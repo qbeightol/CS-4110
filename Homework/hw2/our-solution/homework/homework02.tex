@@ -169,7 +169,7 @@ We see that these two do $\emph{not}$ produce the same results. Therefore, the a
 
 \item $\while{x~\mathord{!}\mathord{=}~0}{x := 0}$\qquad and \qquad $x:= 0 * x$\\
 
-TODO: do this exercise 
+TODO: type this up 
 
 \end{enumerate}
 \end{exercise}
@@ -201,7 +201,22 @@ $\stepsone\kleenestar$ is transitive.
 \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \).
 \end{theorem*}
 
-TODO: type this up.
+Because of our axiom R1 and our inference rule R2, we have an exhaustive set of cases against which we may pattern-match the expression \( \CONFIG{\sigma}{c} \stepsone\kleenestar
+\CONFIG{\sigma'}{c'} \).\\
+
+We complete the following proof by induction on  \( \CONFIG{\sigma}{c} \stepsone\kleenestar
+\CONFIG{\sigma'}{c'} \).\\
+
+
+{\it Case R1}: We know \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \) and
+\( \CONFIG{\sigma'}{c'} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \).\\ 
+\indent By R1, \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma}{c} \), so $\sigma = \sigma'$ and $c = c'$.\\
+\indent By substituting $\sigma$ and $c$ for $\sigma'$ and $c'$, we get  \(
+\CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \). \checkmark
+
+{\it Case R2}:
+
+
 \end{exercise}
 
 \begin{exercise}

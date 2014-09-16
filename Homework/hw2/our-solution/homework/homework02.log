@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  15 SEP 2014 21:00
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  15 SEP 2014 21:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -722,8 +722,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 170--171
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 204--206
+
+ []
+
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 260--262
+Underfull \hbox (badness 10000) in paragraph at lines 207--209
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 275--277
 
  []
 
@@ -758,7 +768,7 @@ f-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb></usr/local/texlive/2012/texmf-dist
 /fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/
 type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/u
 rw/palatino/uplri8a.pfb>
-Output written on homework02.pdf (4 pages, 149577 bytes).
+Output written on homework02.pdf (4 pages, 150381 bytes).
 PDF statistics:
  93 PDF objects out of 1000 (max. 8388607)
  56 compressed objects within 1 object stream
