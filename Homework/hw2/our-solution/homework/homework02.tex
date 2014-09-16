@@ -285,7 +285,35 @@ it should discard $e$ executes the handler $c_2$. You will also need
 to modify many other rules so they have the right type and also
 propagate exceptions.
 
-TODO: type this up.
+%\begin{mathpar}
+
+
+ %{ \inferrule *[right=WHILE-T] { { \CONFIG{\sigma}{b} \stepsto {true} 
+%} {\inferrule *[right=ASSGN] {\inferrule *[right=VAR]{n = \sigma(i)}{\CONFIG{\sigma}{i + 2} \stepsto {n + 2}}}{\CONFIG{\sigma}{i := n+2} \stepsto \sigma'}} {\inferrule {\CONFIG{\sigma'}{\while{b}{i := i+2}} \stepsto \sigma''}{}}}
+%{\CONFIG{\sigma}{\while{b}{i := i+2}} \stepsto \sigma''}}
+%\end{mathpar}
+
+\begin{mathpar}
+
+ { \inferrule { { \CONFIG{\sigma}{b} \stepsto {true}} \hspace{2mm} {\CONFIG{\sigma}{c_1} \stepsto \CONFIG{\sigma'}{e}}} {\CONFIG{\sigma}{ \IF~b~\THEN~c_1~\ELSE~c_2} \stepsto \CONFIG{\sigma'}{e}}}
+ 
+  { \inferrule { { \CONFIG{\sigma}{b} \stepsto {false}} \hspace{2mm} {\CONFIG{\sigma}{c_2} \stepsto \CONFIG{\sigma'}{e}}} {\CONFIG{\sigma}{ \IF~b~\THEN~c_1~\ELSE~c_2} \stepsto \CONFIG{\sigma'}{e}}}
+  
+While-F safe.\\
+
+  { \inferrule { { \CONFIG{\sigma}{b} \stepsto {true}} \hspace{2mm} {\CONFIG{\sigma}{c} \stepsto \CONFIG{\sigma'}{e}}} {\CONFIG{\sigma}{\WHILE~b~\DO~c} \stepsto \CONFIG{\sigma'}{e}}}
+  
+    { \inferrule { { \CONFIG{\sigma}{b} \stepsto {true}} \hspace{2mm} {\CONFIG{\sigma}{c} \stepsto \sigma'} {\CONFIG{\sigma'}{\WHILE~b~\DO~c} \stepsto \CONFIG{\sigma''}{e}}} {\CONFIG{\sigma}{\WHILE~b~\DO~c} \stepsto \CONFIG{\sigma''}{e}}}
+
+
+
+  
+ 
+
+ 
+%{\inferrule {\inferrule *[right=VAR]{n = \sigma(i)}{\CONFIG{\sigma}{i + 2} \stepsto {n + 2}}}{\CONFIG{\sigma}{i := n+2} \stepsto \sigma'}} {\inferrule {\CONFIG{\sigma'}{\while{b}{i := i+2}} \stepsto \sigma''}{}}}
+%{\CONFIG{\sigma}{\while{b}{i := i+2}} \stepsto \sigma''}}
+\end{mathpar}
 
 \end{exercise}
 
