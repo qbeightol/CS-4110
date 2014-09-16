@@ -285,25 +285,35 @@ it should discard $e$ executes the handler $c_2$. You will also need
 to modify many other rules so they have the right type and also
 propagate exceptions.
 
-%\begin{mathpar}
-
-
- %{ \inferrule *[right=WHILE-T] { { \CONFIG{\sigma}{b} \stepsto {true} 
-%} {\inferrule *[right=ASSGN] {\inferrule *[right=VAR]{n = \sigma(i)}{\CONFIG{\sigma}{i + 2} \stepsto {n + 2}}}{\CONFIG{\sigma}{i := n+2} \stepsto \sigma'}} {\inferrule {\CONFIG{\sigma'}{\while{b}{i := i+2}} \stepsto \sigma''}{}}}
-%{\CONFIG{\sigma}{\while{b}{i := i+2}} \stepsto \sigma''}}
-%\end{mathpar}
-
 \begin{mathpar}
 
  { \inferrule { { \CONFIG{\sigma}{b} \stepsto {true}} \hspace{2mm} {\CONFIG{\sigma}{c_1} \stepsto \CONFIG{\sigma'}{e}}} {\CONFIG{\sigma}{ \IF~b~\THEN~c_1~\ELSE~c_2} \stepsto \CONFIG{\sigma'}{e}}}
  
   { \inferrule { { \CONFIG{\sigma}{b} \stepsto {false}} \hspace{2mm} {\CONFIG{\sigma}{c_2} \stepsto \CONFIG{\sigma'}{e}}} {\CONFIG{\sigma}{ \IF~b~\THEN~c_1~\ELSE~c_2} \stepsto \CONFIG{\sigma'}{e}}}
   
-While-F safe.\\
+%While-F safe.\\
 
   { \inferrule { { \CONFIG{\sigma}{b} \stepsto {true}} \hspace{2mm} {\CONFIG{\sigma}{c} \stepsto \CONFIG{\sigma'}{e}}} {\CONFIG{\sigma}{\WHILE~b~\DO~c} \stepsto \CONFIG{\sigma'}{e}}}
   
     { \inferrule { { \CONFIG{\sigma}{b} \stepsto {true}} \hspace{2mm} {\CONFIG{\sigma}{c} \stepsto \sigma'} {\CONFIG{\sigma'}{\WHILE~b~\DO~c} \stepsto \CONFIG{\sigma''}{e}}} {\CONFIG{\sigma}{\WHILE~b~\DO~c} \stepsto \CONFIG{\sigma''}{e}}}
+    
+%    $\THROW~e$ should return exception $e$
+     { \inferrule {\\\\}{\CONFIG{\sigma}{\THROW~e} \stepsto \CONFIG{\sigma}{e}}}
+     
+    
+%$\TRYCATCH{c_1}{e}{c_2}$ should execute $c_1$ and return the result it
+%produces, unless the result contains an exception $e$, in which case
+%it should discard $e$ executes the handler $c_2$
+
+%{\inferrule{\\\\}{\}
+
+      { \inferrule {\CONFIG{\sigma}{c_1} \stepsto v} {\CONFIG {\sigma}{{\TRYCATCH{c_1}{e}{c_2}}} \stepsto v}}
+      
+      { \inferrule {\CONFIG{\sigma}{c_1} \stepsto \CONFIG{\sigma}{e_1}} {\CONFIG {\sigma}{{\TRYCATCH{c_1}{e}{c_2}}} \stepsto  \CONFIG{\sigma}{e_1}}}
+      
+        { \inferrule {\CONFIG{\sigma}{c_1} \stepsto \CONFIG{\sigma}{e} \\ {\CONFIG{\sigma}{c_2} \stepsto v'}} {\CONFIG {\sigma}{{\TRYCATCH{c_1}{e}{c_2}}} \stepsto v'}}
+        
+           { \inferrule {\CONFIG{\sigma}{c_1} \stepsto \CONFIG{\sigma}{e} \\ {\CONFIG{\sigma}{c_2} \stepsto \CONFIG{\sigma}{e_n}}} {\CONFIG {\sigma}{{\TRYCATCH{c_1}{e}{c_2}}} \stepsto \CONFIG{\sigma}{e_n}}}
 
 
 
