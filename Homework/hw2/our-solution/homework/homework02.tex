@@ -208,13 +208,30 @@ We complete the following proof by induction on  \( \CONFIG{\sigma}{c} \stepsone
 \CONFIG{\sigma'}{c'} \).\\
 
 
-{\it Case R1}: We know \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \) and
-\( \CONFIG{\sigma'}{c'} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \).\\ 
-\indent By R1, \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma}{c} \), so $\sigma = \sigma'$ and $c = c'$.\\
-\indent By substituting $\sigma$ and $c$ for $\sigma'$ and $c'$, we get  \(
-\CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \). \checkmark
+{\it Case R1}:
+% We know \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \) and \( \CONFIG{\sigma'}{c'} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \).\\ 
+By R1, \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma}{c} \), so $\sigma = \sigma'$ and $c = c'$.\\
+By substituting $\sigma$ and $c$ for $\sigma'$ and $c'$, we get  \(
+\CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \). \checkmark \\
 
-{\it Case R2}:
+{\it Case R2}: 
+%We know that \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} and \CONFIG{\sigma'}{c'} \stepsone\kleenestar \CONFIG{\sigma''}{c''}.
+We know that \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \), and we may break it down into the following, for some $\sigma_n$ and $c_n$:
+
+\centerline{\( \CONFIG{\sigma}{c} \stepsone \CONFIG{\sigma_n}{c_n} \)}
+\centerline{ \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \).}
+
+\vspace{3mm}
+
+%Therefore, we may apply the inductive hypothesis to  \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma_n}{c_n} \) and \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \).
+
+Therefore, we may apply the inductive hypothesis to \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \) and  \( \CONFIG{\sigma'}{c'} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \) to conclude that \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \).\\
+
+By applying R1 to \( \CONFIG{\sigma}{c} \stepsone \CONFIG{\sigma_n}{c_n} \), we know that \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma_n}{c_n} \).\\
+
+Therefore, we may apply the inductive hypothesis to  \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma_n}{c_n} \) and \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \) to conclude that  \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \). \checkmark \\
+
+This concludes the case and the proof. $\blacksquare$
 
 
 \end{exercise}
