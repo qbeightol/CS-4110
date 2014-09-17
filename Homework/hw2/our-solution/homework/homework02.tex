@@ -173,7 +173,7 @@ We see that these two do $\emph{not}$ produce the same results. Therefore, the a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % new version of the proof %
-
+\iffalse
 To prove that $\while{x~\mathord{!}\mathord{=}~0}{x := 0}$ and $x:= 0 * x$ are equivalent, we'll consider $\sigma(x)$ undefined, $\sigma(x) = 0$ and $\sigma(x) = n$, where $n \neq 0$, and show that either 
 \begin{enumerate}
 \item $\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma'$ and $\left< \sigma, x:= 0 * x \right> \Downarrow \sigma'$
@@ -245,8 +245,9 @@ Again, the statements $\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0}
 
 
 \newpage
+\fi
 % old version %
-OLD VERSION
+%OLD VERSION
 
 To prove that $\while{x~\mathord{!}\mathord{=}~0}{x := 0}$ and $x:= 0 * x$ are equivalent, we'll first assume that $\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma'$ and then show that $\left< \sigma, x:=0*x \right>$ necessarily steps to the same $\sigma'$. Then we'll show that if $\left< \sigma, x:= 0 * x \right> \Downarrow \sigma'$ (and note that this is a different $\sigma'$ from the $\sigma'$ in the last sentence), then $\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma'$:
 
