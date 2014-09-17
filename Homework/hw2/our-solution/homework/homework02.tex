@@ -407,25 +407,35 @@ $\stepsone\kleenestar$ is transitive.
 \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \).
 \end{theorem*}
 
-Because of our axiom R1 and our inference rule R2, we have an exhaustive set of cases against which we may pattern-match the expression \( \CONFIG{\sigma}{c} \stepsone\kleenestar
-\CONFIG{\sigma'}{c'} \).\\
+%Because of our axiom R1 and our inference rule R2, we have an exhaustive set of cases against which we may pattern-match the expression \( \CONFIG{\sigma}{c} \stepsone\kleenestar
+%\CONFIG{\sigma'}{c'} \).\\
 
-We complete the following proof by induction on  \( \CONFIG{\sigma}{c} \stepsone\kleenestar
-\CONFIG{\sigma'}{c'} \).\\
+We complete the following proof by assuming \CONFIG{\sigma}{c}\stepsone\kleenestar\CONFIG{\sigma'}{c'} and \CONFIG{\sigma'}{c'}\stepsone\kleenestar\CONFIG{\sigma''}{c''} and then inducting on the derivation of \( \CONFIG{\sigma}{c} \stepsone\kleenestar
+\CONFIG{\sigma'}{c'} \) using the following predicate: \\
 
+$$P(\mathcal{D}) \triangleq \mathcal{D} \Vdash \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'}$$ 
+
+Since \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'}, there is some derivation $\mathcal{D} \Vdash \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'}$. There are two possible final steps in $\mathcal{D}$ \\
 
 {\it Case R1}:
 % We know \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \) and \( \CONFIG{\sigma'}{c'} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \).\\ 
-By R1, \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma}{c} \), so $\sigma = \sigma'$ and $c = c'$.\\
-By substituting $\sigma$ and $c$ for $\sigma'$ and $c'$, we get  \(
+If R1 was applied, \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma}{c} \), so $\sigma = \sigma'$ and $c = c'$. By substituting $\sigma$ and $c$ for $\sigma'$ and $c'$, we get  \(
 \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \). \checkmark \\
 
 {\it Case R2}: 
-%We know that \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} and \CONFIG{\sigma'}{c'} \stepsone\kleenestar \CONFIG{\sigma''}{c''}.
-We know that \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \), and we may break it down into the following, for some $\sigma_n$ and $c_n$:
 
-\centerline{\( \CONFIG{\sigma}{c} \stepsone \CONFIG{\sigma_n}{c_n} \)}
-\centerline{ \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \).}
+\begin{prooftree}
+\AxiomC{\CONFIG{\sigma}{c} \stepsone \CONFIG{\sigma'}{c'}}
+\AxiomC{\vdots}
+\UnaryInfC{\CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma'}{c'}}
+\BinaryInfC{\CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'}}
+\end{prooftree}
+
+%We know that \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} and \CONFIG{\sigma'}{c'} \stepsone\kleenestar \CONFIG{\sigma''}{c''}.
+%We know that \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \), and we may break it down into the following, for some $\sigma_n$ and $c_n$:
+
+%\centerline{\( \CONFIG{\sigma}{c} \stepsone \CONFIG{\sigma_n}{c_n} \)}
+%\centerline{ \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \).}
 
 \vspace{3mm}
 
@@ -433,9 +443,20 @@ We know that \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \),
 
 Therefore, we may apply the inductive hypothesis to \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma'}{c'} \) and  \( \CONFIG{\sigma'}{c'} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \) to conclude that \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \).\\
 
-By applying R1 to \( \CONFIG{\sigma}{c} \stepsone \CONFIG{\sigma_n}{c_n} \), we know that \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma_n}{c_n} \).\\
 
-Therefore, we may apply the inductive hypothesis to  \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma_n}{c_n} \) and \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \) to conclude that  \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \). \checkmark \\
+Then we can apply R1 to conclude that $\CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''}:$
+
+\begin{prooftree}
+\AxiomC{\CONFIG{\sigma}{c} \stepsone \CONFIG{\sigma'}{c'}}
+\AxiomC{\vdots}
+\UnaryInfC{\CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma''}{c''}}
+\BinaryInfC{\CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \checkmark}
+\end{prooftree}
+
+
+%By applying R1 to \( \CONFIG{\sigma}{c} \stepsone \CONFIG{\sigma_n}{c_n} \), we know that \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma_n}{c_n} \).\\
+
+%Therefore, we may apply the inductive hypothesis to  \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma_n}{c_n} \) and \( \CONFIG{\sigma_n}{c_n} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \) to conclude that  \( \CONFIG{\sigma}{c} \stepsone\kleenestar \CONFIG{\sigma''}{c''} \). \checkmark \\
 
 This concludes the case and the proof. $\blacksquare$
 
