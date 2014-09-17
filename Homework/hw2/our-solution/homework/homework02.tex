@@ -4,6 +4,7 @@
 
 \usepackage{../tex/jnf}
 \usepackage{../tex/angle}
+\usepackage{bussproofs}
 
 \solutionfalse
 
@@ -169,7 +170,212 @@ We see that these two do $\emph{not}$ produce the same results. Therefore, the a
 
 \item $\while{x~\mathord{!}\mathord{=}~0}{x := 0}$\qquad and \qquad $x:= 0 * x$\\
 
-TODO: type this up 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% new version of the proof %
+
+To prove that $\while{x~\mathord{!}\mathord{=}~0}{x := 0}$ and $x:= 0 * x$ are equivalent, we'll consider $\sigma(x)$ undefined, $\sigma(x) = 0$ and $\sigma(x) = n$, where $n \neq 0$, and show that either 
+\begin{enumerate}
+\item $\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma'$ and $\left< \sigma, x:= 0 * x \right> \Downarrow \sigma'$
+\item $\neg(\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma')$ and $\neg(\left< \sigma, x:= 0 * x \right> \Downarrow \sigma')$ \\*
+\end{enumerate}
+which is equivalent to proving $\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma' \Leftrightarrow \left< \sigma, x:= 0 * x \right> \Downarrow \sigma'$\\*
+
+
+\underline{$\sigma(x)$ undefined:} \\*
+In this case, its impossible for either command to step forward--if you attempted to create a derivation showing that either command could be evaluated, you'd eventually reach a case where you need to use the value of $\sigma(x)$ to support another inference. Consequently, any assertions that $\left< \sigma, c \right> \sigma'$ (where $c$ is one of the commands in the prompt), will be false for any choice of $\sigma$, $\sigma'$, and $c$.
+
+\underline{$\sigma(x) = 0$:}\\*
+Here, we'll analyze how each command steps forward (Note that each configuration will step to exactly one final store because IMP is deterministic):
+
+\begin{prooftree}
+\AxiomC{$\left< \sigma, x \right> \Downarrow 0$}
+\AxiomC{$\left< \sigma, 0, \right> \Downarrow 0$}
+\AxiomC{$0=0$}
+\TrinaryInfC{$\left< \sigma,x~\mathord{!}\mathord{=}~0 \right> \Downarrow \FALSE$}
+\UnaryInfC{$\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma$}
+\end{prooftree}
+
+\begin{prooftree}
+\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+\AxiomC{$\sigma(x) = 0$}
+\UnaryInfC{$\left< \sigma,x \right> \Downarrow 0$}
+\AxiomC{$0 = 0 \times 0$}
+\TrinaryInfC{$\left<\sigma, 0 * x \right> \Downarrow 0$}
+\UnaryInfC{$\left< \sigma, x:= 0 * x \right> \Downarrow \sigma[x \mapsto 0]$}
+\end{prooftree}
+
+Notice $\sigma$ already maps $x$ to 0, so $\sigma[x \mapsto 0] = \sigma$. Now let's consider the statements  $\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma'$ and $\left< \sigma, x:= 0 * x \right> \Downarrow \sigma'$ for arbitrary values of $\sigma'$. 
+
+If $\sigma'$ happens to be equal to $\sigma$ then we can use our previous derivations to conclude that both statements are true simultaneously. Otherwise, both will be false, which concludes this branch of the proof.
+
+\underline{$\sigma(x) = n$ where $n \neq 0$} \\*
+
+\footnotesize 
+\begin{prooftree}
+\AxiomC{$\sigma(x) = n$}
+\UnaryInfC{$\left< \sigma, x, \right> \Downarrow n$}
+	\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+		\AxiomC{$n \neq 0$}
+\TrinaryInfC{$\left< \sigma, x != 0 \right> \Downarrow \TRUE$} 
+	\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+	\UnaryInfC{$\left< \sigma, x:= 0 \right> \Downarrow \sigma[x \mapsto 0]$}
+		\AxiomC{$\left< \sigma [x\mapsto 0], x \right> \Downarrow 0$}
+		\AxiomC{$\left< \sigma[x \mapsto 0], 0, \right> \Downarrow 0$}
+		\AxiomC{$0=0$}
+		\TrinaryInfC{$\left< \sigma[x\mapsto 0],x~\mathord{!}\mathord{=}~0 \right> 
+					  \Downarrow \FALSE$}
+		\UnaryInfC{$\left< \sigma[x\mapsto 0], 
+					\while{x~\mathord{!}\mathord{=}~0}{x := 0}
+					\right> \Downarrow \sigma[x\mapsto 0]$}
+\TrinaryInfC{$\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma[x \mapsto 0]$}
+\end{prooftree}
+\normalsize
+
+\begin{prooftree}
+\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+\AxiomC{$\sigma(x) = n$}
+\UnaryInfC{$\left< \sigma,x \right> \Downarrow n$}
+\AxiomC{$0 = 0 \times n$}
+\TrinaryInfC{$\left<\sigma, 0 * x \right> \Downarrow 0$}
+\UnaryInfC{$\left< \sigma, x:= 0 * x \right> \Downarrow \sigma[x \mapsto 0]$}
+\end{prooftree}
+
+Again, the statements $\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma'$ and $\left< \sigma, x:= 0 * x \right> \Downarrow \sigma'$ for arbitrary values of $\sigma'$ will either be true simultaneously or false simultaneously. $\blacksquare$
+
+
+\newpage
+% old version %
+OLD VERSION
+
+To prove that $\while{x~\mathord{!}\mathord{=}~0}{x := 0}$ and $x:= 0 * x$ are equivalent, we'll first assume that $\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma'$ and then show that $\left< \sigma, x:=0*x \right>$ necessarily steps to the same $\sigma'$. Then we'll show that if $\left< \sigma, x:= 0 * x \right> \Downarrow \sigma'$ (and note that this is a different $\sigma'$ from the $\sigma'$ in the last sentence), then $\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma'$:
+
+$\Rightarrow$
+
+Assume that $\left<\sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0}\right> \Downarrow \sigma'$. There are two possible derivation trees for this assumption:
+
+\underline{While-F}:
+
+\begin{prooftree}
+\AxiomC{$\left< \sigma, x \right> \Downarrow 0$}
+\AxiomC{$\left< \sigma, 0, \right> \Downarrow 0$}
+\AxiomC{$0=0$}
+\TrinaryInfC{$\left< \sigma,x~\mathord{!}\mathord{=}~0 \right> \Downarrow \FALSE$}
+\UnaryInfC{$\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma$}
+\end{prooftree}
+
+so we can conclude $\sigma' = \sigma$ and $\sigma(x) = 0$
+
+Now let's evaluate $\left< \sigma, x:= 0 * x\right>$:
+
+\begin{prooftree}
+\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+\AxiomC{$\sigma(x) = 0$}
+\UnaryInfC{$\left< \sigma,x \right> \Downarrow 0$}
+\AxiomC{$0 = 0 \times 0$}
+\TrinaryInfC{$\left<\sigma, 0 * x \right> \Downarrow 0$}
+\UnaryInfC{$\left< \sigma, x:= 0 * x \right> \Downarrow \sigma[x \mapsto 0]$}
+\end{prooftree}
+
+since $\sigma$ already maps $x$ to 0, $\sigma[x \mapsto 0] = \sigma$, and, in this case, the commands produce the same final store given the same starting store.
+
+\underline{While-T}
+\footnotesize 
+\begin{prooftree}
+\AxiomC{$\sigma(x) = n$}
+\UnaryInfC{$\left< \sigma, x, \right> \Downarrow n$}
+	\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+		\AxiomC{$n \neq 0$}
+\TrinaryInfC{$\left< \sigma, x != 0 \right> \Downarrow \TRUE$} 
+	\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+	\UnaryInfC{$\left< \sigma, x:= 0 \right> \Downarrow \sigma[x \mapsto 0]$}
+		\AxiomC{$\left< \sigma [x\mapsto 0], x \right> \Downarrow 0$}
+		\AxiomC{$\left< \sigma[x \mapsto 0], 0, \right> \Downarrow 0$}
+		\AxiomC{$0=0$}
+		\TrinaryInfC{$\left< \sigma[x\mapsto 0],x~\mathord{!}\mathord{=}~0 \right> 
+					  \Downarrow \FALSE$}
+		\UnaryInfC{$\left< \sigma[x\mapsto 0], 
+					\while{x~\mathord{!}\mathord{=}~0}{x := 0}
+					\right> \Downarrow \sigma[x\mapsto 0]$}
+\TrinaryInfC{$\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma[x \mapsto 0]$}
+\end{prooftree}
+\normalsize
+
+which tells us that $\sigma(x) = n$, where $n \neq 0$. Again, let's consider the evaluation of the second command:
+
+\begin{prooftree}
+\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+\AxiomC{$\sigma(x) = n$}
+\UnaryInfC{$\left< \sigma,x \right> \Downarrow n$}
+\AxiomC{$0 = 0 \times n$}
+\TrinaryInfC{$\left<\sigma, 0 * x \right> \Downarrow 0$}
+\UnaryInfC{$\left< \sigma, x:= 0 * x \right> \Downarrow \sigma[x \mapsto 0]$}
+\end{prooftree}
+
+So in both cases, the commands step to the same ending store given the same starting store. I.e.
+
+$$\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma' \Rightarrow \left< \sigma, x:= 0 * x \right> \Downarrow \sigma'$$
+
+
+$\Leftarrow$
+Here, we'll assume $\left < \sigma, x:=0 * x \right> \Downarrow \sigma'$, and analyze the only possible derivation for this assumption:
+
+\begin{prooftree}
+\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+\AxiomC{$\sigma(x) = n$}
+\UnaryInfC{$\left< \sigma,x \right> \Downarrow n$}
+\AxiomC{$0 = 0 \times n$}
+\TrinaryInfC{$\left<\sigma, 0 * x \right> \Downarrow 0$}
+\UnaryInfC{$\left< \sigma, x:= 0 * x \right> \Downarrow \sigma[x \mapsto 0]$}
+\end{prooftree}
+
+We know very little about $\sigma$ (in fact, the only thing we know is that it maps $x$ to some value $n$, so for the next step in the proof we'll consider two possible values of $n$.
+
+\underline{$n = 0$:}\\*
+
+\begin{prooftree}
+\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+\AxiomC{$\sigma(x) = 0$}
+\UnaryInfC{$\left< \sigma,x \right> \Downarrow 0$}
+\AxiomC{$0 = 0 \times 0$}
+\TrinaryInfC{$\left<\sigma, 0 * x \right> \Downarrow 0$}
+\UnaryInfC{$\left< \sigma, x:= 0 * x \right> \Downarrow \sigma[x \mapsto 0]$}
+\end{prooftree}
+
+Since $\sigma$ already mapped $x$ to 0, $\sigma = \sigma[x \mapsto 0]$. So both commands stepped to the same final store when given the same starting store.
+
+\underline{$n \neq 0$:}\\*
+
+\footnotesize 
+\begin{prooftree}
+\AxiomC{$\sigma(x) = n$}
+\UnaryInfC{$\left< \sigma, x, \right> \Downarrow n$}
+	\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+		\AxiomC{$n \neq 0$}
+\TrinaryInfC{$\left< \sigma, x != 0 \right> \Downarrow \TRUE$} 
+	\AxiomC{$\left< \sigma, 0 \right> \Downarrow 0$}
+	\UnaryInfC{$\left< \sigma, x:= 0 \right> \Downarrow \sigma[x \mapsto 0]$}
+		\AxiomC{$\left< \sigma [x\mapsto 0], x \right> \Downarrow 0$}
+		\AxiomC{$\left< \sigma[x \mapsto 0], 0, \right> \Downarrow 0$}
+		\AxiomC{$0=0$}
+		\TrinaryInfC{$\left< \sigma[x\mapsto 0],x~\mathord{!}\mathord{=}~0 \right> 
+					  \Downarrow \FALSE$}
+		\UnaryInfC{$\left< \sigma[x\mapsto 0], 
+					\while{x~\mathord{!}\mathord{=}~0}{x := 0}
+					\right> \Downarrow \sigma[x\mapsto 0]$}
+\TrinaryInfC{$\left< \sigma, \while{x~\mathord{!}\mathord{=}~0}{x := 0} \right> \Downarrow \sigma[x \mapsto 0]$}
+\end{prooftree}
+\normalsize
+
+Again, both commands stepped to the same final store given the same starting store.
+$\blacksquare$
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 
 \end{enumerate}
 \end{exercise}
