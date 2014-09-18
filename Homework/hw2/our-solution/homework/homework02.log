@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  16 SEP 2014 20:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  16 SEP 2014 22:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -827,37 +827,27 @@ Overfull \hbox (47.45076pt too wide) in paragraph at lines 350--367
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 410--412
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 413--415
 
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 417--422
+Underfull \hbox (badness 10000) in paragraph at lines 418--419
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 434--435
+Underfull \hbox (badness 10000) in paragraph at lines 420--424
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 436--437
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 438--439
+Underfull \hbox (badness 10000) in paragraph at lines 444--445
 
  []
 
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 536--538
+Underfull \hbox (badness 10000) in paragraph at lines 557--559
 
  []
 
@@ -895,7 +885,7 @@ fonts/type1/urw/helvetic/uhvbo8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/
 type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/u
 rw/palatino/uplr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/pala
 tino/uplri8a.pfb>
-Output written on homework02.pdf (8 pages, 188827 bytes).
+Output written on homework02.pdf (8 pages, 189680 bytes).
 PDF statistics:
  127 PDF objects out of 1000 (max. 8388607)
  83 compressed objects within 1 object stream
