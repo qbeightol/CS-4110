@@ -20,7 +20,7 @@ need to focus on commands*)
 
 (* create an initial configuration from a command *)
 let make_configuration (c:com) : configuration = 
-  (Hashtbl.create 10, c)
+  ([], c)
 
 let rec evala (s: store) (a: aexp) : int= 
   match a with
