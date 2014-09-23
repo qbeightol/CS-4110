@@ -21,10 +21,10 @@ exception Continued of store
 type exp = Aexp of aexp | Bexp of bexp | Com of com
 *)
 
-type status = Normal | Broken | Continued
+type status = N (*normal*) | B (*broken*) | C (*continued*)
 
 (* A type for configurations *)
-type configuration = (store * com * ) (*check if this makes sense; I might only 
+type configuration = (store * com * status) (*check if this makes sense; I might only 
 need to focus on commands*)
 
 (* create an initial configuration from a command *)
@@ -63,21 +63,26 @@ let rec evalb (s: store) (b: bexp) : bool =
 (* evaluate a command *)
 let rec evalc (conf:configuration) : store = 
   match conf with
-  | s, Skip -> s
-  | s, (Assign (var_name, a)) -> (var_name, (evala s a))::s
-  | s, (Seq (c1, c2)) -> let s' = evalc (s, c1) in evalc (s', c2)
-  | s, (If (b, c_then, c_else)) -> 
+  | s, Skip, N -> s
+  | s, Assign (var_name, a), N -> (var_name, (evala s a))::s
+
+
+
+  | s, Seq (Break, c2), N -> evalc (s, c2, B)
+  | s, Seq (Continue, c2), N -> evalc (s, c2, C)
+  | s, Seq (c1, c2), N -> let s' = evalc (s, c1, N) in evalc (s', c2, N)
+  | s, Seq (While (b,c), c2), S -> 
+    let s' = evalc (s, (While b, c) c1) in evalc (s', c2)
+  | s, Seq (While _, c2), D -> evalc (s, c2)
+  | s, Seq (_, c2), stat -> (s, c2, stat)
+
+
+
+  | s, If (b, c_then, c_else), N -> 
     if evalb s b then evalc (s, c_then) else evalc (s, c_else)
-  | s, (While (b, c)) ->
-    (*double check*)
-    if evalb s b then 
-      try 
-        let s' = evalc (s, c) in evalc (s', While (b, c))
-      with 
-        | Broken s -> s 
-        | Continued s -> s 
-    else s
-  | s, (Print a) -> print_endline (soi (evala s a)); s (*double check*)
+  | s, While (b, c), D -> s
+  | s, While (b, c), _ -> evalc (s, If (b, Seq (c, While (b,c)), Skip), N) 
+  | s, (Print a), N -> print_endline (soi (evala s a)); s (*double check*)
   | s, (Test (i,b)) -> 
     if evalb s b then s else 
       let (l1, c1), (l2, c2) = i in
@@ -85,5 +90,5 @@ let rec evalc (conf:configuration) : store =
               ^ "line " ^ (soi l1) ^ ", character " ^ (soi c1) ^ " and "
               ^ "line " ^ (soi l2) ^ ", character " ^ (soi c2) 
       in print_endline str; raise (TestFailure str)
-  | s, Break -> raise (Broken s)
+  | s, Break -> s
   | s, Continue -> raise (Continued s) 
