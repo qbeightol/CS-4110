@@ -11,17 +11,20 @@ exception UnboundVariable of var
 (* A type for stores *)
 type store = (var * int) list
 
-(*custom exceptions:*)
+(*custom exceptions:
 exception Broken of store
 exception Continued of store
+*)
 
 (* nevermind:
 (*a wrapper type capable of holding the three kinds of expressions in IMP*)
 type exp = Aexp of aexp | Bexp of bexp | Com of com
 *)
 
+type status = Normal | Broken | Continued
+
 (* A type for configurations *)
-type configuration = (store * com) (*check if this makes sense; I might only 
+type configuration = (store * com * ) (*check if this makes sense; I might only 
 need to focus on commands*)
 
 (* create an initial configuration from a command *)
