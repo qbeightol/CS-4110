@@ -1,5 +1,7 @@
+x := 0;
 while true do {
-  x := input;
+  x := x + 1;
   print x;
-  if x = 0 then break else skip
-}
+  if x = 100 then break else skip
+};
+test x = 100
