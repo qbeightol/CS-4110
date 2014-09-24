@@ -1,0 +1,13 @@
+x:=0;
+y:=0;
+z:=0;
+while x = z do{
+	while x = y do {
+      y:=y+1;
+      x:=z+1;
+      y:=y*2
+	}
+};
+test x = 1;
+test y = 2;
+test z = 0
