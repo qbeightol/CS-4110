@@ -87,8 +87,10 @@ let rec evalc' (((stat: status), (bs: bindings)), (c: com)) : store =
   | N, Break -> (B, bs)
   | N, Continue -> (C, bs)
   | B, While _ -> (N, bs)
+  | B, Seq (c1, c2) -> let s' = evalc' ((B, bs), c1) in evalc' (s', c2)
   | B, _ -> (B, bs)
   | C, While (b, c) -> evalc' ((N, bs), If (b, Seq(c, While (b,c)), Skip))
+  | C, Seq (c1, c2) -> let s' = evalc' ((C, bs), c1) in evalc' (s', c2)
   | C, _ -> (C, bs)
 
 (*evaluates c; may throw IllegalBreak or IllegalContinue *)
