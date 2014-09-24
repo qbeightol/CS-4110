@@ -2,10 +2,11 @@ x:=1;
 y:=2;
 while true do {
   x:=x+1;
+  print x;
   if 4 < x then break else skip;
-  continue; 
-  y:=y+1 
+  print y;
+  y:=y+1;
+  print y
 };
 x:=x*2;
-test x = 10;
-test y = 2
+test x = 10
