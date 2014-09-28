@@ -17,10 +17,10 @@
     \begin{eqnarray*}
       \mathcal{C}\llbracket \texttt{if } b \texttt{ then } c \rrbracket & = & 
         \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
-                                                          \llbracket b \rrbracket \}
+                                                         \llbracket b \rrbracket \}
         \cup \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
           \llbracket b \rrbracket \wedge (\sigma, \sigma') \in \mathcal{C}
-                                                        \llbracket c \rrbracket \}\\
+                                                       \llbracket c \rrbracket \}\\
       \mathcal{C} \llbracket \texttt{do } c \texttt{ until } b  \rrbracket 
         & = & \text{fix}(G)\\
       \text{where } G(f) & = &
@@ -40,7 +40,65 @@
   \begin{enumerate} [(a)]
     \item
     \item
-    \item
+      To reduce the amount of repeated text, we'll refer to 
+      $(x \texttt{:= }1\texttt{; do } x \texttt{:= } x + 1 \texttt{ until } x < 0)$ 
+      as $c_a$, and we'll refer to $\texttt{while true do } c$ as $c_b$. 
+      
+      \begin{eqnarray*}
+        \mathcal{C} \llbracket c_b \rrbracket & = & \text{fix}(F) \\
+        F(f) & = & \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in 
+                                           \mathcal{B} \llbracket b \rrbracket \}\\
+            & \cup & \{(\sigma, \sigma'') 
+               \mid (\sigma, \texttt{true}) \in \mathcal{B} \llbracket b\rrbracket
+             \wedge (\sigma, \sigma') \in \mathcal{c} \llbracket c \rrbracket 
+             \wedge (\sigma', \sigma'') \in f \} \\
+      \end{eqnarray*}
+      Substituting \texttt{true} in for $b$ give the following equation (which is 
+      only true for commands with the same form as $c_b$):
+      \begin{eqnarray*}
+        F'(f) & = & \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in 
+                               \mathcal{B} \llbracket \texttt{true} \rrbracket \}\\
+            & \cup & \{(\sigma, \sigma'') 
+    \mid (\sigma, \texttt{true}) \in \mathcal{B} \llbracket \texttt{true}\rrbracket
+             \wedge (\sigma, \sigma') \in \mathcal{C} \llbracket c \rrbracket 
+             \wedge (\sigma', \sigma'') \in f \} \\
+      \end{eqnarray*} 
+      Since $\mathcal{B} \llbracket \texttt{true} \rrbracket = \{(\sigma, 
+      \texttt{true})\}$, the pair $(\sigma, \texttt{false})$ will never be a subset 
+      of $\mathcal{B} \llbracket \texttt{true} \rrbracket$ and the set preceding 
+      the union operator will be the empty set. Likewise, $(\sigma, \texttt{true})$ 
+      is always a subset of $\{(\sigma, \texttt{true})\}$, so we can refine our 
+      definition of $F'$ as follows:
+            \begin{eqnarray*}
+        F'(f) & = &  \{(\sigma, \sigma'') 
+    					    \mid (\sigma, \sigma') \in \mathcal{C} \llbracket c \rrbracket 
+                \wedge (\sigma', \sigma'') \in f \} \\
+      \end{eqnarray*} 
+      Now we'll show that $f_n$ is undefined on all stores for all $n \in
+      \mathbb{N}$ using induction (and the higher order function $F'$):
+      \begin{eqnarray*}
+        P(n)  & \triangleq & f_n = \emptyset \\
+        P(0): & & f_0 = F^0(\emptyset) = \emptyset \text{ } \checkmark \\
+        P(n+1): & & f_{n+1} = F(f_n) \\
+                & = & \{(\sigma, \sigma'') 
+    					    \mid (\sigma, \sigma') \in \mathcal{C} \llbracket c \rrbracket 
+                \wedge (\sigma', \sigma'') \in f_n \}
+      \end{eqnarray*}
+      Using our inductive hypothesis, we can conclude that $f_n = \emptyset$ which
+      in turn means that the second rule in the set comprehension (e.g. $(\sigma',
+      \sigma'') \in f_n$) is unsatisfiable. So the right hand side of the equation
+      is just the empty set, as desired:
+      
+      $$f_{n+1} = \emptyset \text{ } \checkmark$$ 
+      
+      Therefore, $P(n)$ hold for all $n \in \mathbb{N}$ and the fixed point of $F'$ 
+      is:
+      
+      $$ \text{fix}(F') = \bigcup_{i \geq 0} F'^{i}(\emptyset) = \emptyset \cup 
+      \emptyset \cup ... \cup \emptyset = \emptyset$$.
+      
+      In short, $c_b$ is guaranteed not to terminate.
+    \item 
   \end{enumerate}
 
 % Exercise 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
