@@ -18,7 +18,7 @@
       \mathcal{C}\llbracket \texttt{if } b \texttt{ then } c \rrbracket & = & 
         \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
                                                           \llbracket b \rrbracket \}
-        \cup \{ (\sigma, \sigma') \mid (\sigma, \texttt{false}) \in \mathcal{B}
+        \cup \{ (\sigma, \sigma') \mid (\sigma, \texttt{true}) \in \mathcal{B}
           \llbracket b \rrbracket \wedge (\sigma, \sigma') \in \mathcal{C}
                                                        \llbracket c \rrbracket \}\\
       \mathcal{C} \llbracket \texttt{do } c \texttt{ until } b  \rrbracket 
