@@ -38,7 +38,18 @@
 % Exercise 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \item
   \begin{enumerate} [(a)]
-    \item
+
+    \item  \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 42 \rrbracket \} \\
+    \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 42 \rrbracket \wedge n = n_1 + n _2\} \\
+    \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
+    \mathcal{A} \llbracket 42 \rrbracket  & = & \{ (\sigma, 42) \} \\
+    \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in (\sigma, \sigma(x)) \wedge (\sigma, n_2) \in (\sigma, 42) \wedge n = n_1 + n_2 \} \\
+    & = & \{ (\sigma, n) \mid n = \sigma(x) + 42 \} \\
+    & = & \{ (\sigma, \sigma(x) + 42) \} \\
+    & = & \{ (\sigma, \sigma(x) + 42 \}\\
+     \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid n = \sigma(x) + 42 \} \\
+     & = &  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 42 ]\} \\
+   \end{eqnarray*}
     \item
     \item
   \end{enumerate}
