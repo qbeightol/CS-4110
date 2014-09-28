@@ -1,0 +1,9 @@
+x:=42;
+skip;
+skip;
+while x < 3110 do{
+	x:=x + 1;
+	if(x*2 > 3110) then break else skip;
+	x:=x*2
+};
+test x = 2815

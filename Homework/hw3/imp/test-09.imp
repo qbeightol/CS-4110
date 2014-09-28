@@ -1,0 +1,13 @@
+x:=1110;
+y:=2110;
+z:=3110;
+temp:=0;
+while(x < z) do {
+  temp:=x;
+  x:= y;
+  z:=y-2;
+  y:=temp
+};
+test x = 2110;
+test y = 1110;
+test z = 2108
