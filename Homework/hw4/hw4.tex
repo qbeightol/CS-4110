@@ -39,6 +39,18 @@
   \item
   \begin{enumerate} [(a)]
 
+    \item  \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in \mathcal{C} \llbracket x := x + 21\rrbracket \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
+    \mathcal{C} \llbracket x := x + 21\rrbracket & = & (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 21 \rrbracket \} \\
+     \mathcal{A} \llbracket x + 21\rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 21 \rrbracket \wedge n = n_1 + n _2\} \\
+       \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
+    \mathcal{A} \llbracket 21 \rrbracket  & = & \{ (\sigma, 21) \} \\
+    \mathcal{A} \llbracket x + 21 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in (\sigma, \sigma(x)) \wedge (\sigma, n_2) \in (\sigma, 21) \wedge n = n_1 + n_2 \} \\
+    & = & \{ (\sigma, n) \mid n = \sigma(x) + 21 \} \\
+    & = & \{ (\sigma, \sigma(x) + 21) \} \\
+      \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma, \sigma[x \mapsto \sigma(x) + 21]) \} \\
+     \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 21]) \} \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
+    \end{eqnarray*}
+
     \item  \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 42 \rrbracket \} \\
     \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 42 \rrbracket \wedge n = n_1 + n _2\} \\
     \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
@@ -46,7 +58,6 @@
     \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in (\sigma, \sigma(x)) \wedge (\sigma, n_2) \in (\sigma, 42) \wedge n = n_1 + n_2 \} \\
     & = & \{ (\sigma, n) \mid n = \sigma(x) + 42 \} \\
     & = & \{ (\sigma, \sigma(x) + 42) \} \\
-    & = & \{ (\sigma, \sigma(x) + 42 \}\\
      \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid n = \sigma(x) + 42 \} \\
      & = &  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 42 ]\} \\
    \end{eqnarray*}
