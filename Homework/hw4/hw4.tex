@@ -18,7 +18,7 @@
       \mathcal{C}\llbracket \texttt{if } b \texttt{ then } c \rrbracket & = & 
         \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
                                                           \llbracket b \rrbracket \}
-        \cup \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
+        \cup \{ (\sigma, \sigma') \mid (\sigma, \texttt{false}) \in \mathcal{B}
           \llbracket b \rrbracket \wedge (\sigma, \sigma') \in \mathcal{C}
                                                         \llbracket c \rrbracket \}\\
       \mathcal{C} \llbracket \texttt{do } c \texttt{ until } b  \rrbracket 
@@ -38,8 +38,9 @@
 % Exercise 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \item
   \begin{enumerate} [(a)]
-
-    \item  \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in \mathcal{C} \llbracket x := x + 21\rrbracket \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
+  \item 
+{\bf Denotation of}  (x := x + 21; x := x + 21):
+      \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in \mathcal{C} \llbracket x := x + 21\rrbracket \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
     \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 21 \rrbracket \} \\
      \mathcal{A} \llbracket x + 21\rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 21 \rrbracket \wedge n = n_1 + n _2\} \\
        \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
@@ -58,9 +59,11 @@
     \mathcal{A} \llbracket x + 21 \rrbracket & = & \{ (\sigma'', n) \mid (\sigma'', n_1) \in (\sigma'', \sigma''(x)) \wedge (\sigma'', n_2) \in (\sigma'', 21) \wedge n = n_1 + n_2 \} \\
     & = & \{ (\sigma'', n) \mid n = \sigma(x) + \sigma(x) + 21 \} \\
     & = & \{ (\sigma'', \sigma(x) + 42) \} \\
+    \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{(\sigma, \sigma[x \mapsto \sigma(x) + 42 ]) \}
     \end{eqnarray*}
 
-    \item  \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 42 \rrbracket \} \\
+{\bf Denotation of}  (x := x + 42):
+      \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 42 \rrbracket \} \\
     \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 42 \rrbracket \wedge n = n_1 + n _2\} \\
     \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
     \mathcal{A} \llbracket 42 \rrbracket  & = & \{ (\sigma, 42) \} \\
@@ -68,8 +71,9 @@
     & = & \{ (\sigma, n) \mid n = \sigma(x) + 42 \} \\
     & = & \{ (\sigma, \sigma(x) + 42) \} \\
      \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid n = \sigma(x) + 42 \} \\
-     & = &  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 42 ]\} \\
+     & = &  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 42 ])\} \\
    \end{eqnarray*}
+   
     \item
     \item
   \end{enumerate}
