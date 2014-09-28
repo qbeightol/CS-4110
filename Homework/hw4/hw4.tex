@@ -1,0 +1,64 @@
+\documentclass[10pt, oneside]{article}
+\usepackage{geometry}
+\geometry{letterpaper}
+\usepackage{amssymb, amsmath, enumerate, stmaryrd}
+
+
+\begin{document}
+\noindent Ameya Acharya (apa52) \& Quinn Beightol (qeb2) \\*
+\noindent CS 4110 \\*
+\noindent hw4
+
+\begin{enumerate}[1.]
+% Exercise 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item
+  \begin{enumerate}[(a)] 
+    \item 
+    \begin{eqnarray*}
+      \mathcal{C}\llbracket \texttt{if } b \texttt{ then } c \rrbracket & = & 
+        \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
+                                                          \llbracket b \rrbracket \}
+        \cup \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
+          \llbracket b \rrbracket \wedge (\sigma, \sigma') \in \mathcal{C}
+                                                        \llbracket c \rrbracket \}\\
+      \mathcal{C} \llbracket \texttt{do } c \texttt{ until } b  \rrbracket 
+        & = & \text{fix}(G)\\
+      \text{where } G(f) & = &
+  				\{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} 
+				                                              \llbracket c \rrbracket
+		 \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket b \rrbracket \} \\
+				& \cup & \{ (\sigma, \sigma'') \mid 
+				            (\sigma, \sigma')  \in \mathcal{C} \llbracket c \rrbracket 
+				     \wedge (\sigma', \texttt{false})\in \mathcal{B} \llbracket b \rrbracket
+				     \wedge \exists \sigma''. (\sigma', \sigma'') \in f \}
+    \end{eqnarray*}
+    \item 
+  \end{enumerate}
+
+% Exercise 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item
+  \begin{enumerate} [(a)]
+    \item
+    \item
+    \item
+  \end{enumerate}
+
+% Exercise 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item
+
+% Exercise 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item
+  \begin{enumerate} [(a)]
+    \item
+    \item
+  \end{enumerate}
+
+% Exercise 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item
+  \begin{enumerate} [(a)]
+    \item
+    \item
+  \end{enumerate}
+
+\end{enumerate}
+\end{document}
