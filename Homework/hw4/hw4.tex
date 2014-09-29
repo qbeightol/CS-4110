@@ -130,10 +130,25 @@
       is:
       
       $$ \text{fix}(F') = \bigcup_{i \geq 0} F'^{i}(\emptyset) = \emptyset \cup 
-      \emptyset \cup ... \cup \emptyset = \emptyset$$.
+      \emptyset \cup ... \cup \emptyset = \emptyset.$$
       
       In short, $c_b$ is guaranteed not to terminate.
-    \item 
+      
+    \item {\bf Denotation of}  (x := x):
+       \begin{eqnarray*}  \mathcal{C} \llbracket x := x \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x \rrbracket \} \\
+    \mathcal{A} \llbracket x \rrbracket & = & \{ (\sigma, \sigma)\} \\
+     \mathcal{C} \llbracket x := x \rrbracket & = & \{ (\sigma, \sigma[x \mapsto \sigma(x)]) \}\\
+     & = & \{(\sigma, \sigma)\}\\
+   \end{eqnarray*}
+   
+   
+   {\bf Denotation of}   ($\texttt{if} (x = x+1) \hspace{1mm} \texttt{then} \hspace{1mm} x := 0$):
+       \begin{eqnarray*}  \mathcal{C} \llbracket \texttt{if} (x = x+1) \hspace{1mm} \texttt{then}\hspace{1mm} x := 0 \rrbracket & = & \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B} \llbracket x = x + 1 \rrbracket \} \cup \{ (\sigma, \sigma') \mid (\sigma, \texttt{true}) \in \mathcal{B}\\  \llbracket x = x + 1 \rrbracket \wedge (\sigma, \sigma') \in \mathcal{C}\llbracket x := 0 \rrbracket \} \\
+    \mathcal{A} \llbracket x \rrbracket & = & \{ (\sigma, \sigma)\} \\
+     \mathcal{C} \llbracket x := x \rrbracket & = & \{ (\sigma, \sigma[x \mapsto \sigma(x)]) \}\\
+     & = & \{(\sigma, \sigma)\}\\
+   \end{eqnarray*}
+
   \end{enumerate}
 
 % Exercise 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
