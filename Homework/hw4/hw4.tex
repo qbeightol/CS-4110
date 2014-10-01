@@ -17,8 +17,8 @@
     \begin{eqnarray*}
       \mathcal{C}\llbracket \texttt{if } b \texttt{ then } c \rrbracket & = & 
         \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
-                                                         \llbracket b \rrbracket \}
-        \cup \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
+                                                          \llbracket b \rrbracket \}
+        \cup \{ (\sigma, \sigma') \mid (\sigma, \texttt{true}) \in \mathcal{B}
           \llbracket b \rrbracket \wedge (\sigma, \sigma') \in \mathcal{C}
                                                        \llbracket c \rrbracket \}\\
       \mathcal{C} \llbracket \texttt{do } c \texttt{ until } b  \rrbracket 
@@ -35,11 +35,12 @@
     \item 
   \end{enumerate}
 
-% Exercise 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Exercise 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \item
   \begin{enumerate} [(a)]
-
-    \item  \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in \mathcal{C} \llbracket x := x + 21\rrbracket \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
+  \item 
+{\bf Denotation of}  (x := x + 21; x := x + 21):
+      \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in \mathcal{C} \llbracket x := x + 21\rrbracket \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
     \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 21 \rrbracket \} \\
      \mathcal{A} \llbracket x + 21\rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 21 \rrbracket \wedge n = n_1 + n _2\} \\
        \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
@@ -58,9 +59,11 @@
     \mathcal{A} \llbracket x + 21 \rrbracket & = & \{ (\sigma'', n) \mid (\sigma'', n_1) \in (\sigma'', \sigma''(x)) \wedge (\sigma'', n_2) \in (\sigma'', 21) \wedge n = n_1 + n_2 \} \\
     & = & \{ (\sigma'', n) \mid n = \sigma(x) + \sigma(x) + 21 \} \\
     & = & \{ (\sigma'', \sigma(x) + 42) \} \\
+    \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{(\sigma, \sigma[x \mapsto \sigma(x) + 42 ]) \}
     \end{eqnarray*}
 
-    \item  \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 42 \rrbracket \} \\
+{\bf Denotation of}  (x := x + 42):
+      \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 42 \rrbracket \} \\
     \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 42 \rrbracket \wedge n = n_1 + n _2\} \\
     \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
     \mathcal{A} \llbracket 42 \rrbracket  & = & \{ (\sigma, 42) \} \\
@@ -68,20 +71,149 @@
     & = & \{ (\sigma, n) \mid n = \sigma(x) + 42 \} \\
     & = & \{ (\sigma, \sigma(x) + 42) \} \\
      \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid n = \sigma(x) + 42 \} \\
-     & = &  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 42 ]\} \\
+     & = &  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 42 ])\} \\
    \end{eqnarray*}
+   
+% Exercise 2 b %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \item
-      To reduce the amount of repeated text, we'll refer to 
+      To conserve space, we'll refer to 
       $(x \texttt{:= }1\texttt{; do } x \texttt{:= } x + 1 \texttt{ until } x < 0)$ 
       as $c_a$, and we'll refer to $\texttt{while true do } c$ as $c_b$. 
       
+      \begin{eqnarray*}
+        \mathcal{C} \llbracket c_a \rrbracket & = & 
+          \{(\sigma, \sigma'') \mid \exists \sigma'. 
+            (\sigma, \sigma') \in \mathcal{C}\llbracket x\texttt{:= } 1\rrbracket \\
+     & & \wedge (\sigma', \sigma'') \in \mathcal{C} \llbracket \texttt{do } x 
+                               \texttt{:= } x + 1 \texttt{ until } x < 0 \rrbracket
+                                   \} \\
+        \mathcal{C} \llbracket x \texttt{:= } x+1 \rrbracket & = & \{(\sigma, n) \mid (\sigma, \sigma[x \mapsto n]) \in \mathcal{A} \llbracket x \rrbracket  \} \\
+        \mathcal{A} \llbracket 1 \rrbracket & = & \{(\sigma, 1) \} \\
+        \mathcal{C} \llbracket x \texttt{:= } x+1 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto 1]) \} \\
+        & & \\
+        \mathcal{C} \llbracket \texttt{do } x \texttt{:= } x + 1 \texttt{ until } x < 0 \rrbracket & = & \text{fix}(G') \\
+        \text{where } G'(f) & = & \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \} \\
+				& \cup & \{ (\sigma, \sigma'') \mid (\sigma, \sigma')  \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{false})\in \mathcal{B} \llbracket x < 0 \rrbracket \\
+				& & \wedge \exists \sigma''. (\sigma', \sigma'') \in f \}
+      \end{eqnarray*}
+      
+      Going forward, we'll argue that the second set in the definition of $G'$ 
+      (more precisely, the set defined after the first union operator) never adds 
+      anything to $f_n$--i.e. we'll prove $\forall n \in \mathbb{N}. 
+      P(n) = \{ (\sigma, \sigma'') \mid ... \wedge \exists \sigma''. (\sigma', 
+      \sigma'') \in f_n \} = \emptyset$ using induction:
+      
+      \underline{P(0)}: In this case $f_n = \emptyset$ so its impossible to have
+      a pair $(\sigma', \sigma'')$ satisfying $(\sigma', \sigma'')$, so the the 
+      second set is the empty set.
+      
+      \underline{Inductive Step (i.e. $P(n - 1) \rightarrow P(n)$)}: Using the 
+      inductive hypothesis I can conclude that 
+      
+      \begin{eqnarray*}
+        f_n = & = & \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \}  \\
+        & \cup & \{ (\sigma, \sigma'') \mid (\sigma, \sigma')  \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{false})\in \mathcal{B} \llbracket x < 0 \rrbracket \\
+				& & \wedge \exists \sigma''. (\sigma', \sigma'') \in f_{n-1} \} \\
+				& = & \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \}  \\
+        & \cup & \{ (\sigma, \sigma'') \mid (\sigma, \sigma')  \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{false})\in \mathcal{B} \llbracket x < 0 \rrbracket \\
+				& & \wedge \exists \sigma''. (\sigma', \sigma'') \in \emptyset \} \\
+			\end{eqnarray*}
+			\begin{eqnarray*}
+				f_n & = & \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \}  \\
+			\end{eqnarray*}
+			
+			And now we can re-write the second set in $G'(f)$:
+			
+			\begin{eqnarray*}
+			  \{ (\sigma, \sigma'') & \mid & (\sigma, \sigma')  \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \\ 
+			  & \wedge & (\sigma', \texttt{false})\in \mathcal{B} \llbracket x < 0 \rrbracket \\
+				& \wedge & \exists \sigma''. (\sigma', \sigma'') \in f_n \} \\
+				& & \\
+				= \{ (\sigma, \sigma'') & \mid & (\sigma, \sigma')  \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \\ 
+			  & \wedge & (\sigma', \texttt{false})\in \mathcal{B} \llbracket x < 0 \rrbracket \\
+				& \wedge & \exists \sigma''. ((\sigma', \sigma'') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \\
+				& \wedge & (\sigma'', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket) \}
+			\end{eqnarray*}
+			
+			Notice that the last three requirements on the stores are contradictory. 
+			Consider some $\sigma'$ such that $\mathcal{B} \llbracket x < 0 \rrbracket 
+			\sigma' = \texttt{false}$.  Looking at at the definition of 
+			$\mathcal{B} \llbracket x < 0 \rrbracket$ we can infer a few facts about 
+			$\sigma'$:
+			
+			\begin{eqnarray*}
+			  \mathcal{B} \llbracket x < 0 \rrbracket & = & ... \cup \{ (\sigma', \texttt{false}) \mid (\sigma', n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma', n_2) \in \mathcal{A} \llbracket 0 \rrbracket \wedge n_1 \geq n_2 \} \\
+			  \mathcal{A} \llbracket x \rrbracket & = & \{(\sigma, \sigma(x))\} \\
+			  \mathcal{A} \llbracket 0 \rrbracket & = & \{(\sigma, 0)\} \\
+			\end{eqnarray*}
+			
+			Since $\mathcal{B} \llbracket x < 0 \rrbracket \sigma' = \texttt{true}$, we
+			know that $n_1 = \sigma'(x)$, $n_2 = 0$, and $\sigma'(x) \geq 0$. Now let's 
+			take a look at what happens when execute $x \texttt{:= } x + 1$ on the 
+			store and then evaluate $x < 0$:
+			
+			\begin{eqnarray*}
+			  \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 1 \rrbracket \} \\
+			  \mathcal{A} \llbracket x + 1 \rrbracket & = & \{(\sigma, n') \mid (\sigma, n_1') \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2') \in \mathcal{A} \llbracket x \rrbracket \wedge n' = n_1' + n_2' \}
+			\end{eqnarray*}
+			
+			\begin{eqnarray*}
+			  \mathcal{A} \llbracket x \rrbracket & = & \{(\sigma, \sigma(x))\} \\
+			  \mathcal{A} \llbracket 1 \rrbracket & = & \{(\sigma, 1)\} \\
+			  \mathcal{A} \llbracket x + 1 \rrbracket & = & \{(\sigma, \sigma(x) + 1)\} \\
+			  \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket & = & \{(\sigma, \sigma[x \mapsto \sigma(x) + 1])\} \\
+			  \mathcal{B} \llbracket x < 0 \rrbracket & = & \{(\sigma, \texttt{true}) \mid (\sigma, n_1) \in \mathcal{B} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{B} \llbracket 0 \rrbracket \wedge n_1 < n_2\} \cup \\
+			  & & \{(\sigma, \texttt{false}) \mid (\sigma,n_1) \in \mathcal{B} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{B} \llbracket 0 \rrbracket \wedge n_1 \geq n_2 \}
+			\end{eqnarray*}
+			
+			which can be more compactly written:
+			
+			$$\mathcal{B} \llbracket x < 0 \rrbracket = \left \{ 
+			  \begin{array}{lr} 
+			    \texttt{true}  & \text{iff } \sigma'(x) < 0 \\
+			    \texttt{false} & \text{otherwise}
+			  \end{array} \right.$$
+			    
+		  Now the source of the contradiction should become clear. Let's evaluate
+		  our command on $\sigma'$ and then evaluate our boolean expression:
+			\begin{eqnarray*}
+			  \sigma'' = \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \sigma' & = & \sigma'[x \mapsto \sigma'(x) + 1])\}
+			  \mathcal{B} \llbracket x < 0 \rrbracket \sigma'' = \texttt{false}
+			\end{eqnarray*}
+			
+			The boolean expression evaluates to false because $\sigma'(x) > 0$ and so 
+			$\sigma''(x) = \sigma'(x) + 1 > 0$. This, in turn, demonstrates that the 
+			three conditionals in the definition of the second set are contradictory. 
+			That set will be the empty set for all $n$. \checkmark
+			
+			
+			Now we can calculate the fixed point of $G'$:
+			
+			\begin{eqnarray*}
+			  \text{fix}(G') & = & \bigcup_{i \geq 0} (G')^{i}(\emptyset) \\
+			  & = & \emptyset \cup \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \} \cup \emptyset \cup\\
+			  & & \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \} \cup \emptyset \cup ... \\
+			  & = & \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \} \\
+			\end{eqnarray*}
+			
+			If we evaluate $\mathcal{C} \llbracket x \texttt{:= 1} \rrbracket$ on a store
+			sigma, we'll get a new store $\sigma' = \sigma[x\mapsto 1]$, and then if we 
+			attempt to apply  $\mathcal{C} \llbracket \texttt{do } x \texttt{:= } x + 1 
+			\texttt{ until } x < 0 \rrbracket  =  \text{fix}(G')$ to that store, well, 
+			we won't get a value--the relationship is undefined since $\sigma'(x) > 
+			0$, which implies that $\sigma''(x) = \sigma'(x) + 1 > 0$ and therefore $
+			\mathcal{B}\llbracket x < 0 \rrbracket \sigma'' = \texttt{false}$. In other 
+			words, $c_a$ doesn't terminate. Let's look at $c_b$ and prove that it doesn't 
+			terminate as well (which in turn demonstrates that the commands are 
+			equivalent:
+			
       \begin{eqnarray*}
         \mathcal{C} \llbracket c_b \rrbracket & = & \text{fix}(F) \\
         F(f) & = & \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in 
                                            \mathcal{B} \llbracket b \rrbracket \}\\
             & \cup & \{(\sigma, \sigma'') 
                \mid (\sigma, \texttt{true}) \in \mathcal{B} \llbracket b\rrbracket
-             \wedge (\sigma, \sigma') \in \mathcal{c} \llbracket c \rrbracket 
+             \wedge (\sigma, \sigma') \in \mathcal{C} \llbracket c \rrbracket 
              \wedge (\sigma', \sigma'') \in f \} \\
       \end{eqnarray*}
       Substituting \texttt{true} in for $b$ give the following equation (which is 
@@ -127,9 +259,24 @@
       
       $$ \text{fix}(F') = \bigcup_{i \geq 0} F'^{i}(\emptyset) = \emptyset \cup 
       \emptyset \cup ... \cup \emptyset = \emptyset$$
+
+      In short, $c_b$ is guaranteed not to terminate, just like $c_a$.
       
-      In short, $c_b$ is guaranteed not to terminate.
-    \item 
+    \item {\bf Denotation of}  (x := x):
+       \begin{eqnarray*}  \mathcal{C} \llbracket x := x \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x \rrbracket \} \\
+    \mathcal{A} \llbracket x \rrbracket & = & \{ (\sigma, \sigma)\} \\
+     \mathcal{C} \llbracket x := x \rrbracket & = & \{ (\sigma, \sigma[x \mapsto \sigma(x)]) \}\\
+     & = & \{(\sigma, \sigma)\}\\
+   \end{eqnarray*}
+   
+   
+   {\bf Denotation of}   ($\texttt{if} (x = x+1) \hspace{1mm} \texttt{then} \hspace{1mm} x := 0$):
+       \begin{eqnarray*}  \mathcal{C} \llbracket \texttt{if} (x = x+1) \hspace{1mm} \texttt{then}\hspace{1mm} x := 0 \rrbracket & = & \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B} \llbracket x = x + 1 \rrbracket \} \cup \{ (\sigma, \sigma') \mid (\sigma, \texttt{true}) \in \mathcal{B}\\  \llbracket x = x + 1 \rrbracket \wedge (\sigma, \sigma') \in \mathcal{C}\llbracket x := 0 \rrbracket \} \\
+    \mathcal{A} \llbracket x \rrbracket & = & \{ (\sigma, \sigma)\} \\
+     \mathcal{C} \llbracket x := x \rrbracket & = & \{ (\sigma, \sigma[x \mapsto \sigma(x)]) \}\\
+     & = & \{(\sigma, \sigma)\}\\
+   \end{eqnarray*}
+
   \end{enumerate}
 
 % Exercise 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
