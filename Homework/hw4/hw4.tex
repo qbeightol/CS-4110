@@ -1,7 +1,7 @@
 \documentclass[10pt, oneside]{article}
 \usepackage{geometry}
 \geometry{letterpaper}
-\usepackage{amssymb, amsmath, enumerate, stmaryrd}
+\usepackage{amssymb, amsmath, enumerate, stmaryrd, bussproofs}
 
 
 \begin{document}
@@ -32,7 +32,13 @@
 				     \wedge (\sigma', \texttt{false})\in \mathcal{B} \llbracket b \rrbracket
 				     \wedge \exists \sigma''. (\sigma', \sigma'') \in f \}
     \end{eqnarray*}
-    \item 
+    
+    \item \text{ }
+    \begin{prooftree}
+      \AxiomC{$\vdash \{P \wedge b\} c \{Q\}$}
+      \AxiomC{$\vdash \{P \wedge \neg b\} \Rightarrow Q$}
+      \BinaryInfC{$\vdash \{P\} \text{ if } b \text{ then } c \text{ }\{Q\}$}
+    \end{prooftree}
   \end{enumerate}
 
 % Exercise 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -293,7 +299,116 @@
   \item
   \begin{enumerate} [(a)]
     \item
-    \item
+      Yes, consider the following derivation tree (as a side note, we'll refer to 
+  		$(b \Rightarrow P) \wedge (\neg b \Rightarrow Q)$ as A:
+      
+      \begin{prooftree}
+        \AxiomC{$\vDash \text{A}  \Rightarrow \text{A}$}
+        
+        \AxiomC{$\vDash (b \Rightarrow P) \wedge (\neg b \Rightarrow Q) \wedge b \Rightarrow P$}
+        \AxiomC{$\vdash \{\text{P}\} \text{ } c \text{ } \{\text{A}\}$}
+        \AxiomC{$\vDash A \Rightarrow A$}
+        \LeftLabel{C}
+        \TrinaryInfC{$\vdash \{(b \Rightarrow P) \wedge (\neg b \Rightarrow Q) \wedge b \} \text{ } c \text{ } \{A\}$}
+        \LeftLabel{W}
+        \UnaryInfC{$\vdash \{ \text{A} \} \texttt{ while b do c } \{ \text{A} \wedge \neg b \}$}
+        
+        \AxiomC{A $\wedge \neg b$ $\Rightarrow$ Q}
+        \LeftLabel{C}
+        \TrinaryInfC{$\vdash \{\text{A}\} \texttt{ while b do c } \{\text{Q}\}$}
+      \end{prooftree}
+      
+      *"C" is an abbreviation for "Consequence", and "W" is short for "While" \\*
+      
+      Note that we've made a few assumptions here, namely that we have some 
+      derivation for $\{\text{P}\} \text{ } c \text{ } \{\text{A}\}$ as well as 
+      A $\Rightarrow$ A, A $\Rightarrow$ Q, and $(b \Rightarrow P) \wedge (\neg b 
+      \Rightarrow Q) \wedge b \Rightarrow P$. The last three assumptions are 
+      tautologies, however--anything implies itself, and we can combine $(b 
+      \Rightarrow P) \wedge (\neg b \Rightarrow Q)$ with information about the
+      truth value of $b$ to conclude either $P$ (if $b$ is true) or $Q$ (if $b$ 
+      is false). Consequently, the entire tree is a proof that 
+      
+      \begin{prooftree}
+        \AxiomC{$\vdash \{P\} \text{ } c \text{ } \{(b \Rightarrow P) \wedge (\neg b \Rightarrow Q) \}$}
+        \UnaryInfC{$\vdash \{(b \Rightarrow P) \wedge (\neg b \Rightarrow Q)\} \texttt{ while b do c } \{Q\}$}
+      \end{prooftree}
+      
+      which is the definition of our alternate \texttt{while} rule.
+      
+      
+    \item 
+      No, this rule reduces the completeness of Hoare logic. Consider the following
+      code:
+      
+      \texttt{sum:= 0} \\
+      \texttt{i:= 0} \\
+      \texttt{while i < n do\{} \\
+      \indent \texttt{ } \texttt{ i:= i + 1} \\ 
+      \indent \texttt{ } \texttt{ sum:= sum + i} \\
+      \texttt{\}} \\
+      
+      It computes $\Sigma_{j=1}^{n}j$, and it would be nice to be able to prove 
+      that property using Hoare Logic. Put simply, you can't prove that property 
+      using the new rule (primarily because you can only show that the sum is $
+      \Sigma_{j=1}^{i}j$ and that $i <= n+1$, but not that $i <=n$), but we'll 
+      delve into a slightly longer analysis to show where the bug occurs. Here's 
+      part of the proof we'd write using the original inference rules (along with 
+      a few labels for lengthier subsections of the tree: \\*
+      
+      
+      
+      \underline{LT:} 
+      \begin{prooftree}
+        \AxiomC{}
+        \LeftLabel{Assign}
+        \UnaryInfC{$\vdash \{\texttt{sum} = \Sigma_{j=1}^{i}j \wedge i \leq n ^ i < n \} \texttt{i:= i + 1} \{\texttt{sum} = \Sigma_{j=1}^{i-1}j \wedge i - 1 \leq n \wedge i - 1 < n \}$} 
+      \end{prooftree} 
+      
+      \underline{RT:} 
+      \begin{prooftree}
+      	\AxiomC{}
+	    	\LeftLabel{Assign}
+				\UnaryInfC{$\vdash \{\texttt{sum} = \Sigma_{j=1}^{i-1}j \wedge i - 1 \leq n \wedge i - 1 < n \} \texttt{sum:= sum + i} \{\texttt{sum} - i = \Sigma_{j=1}^{i-1} \wedge i - 1 \leq n \wedge i-1 < n\}$}
+			\end{prooftree}
+			
+			\underline{A:} $\{\texttt{sum} = \Sigma_{j=1}^{i}j \wedge i \leq n \wedge i < n \}$
+      
+      \underline{B':} $\{\texttt{sum} - i = \Sigma_{j=1}^{i-1} \wedge i - 1 \leq n \wedge i-1 < n\}$
+      
+      \underline{B:} $\{ \texttt{sum} = \Sigma_{j=1}^{i}j \wedge i \leq n \}$
+      
+      Note that you can use arithmetic properties to conclude that B' $\Rightarrow$ 
+      B
+      
+      \begin{prooftree}
+        \AxiomC{}
+        \LeftLabel{anything implies itself}
+        \UnaryInfC{A $\Rightarrow$ A}
+        \AxiomC{LT}
+        \AxiomC{RT}
+        \LeftLabel{Seq}
+        \BinaryInfC{$ \{\text{A}\} \texttt{ i:=i+1; sum:= sum + i } \{ \text{B'} \}$}
+        
+        \AxiomC{}
+        \LeftLabel{arithmetic}
+        \UnaryInfC{B' $\Rightarrow$ B}
+        \LeftLabel{Consequence}
+        \TrinaryInfC{$\{ \text{A} \} \texttt{ i:=i+1; sum:= sum + i } \{ \text{B}\}$} 
+        \LeftLabel{While}
+        \UnaryInfC{$\{ \texttt{sum} - \Sigma_{j=1}^{i}j \wedge i \leq n \} \texttt{ while i < n do (i:= i + 1; sum:= sum + i)} \{ \text{B} \wedge i \geq n\} $}
+      \end{prooftree}
+      
+      Notice how important it is for $j<n$ to be on the left-side of 
+      \texttt{ i = i+1; sum := sum + i} above the while inference. Using that 
+      information we can conclude that $\texttt{sum} = \Sigma_{j=1}^{i}j \wedge i 
+      \leq n$ after executing the body of the loop (otherwise it might be possible 
+      for $i = n +1$, which would only show that the final value of \texttt{sum} to 
+      be either $\Sigma_{j=0}^{i}j \wedge (i = n \vee i = n + 1)$).  We need to 
+      have $\{ P \wedge b \}$ at the top-left of our
+      while rule for the language to be as complete as possible.
+      
+      
   \end{enumerate}
 
 \end{enumerate}
