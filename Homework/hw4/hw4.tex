@@ -35,9 +35,17 @@
     
     \item \text{ }
     \begin{prooftree}
-      \AxiomC{$\vdash \{P \wedge b\} c \{Q\}$}
+      \AxiomC{$\vdash \{P \wedge b\} \text{ } c \text{ } \{Q\}$}
       \AxiomC{$\vdash \{P \wedge \neg b\} \Rightarrow Q$}
+      \RightLabel{One-armed If}
       \BinaryInfC{$\vdash \{P\} \text{ if } b \text{ then } c \text{ }\{Q\}$}
+    \end{prooftree}
+    
+    \begin{prooftree}
+      \AxiomC{$\vdash \{P\} \text{ } c \text{ } \{Q\}$}
+      \AxiomC{$\vdash \{Q \wedge \neg b\} \text{ } c \text{ } \{Q \}$}
+      \RightLabel{Do}
+      \BinaryInfC{$\vdash \{ P \} \texttt{ do } c \texttt{ until } b \{Q \wedge ^\neg b\}$}
     \end{prooftree}
   \end{enumerate}
 
@@ -107,11 +115,11 @@
       (more precisely, the set defined after the first union operator) never adds 
       anything to $f_n$--i.e. we'll prove $\forall n \in \mathbb{N}. 
       P(n) = \{ (\sigma, \sigma'') \mid ... \wedge \exists \sigma''. (\sigma', 
-      \sigma'') \in f_n \} = \emptyset$ using induction:
+      \sigma'') \in f_n \} = \emptyset$ using induction: \\
       
       \underline{P(0)}: In this case $f_n = \emptyset$ so its impossible to have
       a pair $(\sigma', \sigma'')$ satisfying $(\sigma', \sigma'')$, so the the 
-      second set is the empty set.
+      second set is the empty set. \\
       
       \underline{Inductive Step (i.e. $P(n - 1) \rightarrow P(n)$)}: Using the 
       inductive hypothesis I can conclude that 
