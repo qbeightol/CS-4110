@@ -1,7 +1,7 @@
 \documentclass[10pt, oneside]{article}
 \usepackage{geometry}
 \geometry{letterpaper}
-\usepackage{amssymb, amsmath, enumerate, stmaryrd, bussproofs}
+\usepackage{amssymb, amsmath, enumerate, stmaryrd, bussproofs, graphicx}
 
 
 \begin{document}
@@ -93,8 +93,11 @@
     & = & \{ (\sigma, n) \mid n = \sigma(x) + 42 \} \\
     & = & \{ (\sigma, \sigma(x) + 42) \} \\
      \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid n = \sigma(x) + 42 \} \\
-     & = &  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 42 ])\} \\
+     & = &  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 42 ])\} 
    \end{eqnarray*}
+   
+   The two are the same.
+   \pagebreak
    
 % Exercise 2 b %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \item
@@ -130,7 +133,7 @@
       second set is the empty set. \\
       
       \underline{Inductive Step (i.e. $P(n - 1) \rightarrow P(n)$)}: Using the 
-      inductive hypothesis I can conclude that 
+      inductive hypothesis, we conclude that 
       
       \begin{eqnarray*}
         f_n = & = & \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \}  \\
@@ -144,6 +147,7 @@
 				f_n & = & \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \}  \\
 			\end{eqnarray*}
 			
+			\pagebreak
 			And now we can re-write the second set in $G'(f)$:
 			
 			\begin{eqnarray*}
@@ -296,20 +300,24 @@
        \begin{eqnarray*}  \mathcal{C} \llbracket \texttt{if} (x = x+1) \hspace{1mm} \texttt{then}\hspace{1mm} x := 0 \rrbracket & = & \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B} \llbracket x = x + 1 \rrbracket \} \cup \{ (\sigma, \sigma') \mid (\sigma, \texttt{true}) \in \mathcal{B}\\  \llbracket x = x + 1 \rrbracket \wedge (\sigma, \sigma') \in \mathcal{C}\llbracket x := 0 \rrbracket \} \\
     \mathcal{A} \llbracket x \rrbracket & = & \{ (\sigma, \sigma)\} \\
      \mathcal{C} \llbracket x := x \rrbracket & = & \{ (\sigma, \sigma[x \mapsto \sigma(x)]) \}\\
-     & = & \{(\sigma, \sigma)\}\\
+     & = & \{(\sigma, \sigma)\}
    \end{eqnarray*}
+   
+   The two are the same.
 
   \end{enumerate}
 
 % Exercise 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \item Our loop invariant is: $r = n - qm \wedge q \geq 0.$
 
-% Exercise 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \item
-  \begin{enumerate} [(a)]
+% Exercise 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+
+    \item     \hspace{4mm}
+    
+    \includegraphics[scale = 0.72]{/Users/ameyaacharya/Desktop/4a.png}
     \item
-    \item
-  \end{enumerate}
+
 
 % Exercise 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \item
@@ -334,7 +342,7 @@
         \TrinaryInfC{$\vdash \{\text{A}\} \texttt{ while b do c } \{\text{Q}\}$}
       \end{prooftree}
       
-      *"C" is an abbreviation for "Consequence", and "W" is short for "While" \\*
+      *$"C"$ is an abbreviation for "Consequence", and $"W"$ for "While" \\*
       
       Note that we've made a few assumptions here, namely that we have some 
       derivation for $\{\text{P}\} \text{ } c \text{ } \{\text{A}\}$ as well as 
