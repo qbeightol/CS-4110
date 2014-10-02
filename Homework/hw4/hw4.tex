@@ -7,7 +7,8 @@
 \begin{document}
 \noindent Ameya Acharya (apa52) \& Quinn Beightol (qeb2) \\*
 \noindent CS 4110 \\*
-\noindent hw4
+\noindent Homework 4
+\noindent Due Wednesday, October 1, 2014
 
 \begin{enumerate}[1.]
 % Exercise 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,35 +54,42 @@
   \item
   \begin{enumerate} [(a)]
   \item 
-{\bf Denotation of}  (x := x + 21; x := x + 21):
-      \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in \mathcal{C} \llbracket x := x + 21\rrbracket \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
-    \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 21 \rrbracket \} \\
-     \mathcal{A} \llbracket x + 21\rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 21 \rrbracket \wedge n = n_1 + n _2\} \\
+  To show prove this equivalence, we will show that both expressions denote the same mathematical object. To make this easier to read, we will box the sections that we denote in later lines.\\
+  
+{\bf Denotation of}  (x := x + 21; x := x + 21):\\
+
+      \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in \boxed {\mathcal{C} \llbracket x := x + 21\rrbracket} \wedge (\sigma'', \sigma') \in   {\mathcal{C} \llbracket x := x + 21\rrbracket })\}   \\
+    \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \boxed{\mathcal{A} \llbracket x + 21 \rrbracket} \} \\
+     \mathcal{A} \llbracket x + 21\rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \boxed{\mathcal{A} \llbracket x \rrbracket} \wedge (\sigma, n_2) \in \boxed{\mathcal{A} \llbracket 21 \rrbracket} \wedge n = n_1 + n _2\} \\
        \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
     \mathcal{A} \llbracket 21 \rrbracket  & = & \{ (\sigma, 21) \} \\
-    \mathcal{A} \llbracket x + 21 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in (\sigma, \sigma(x)) \wedge (\sigma, n_2) \in (\sigma, 21) \wedge n = n_1 + n_2 \} \\
+   \text{So:} \hspace{1mm} \mathcal{A} \llbracket x + 21 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in (\sigma, \sigma(x)) \wedge (\sigma, n_2) \in (\sigma, 21) \wedge n = n_1 + n_2 \} \\
     & = & \{ (\sigma, n) \mid n = \sigma(x) + 21 \} \\
     & = & \{ (\sigma, \sigma(x) + 21) \} \\
-      \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma, \sigma[x \mapsto \sigma(x) + 21]) \} \\
-     \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 21]) \} \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
-      \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  \sigma'' = \sigma[x \mapsto \sigma(x) + 21] \} \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
-       \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma'', \sigma''[x \mapsto n]) \mid (\sigma'', n) \in \mathcal{A} \llbracket x + 21 \rrbracket \} \\
-     \mathcal{A} \llbracket x + 21\rrbracket & = & \{ (\sigma'', n) \mid (\sigma'', n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma'', n_2) \in \mathcal{A} \llbracket 21 \rrbracket \wedge n = n_1 + n _2\} \\
+ \text{And now:} \hspace{1mm} \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma, \sigma[x \mapsto \sigma(x) + 21]) \} \\
+  \end{eqnarray*}
+  Now that we have found the denotation of the first ${\mathcal{C} \llbracket x := x + 21\rrbracket }$, we may use that in our   $\mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket$:
+  
+    \begin{eqnarray*}   \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 21]) \} \wedge (\sigma'', \sigma') \in \\ \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
+      \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  \sigma'' = \sigma[x \mapsto \sigma(x) + 21] \} \wedge (\sigma'', \sigma') \in \boxed{\mathcal{C} \llbracket x := x + 21\rrbracket} )\}\\
+       \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma'', \sigma''[x \mapsto n]) \mid (\sigma'', n) \in \boxed{\mathcal{A} \llbracket x + 21 \rrbracket} \} \\
+     \mathcal{A} \llbracket x + 21\rrbracket & = & \{ (\sigma'', n) \mid (\sigma'', n_1) \in \boxed{\mathcal{A} \llbracket x \rrbracket }\wedge (\sigma'', n_2) \in \boxed{\mathcal{A} \llbracket 21 \rrbracket }\wedge n = n_1 + n _2\} \\
        \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma'', \sigma''(x)) \} \\
          \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma'', \sigma(x) + 21) \} \\
     \mathcal{A} \llbracket 21 \rrbracket  & = & \{ (\sigma'', 21) \} \\
-    \mathcal{A} \llbracket x + 21 \rrbracket & = & \{ (\sigma'', n) \mid (\sigma'', n_1) \in (\sigma'', \sigma''(x)) \wedge (\sigma'', n_2) \in (\sigma'', 21) \wedge n = n_1 + n_2 \} \\
+     \text{So:} \hspace{1mm}  \mathcal{A} \llbracket x + 21 \rrbracket & = & \{ (\sigma'', n) \mid (\sigma'', n_1) \in (\sigma'', \sigma''(x)) \wedge (\sigma'', n_2) \in (\sigma'', 21) \wedge n = n_1 + n_2 \} \\
     & = & \{ (\sigma'', n) \mid n = \sigma(x) + \sigma(x) + 21 \} \\
     & = & \{ (\sigma'', \sigma(x) + 42) \} \\
-    \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{(\sigma, \sigma[x \mapsto \sigma(x) + 42 ]) \}
+       \text{Now, we know:} \hspace{1mm}  \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma'', \sigma''[x \mapsto n]) \mid (\sigma'', n) \in \{ (\sigma'', \sigma(x) + 42) \} \} \\
+     \text{So, we conclude:}\\ \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{(\sigma, \sigma[x \mapsto \sigma(x) + 42 ]) \}
     \end{eqnarray*}
 
 {\bf Denotation of}  (x := x + 42):
-      \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 42 \rrbracket \} \\
-    \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 42 \rrbracket \wedge n = n_1 + n _2\} \\
+      \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \boxed{\mathcal{A} \llbracket x + 42 \rrbracket \} }\\
+    \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \boxed{\mathcal{A} \llbracket x \rrbracket} \wedge (\sigma, n_2) \in \boxed{\mathcal{A} \llbracket 42 \rrbracket }\wedge n = n_1 + n _2\} \\
     \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
     \mathcal{A} \llbracket 42 \rrbracket  & = & \{ (\sigma, 42) \} \\
-    \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in (\sigma, \sigma(x)) \wedge (\sigma, n_2) \in (\sigma, 42) \wedge n = n_1 + n_2 \} \\
+       \text{So:} \hspace{1mm} \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in (\sigma, \sigma(x)) \wedge (\sigma, n_2) \in (\sigma, 42) \wedge n = n_1 + n_2 \} \\
     & = & \{ (\sigma, n) \mid n = \sigma(x) + 42 \} \\
     & = & \{ (\sigma, \sigma(x) + 42) \} \\
      \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid n = \sigma(x) + 42 \} \\
