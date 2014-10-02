@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  1 OCT 2014 21:36
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  1 OCT 2014 21:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -654,8 +654,13 @@ LaTeX Font Warning: Font shape `mTT/pcr/m/n' undefined
 [1
 
 {/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <../pdf/
-cu-logo.pdf>] [2]
-Underfull \hbox (badness 10000) in paragraph at lines 169--171
+cu-logo.pdf>]
+Overfull \hbox (11.22905pt too wide) detected at line 133
+[]
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 170--172
 
  []
 
@@ -684,7 +689,7 @@ e/2012/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2012/
 texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2012/texmf-d
 ist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2012/texmf-dist/fon
 ts/type1/urw/palatino/uplri8a.pfb>
-Output written on homework04.pdf (3 pages, 121390 bytes).
+Output written on homework04.pdf (3 pages, 121436 bytes).
 PDF statistics:
  79 PDF objects out of 1000 (max. 8388607)
  46 compressed objects within 1 object stream
