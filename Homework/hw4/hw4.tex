@@ -122,16 +122,11 @@
 				& & \wedge \exists \sigma''. (\sigma', \sigma'') \in f \}
       \end{eqnarray*}
       
-      Going forward, we'll argue that the second set in the definition of $G'$ 
-      (more precisely, the set defined after the first union operator) never adds 
-      anything to $f_n$--i.e. we'll prove $\forall n \in \mathbb{N}. 
+      Now, we prove $\forall n \in \mathbb{N}. \hspace{1mm}
       P(n) = \{ (\sigma, \sigma'') \mid ... \wedge \exists \sigma''. (\sigma', 
       \sigma'') \in f_n \} = \emptyset$ using induction: \\
       
-      \underline{P(0)}: In this case $f_n = \emptyset$ so its impossible to have
-      a pair $(\sigma', \sigma'')$ satisfying $(\sigma', \sigma'')$, so the the 
-      second set is the empty set. \\
-      
+      \underline{P(0)}: By the Kleene fix point theorem, in this case, $f_n = \emptyset$, so P(0) = $\emptyset$ as well.  \\    
       \underline{Inductive Step (i.e. $P(n - 1) \rightarrow P(n)$)}: Using the 
       inductive hypothesis, we conclude that 
       
@@ -210,10 +205,13 @@
 			The boolean expression evaluates to false because $\sigma'(x) > 0$ and so 
 			$\sigma''(x) = \sigma'(x) + 1 > 0$. This, in turn, demonstrates that the 
 			three conditionals in the definition of the second set are contradictory. 
-			That set will be the empty set for all $n$. \checkmark
+			That set will be the empty set for all $n$, and thus concludes our induction. \checkmark
+			
+			\vspace{4mm}
 			
 			
 			Now we can calculate the fixed point of $G'$:
+	
 			
 			\begin{eqnarray*}
 			  \text{fix}(G') & = & \bigcup_{i \geq 0} (G')^{i}(\emptyset) \\
@@ -278,10 +276,10 @@
       
       $$f_{n+1} = \emptyset \text{ } \checkmark$$ 
       
-      Therefore, $P(n)$ hold for all $n \in \mathbb{N}$ and the fixed point of $F'$ 
+      Therefore, $P(n)$ holds for all $n \in \mathbb{N}$ and the fixed point of $F'$ 
       is:
       
-      $$ \text{fix}(F') = \bigcup_{i \geq 0} F'^{i}(\emptyset) = \emptyset \cup 
+      $$ \text{fix}(F') = \bigcup_{i \geq 0} (F')^{i}(\emptyset) = \emptyset \cup 
       \emptyset \cup ... \cup \emptyset = \emptyset$$
 
      So, we see that $c_b$ and $c_a$ denote the same mathematical object, and are therefore equal.
