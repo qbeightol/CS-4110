@@ -100,7 +100,7 @@ proof to convince yourself your invariant is suitable.
 \begin{array}{rl}
 \text{\textbf{(a)}} & \{ \exists n.~x = 2 \times n + 1 \}\\
 &\;\WHILE~y \gt 0~\DO\\
-& \qquad \{ \exists n.~x = 2 \times n + 1 \wedge y \gt 0 \}\\
+& \qquad \{ \exists n.~2 = 2 \times n + 1 \wedge y \gt 0 \}\\
 &\qquad x := x + 2\\
 & \qquad \{ \exists n.~x = 2 \times n + 1 \wedge y \gt 0 \}\\
 & \{ \exists n.~x = 2 \times n + 1 \wedge \neg (y \gt 0) \} \Rightarrow\\
@@ -116,22 +116,24 @@ proof to convince yourself your invariant is suitable.
 & \{0 = 0 \wedge x = i \wedge y = j \wedge 0 \leq i \} \\
 & \;\ASSGN{z}{0}\\
 & \{ z = 0 \wedge x = i \wedge y = j \wedge 0 \leq i\} \Rightarrow\\
-& \{ z = (i - x) \times y \wedge x \geq 0 \} \\
+& \{ z = (i - x) \times y \wedge x \geq 0 \wedge y = j\} \\
 & \;\WHILE~(x \gt 0)~\DO~\{\\
-&  \{ z = (i - x) \times y \wedge x \geq 0 \wedge x \gt 0\} \Rightarrow\\
-&  \{ z = (i - x) \times y \wedge x + 1 \geq 0\} \\
+&  \{ z = (i - x) \times y \wedge x \geq 0 \wedge x \gt 0 \wedge y = j\} \Rightarrow\\
+&  \{ z = (i - x) \times y \wedge x + 1 \geq 0 \wedge y = j\} \\
 & \qquad\ASSGN{z}{z + y}\\
-& \{ z = (i - (x + 1)) \times y \wedge  x + 1 \geq 0 x + 1 \gt 0 \}\\
+& \{ z = (i - (x + 1)) \times y \wedge  x + 1 \geq 0 \wedge x + 1 \gt 0 \wedge y = j\}\\
 & \qquad\ASSGN{x}{x - 1}\\
-&  \{ z = (i - x) \times y \wedge x \geq 0 \}\\
+&  \{ z = (i - x) \times y \wedge x \geq 0 \wedge y = j \}\\
 & \;\};\\
-& \{ z = (i - x) \times y \wedge x \geq 0 \wedge \neg (x \gt 0)\} \Rightarrow \\
-& \{ z = (i - x) \times y \wedge x \geq 0 \wedge x \leq 0\} \Rightarrow \\
-& \{ z = (i - x) \times y \wedge x = 0\} \Rightarrow \\
-& \{ z = i \times y \wedge x = 0\}  \\
+& \{ z = (i - x) \times y \wedge x \geq 0 \wedge \neg (x \gt 0) \wedge y = j\} \Rightarrow \\
+& \{ z = (i - x) \times y \wedge x \geq 0 \wedge x \leq 0 \wedge y = j\} \Rightarrow \\
+& \{ z = (i - x) \times y \wedge x = 0 \wedge y = j\} \Rightarrow \\
+& \{ z = (i - x) \times j \wedge x = 0\} \Rightarrow \\
+& \{ z = i \times j \wedge x = 0 \wedge (0 \geq 0 \vee 0 \lt 0)\} \Rightarrow\\
 & \;\ASSGN{y}{0}\\
-& \{ things here \}\\
-& \{ x = 0 \wedge y = 0 \wedge z = i \times j\} \\
+& \{ z = i \times j \wedge x = 0 \wedge (y \geq 0 \vee y \lt 0)\}  \Rightarrow\\
+& \{ z = i \times j \wedge x = 0 \wedge (y \geq 0 \vee y \lt 0) \wedge y = 0\}  \Rightarrow\\
+& \{ z = i \times j \wedge x = 0 \wedge y = 0\}
 \end{array}
 \]
 \end{minipage}
