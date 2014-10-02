@@ -121,8 +121,9 @@ proof to convince yourself your invariant is suitable.
 &  \{ z = (i - x) \times y \wedge x \geq 0 \wedge x \gt 0\} \Rightarrow\\
 &  \{ z = (i - x) \times y \wedge x + 1 \geq 0\} \\
 & \qquad\ASSGN{z}{z + y}\\
-& \{ z = (i - (x + 1)) \times y \wedge  x + 1 \geq 0\}\\
+& \{ z = (i - (x + 1)) \times y \wedge  x + 1 \geq 0 x + 1 \gt 0 \}\\
 & \qquad\ASSGN{x}{x - 1}\\
+&  \{ z = (i - x) \times y \wedge x \geq 0 \wedge x \gt 0\}\\
 & \;\};\\
 & \{ z = (i - x) \times j \wedge x \geq 0 \} \\
 & \;\ASSGN{y}{0}\\
