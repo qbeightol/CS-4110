@@ -101,7 +101,7 @@
    
 % Exercise 2 b %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \item
-      To conserve space, we'll refer to 
+      We'll refer to 
       $(x \texttt{:= }1\texttt{; do } x \texttt{:= } x + 1 \texttt{ until } x < 0)$ 
       as $c_a$, and we'll refer to $\texttt{while true do } c$ as $c_b$. 
       
@@ -112,9 +112,9 @@
      & & \wedge (\sigma', \sigma'') \in \mathcal{C} \llbracket \texttt{do } x 
                                \texttt{:= } x + 1 \texttt{ until } x < 0 \rrbracket
                                    \} \\
-        \mathcal{C} \llbracket x \texttt{:= } x+1 \rrbracket & = & \{(\sigma, n) \mid (\sigma, \sigma[x \mapsto n]) \in \mathcal{A} \llbracket x \rrbracket  \} \\
+        \mathcal{C} \llbracket x \texttt{:= }1 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto 1]) \mid (\sigma, 1) \in \mathcal{A} \llbracket x \rrbracket  \} \\
         \mathcal{A} \llbracket 1 \rrbracket & = & \{(\sigma, 1) \} \\
-        \mathcal{C} \llbracket x \texttt{:= } x+1 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto 1]) \} \\
+        \mathcal{C} \llbracket x \texttt{:= } 1 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto 1]) \} \\
         & & \\
         \mathcal{C} \llbracket \texttt{do } x \texttt{:= } x + 1 \texttt{ until } x < 0 \rrbracket & = & \text{fix}(G') \\
         \text{where } G'(f) & = & \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \} \\
@@ -122,16 +122,11 @@
 				& & \wedge \exists \sigma''. (\sigma', \sigma'') \in f \}
       \end{eqnarray*}
       
-      Going forward, we'll argue that the second set in the definition of $G'$ 
-      (more precisely, the set defined after the first union operator) never adds 
-      anything to $f_n$--i.e. we'll prove $\forall n \in \mathbb{N}. 
+      Now, we prove $\forall n \in \mathbb{N}. \hspace{1mm}
       P(n) = \{ (\sigma, \sigma'') \mid ... \wedge \exists \sigma''. (\sigma', 
       \sigma'') \in f_n \} = \emptyset$ using induction: \\
       
-      \underline{P(0)}: In this case $f_n = \emptyset$ so its impossible to have
-      a pair $(\sigma', \sigma'')$ satisfying $(\sigma', \sigma'')$, so the the 
-      second set is the empty set. \\
-      
+      \underline{P(0)}: By the Kleene fix point theorem, in this case, $f_n = \emptyset$, so P(0) = $\emptyset$ as well.  \\    
       \underline{Inductive Step (i.e. $P(n - 1) \rightarrow P(n)$)}: Using the 
       inductive hypothesis, we conclude that 
       
@@ -210,10 +205,13 @@
 			The boolean expression evaluates to false because $\sigma'(x) > 0$ and so 
 			$\sigma''(x) = \sigma'(x) + 1 > 0$. This, in turn, demonstrates that the 
 			three conditionals in the definition of the second set are contradictory. 
-			That set will be the empty set for all $n$. \checkmark
+			That set will be the empty set for all $n$, and thus concludes our induction. \checkmark
+			
+			\vspace{4mm}
 			
 			
 			Now we can calculate the fixed point of $G'$:
+	
 			
 			\begin{eqnarray*}
 			  \text{fix}(G') & = & \bigcup_{i \geq 0} (G')^{i}(\emptyset) \\
@@ -273,20 +271,18 @@
     					    \mid (\sigma, \sigma') \in \mathcal{C} \llbracket c \rrbracket 
                 \wedge (\sigma', \sigma'') \in f_n \}
       \end{eqnarray*}
-      Using our inductive hypothesis, we can conclude that $f_n = \emptyset$ which
-      in turn means that the second rule in the set comprehension (e.g. $(\sigma',
-      \sigma'') \in f_n$) is unsatisfiable. So the right hand side of the equation
-      is just the empty set, as desired:
+      Using our inductive hypothesis, we can conclude that $f_n = \emptyset$. So, the right hand side of the equation
+      is the empty set, as desired:
       
       $$f_{n+1} = \emptyset \text{ } \checkmark$$ 
       
-      Therefore, $P(n)$ hold for all $n \in \mathbb{N}$ and the fixed point of $F'$ 
+      Therefore, $P(n)$ holds for all $n \in \mathbb{N}$ and the fixed point of $F'$ 
       is:
       
-      $$ \text{fix}(F') = \bigcup_{i \geq 0} F'^{i}(\emptyset) = \emptyset \cup 
+      $$ \text{fix}(F') = \bigcup_{i \geq 0} (F')^{i}(\emptyset) = \emptyset \cup 
       \emptyset \cup ... \cup \emptyset = \emptyset$$
 
-      In short, $c_b$ is guaranteed not to terminate, just like $c_a$.
+     So, we see that $c_b$ and $c_a$ denote the same mathematical object, and are therefore equal.
       
     \item {\bf Denotation of}  (x := x):
        \begin{eqnarray*}  \mathcal{C} \llbracket x := x \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x \rrbracket \} \\
@@ -308,7 +304,7 @@
   \end{enumerate}
 
 % Exercise 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \item Our loop invariant is: $r = n - qm \wedge q \geq 0.$
+  \item Our loop invariant is: $r = n - qm.$
 
 % Exercise 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
@@ -316,7 +312,8 @@
     \item     \hspace{4mm}
     
     \includegraphics[scale = 0.72]{/Users/ameyaacharya/Desktop/4a.png}
-    \item
+    
+    \includegraphics[scale = 0.72]{/Users/ameyaacharya/Desktop/4b.png}
 
 
 % Exercise 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
