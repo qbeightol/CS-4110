@@ -1,94 +1,117 @@
 open Ast
 
 (* lexp_of_aexp: convert an aexp into an lexp *)
-let rec lexp_of_aexp (a:aexp) : lexp = 
-  match a with 
-    | Int n -> 
+let rec lexp_of_aexp (a:aexp) : lexp =
+  match a with
+    | Int n ->
       LInt n
-    | Var x -> 
-      LPVar x 
-    | Plus(a1,a2) -> 
+    | Var x ->
+      LPVar x
+    | Plus(a1,a2) ->
       LPlus(lexp_of_aexp a1, lexp_of_aexp a2)
-    | Minus(a1,a2) -> 
+    | Minus(a1,a2) ->
       LMinus(lexp_of_aexp a1, lexp_of_aexp a2)
-    | Times(a1,a2) -> 
+    | Times(a1,a2) ->
       LTimes(lexp_of_aexp a1, lexp_of_aexp a2)
 
 (* assn_of_bexp: convert a bexp into a assn *)
-let rec assn_of_bexp (b:bexp) : assn = 
-  match b with 
-    | True -> 
+let rec assn_of_bexp (b:bexp) : assn =
+  match b with
+    | True ->
       ATrue
-    | False -> 
+    | False ->
       AFalse
-    | Equals(a1,a2) -> 
+    | Equals(a1,a2) ->
       AEquals(lexp_of_aexp a1, lexp_of_aexp a2)
-    | NotEquals(a1,a2) -> 
+    | NotEquals(a1,a2) ->
       ANotEquals(lexp_of_aexp a1, lexp_of_aexp a2)
-    | Less(a1,a2) -> 
+    | Less(a1,a2) ->
       ALess(lexp_of_aexp a1, lexp_of_aexp a2)
-    | LessEq(a1,a2) -> 
+    | LessEq(a1,a2) ->
       ALessEq(lexp_of_aexp a1, lexp_of_aexp a2)
-    | Greater(a1,a2) -> 
+    | Greater(a1,a2) ->
       AGreater(lexp_of_aexp a1, lexp_of_aexp a2)
-    | GreaterEq(a1,a2) -> 
+    | GreaterEq(a1,a2) ->
       AGreaterEq(lexp_of_aexp a1, lexp_of_aexp a2)
-    | Not(b1) -> 
+    | Not(b1) ->
       ANot(assn_of_bexp b1)
-    | And(b1,b2) -> 
+    | And(b1,b2) ->
       AAnd(assn_of_bexp b1, assn_of_bexp b2)
-    | Or(b1,b2) -> 
+    | Or(b1,b2) ->
       AOr(assn_of_bexp b1, assn_of_bexp b2)
 
 (* substLexp l x l1: substitute l for x in l1 *)
-let rec substLexp (l:lexp) (x:var) (l1:lexp) : lexp = 
-  match l1 with 
-    | LInt n -> 
+let rec substLexp (l:lexp) (x:var) (l1:lexp) : lexp =
+  match l1 with
+    | LInt n ->
       LInt n
-    | LLVar i -> 
-      LLVar i 
-    | LPVar y -> 
+    | LLVar i ->
+      LLVar i
+    | LPVar y ->
       if y = x then l
       else LPVar y
-    | LPlus(l1,l2) -> 
+    | LPlus(l1,l2) ->
       LPlus(substLexp l x l1, substLexp l x l2)
-    | LMinus(l1,l2) -> 
+    | LMinus(l1,l2) ->
       LMinus(substLexp l x l1, substLexp l x l2)
-    | LTimes(l1,l2) -> 
+    | LTimes(l1,l2) ->
       LTimes(substLexp l x l1, substLexp l x l2)
 
 (* substAssn l x p: substitute l for x in p *)
-and substAssn (l:lexp) (x:var) (p:assn) : assn = 
-  match p with 
+and substAssn (l:lexp) (x:var) (p:assn) : assn =
+  match p with
     | ATrue -> ATrue
     | AFalse -> AFalse
-    | AEquals(l1,l2) -> 
+    | AEquals(l1,l2) ->
       AEquals(substLexp l x l1, substLexp l x l2)
-    | ANotEquals(l1,l2) -> 
+    | ANotEquals(l1,l2) ->
       ANotEquals(substLexp l x l1, substLexp l x l2)
-    | ALess(l1,l2) -> 
+    | ALess(l1,l2) ->
       ALess(substLexp l x l1, substLexp l x l2)
-    | ALessEq(l1,l2) -> 
+    | ALessEq(l1,l2) ->
       ALessEq(substLexp l x l1, substLexp l x l2)
-    | AGreater(l1,l2) -> 
+    | AGreater(l1,l2) ->
       AGreater(substLexp l x l1, substLexp l x l2)
-    | AGreaterEq(l1,l2) -> 
+    | AGreaterEq(l1,l2) ->
       AGreaterEq(substLexp l x l1, substLexp l x l2)
-    | AAnd(p1,p2) -> 
+    | AAnd(p1,p2) ->
       AAnd(substAssn l x p1, substAssn l x p2)
-    | AOr(p1,p2) -> 
+    | AOr(p1,p2) ->
       AOr(substAssn l x p1, substAssn l x p2)
     | ANot(p1) ->
       ANot(substAssn l x p1)
-    | AImplies(p1,p2) -> 
+    | AImplies(p1,p2) ->
       AImplies(substAssn l x p1, substAssn l x p2)
-    | AForall(i,p1) -> 
+    | AForall(i,p1) ->
       AForall(i,substAssn l x p1)
-    | AExists(i,p1) -> 
+    | AExists(i,p1) ->
       AExists(i,substAssn l x p1)
 
-let rec gens ((pre,sc,post): assn * scom * assn) : assn list = 
-  failwith "Kurt"
+let rec gens ((pre,sc,post): assn * scom * assn) : assn list =
+  (*qeb2: I think the idea is to use the rules of Hoare Logic to come up with
+    constraints for how the pre-condition and post-condition are related. E.g.
+    if you hand the command skip, the pre-condition and the post condition must
+    be equivalant. If you have the assignment, x:= a, it the same sort of thing,
+    but with pre[a/x] = post.
 
-and genc ((pre,c,post): assn * com * assn) : assn list = 
-  failwith "Godel"
+    Wait, no that doesn't quite make sense given the return type (assn list). Do
+    we just return a list of assertions that must all be true? E.g. if we run
+    into an assignment, should we assert both pre[a/x] and post?
+
+    Also, I'm going to guess that genc calls gens, so perhaps gens should only
+    add assertions other than pre and post? e.g. just pre[a/x]
+    *)
+  match sc with
+  | Skip ->
+  | Print a ->
+  | Test i,b ->
+  | Assign v,a ->
+
+
+and genc ((pre,c,post): assn * com * assn) : assn list =
+  match c with
+  | Simple sc ->
+  | SeqSimple c,sc ->
+  | Seq c1,a,c2 ->
+  | If b,c_t,c_e ->
+  | While b,a,c ->
