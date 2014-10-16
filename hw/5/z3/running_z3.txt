@@ -1,0 +1,2 @@
+
+To run z3, navigate to bin and type “./z3” followed by flags and files you want to use.

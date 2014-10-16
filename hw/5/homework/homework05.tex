@@ -1,0 +1,140 @@
+\newif\ifbeamer\beamerfalse
+\documentclass[11pt]{article}
+
+\usepackage{../tex/jnf}
+\usepackage{../tex/angle}
+
+\renewcommand{\labelenumi}{\textbf{(\alph{enumi})}}
+\solutiontrue
+\begin{document}
+
+\bigredheader{Homework \#5}
+
+\vspace*{-1.25\bigskipamount}
+
+\paragraph{Due} 
+%
+Wednesday, October 22, 2014 at 11:59pm.
+
+\paragraph{Instructions} 
+%
+This assignment may be completed with one partner. 
+You and your partner should submit a single solution on CMS. Please do
+not offer or accept any other assistance on this assignment. Late
+submissions will not be accepted.
+
+\paragraph{Exercise}
+%
+In this assignment, you will implement an automatic verification tool
+for the IMP language. Your tool will take annotated programs
+containing a precondition, a postcondition, and extra assertions at
+certain program points described below, and produce a set of
+verification conditions---i.e., assertions that if valid, imply that
+the partial correctness specification is valid. These assertions will
+(often) be automatically discharged by the Z3 theorem prover.
+
+In more detail, your tool will take programs of the form
+$\texttt{@}P\texttt{@}~c~\texttt{@}Q\texttt{@}$ where $P$ and $Q$ are
+assertions and $c$ an annotated command, as specified by the following
+grammar:
+\[
+\begin{array}{rr@{\;}l}
+s & ::=& \SKIP \mid \ASSGN{x}{a} \mid \impfnt{print}~a \mid \impfnt{test}~b\\[.5em]
+c & ::=& s \mid c_1; s_2 \mid c_1;~\texttt{@} P \texttt{@}~c_2\\
+& \mid & \IF~b~\THEN~c_1~\ELSE~c_2 \mid \WHILE~b~\DO~\texttt{@}P\texttt{@}~c,
+\end{array}\]
+%
+Note that this grammar requires every loop to be annotated with an
+invariant, and every sequential composition to be annotated with an
+assertion, except when the second command is ``simple''---i.e., a
+skip, assignment, print, or test. Working with these annotated
+commands makes it fairly easy to calculate verification conditions
+(unlike, say, the weakest liberal preconditions we saw in lecture).
+
+As an example, given the following program
+\begin{progeg}
+@ x = $m and y = $n @
+ t := x; 
+ x := y;
+ y := t
+@ y = $m and x = $n @
+\end{progeg}
+%
+your tool would generate an assertion equivalent to the following,
+%
+\begin{progeg}
+(((x = $m) and (y = $n)) implies ((x = $m) and (y = $n)))
+\end{progeg}
+%
+which could then be discharged using a theorem prover.
+
+More specifically, your tasks are as follows:
+\begin{enumerate}
+\item Implement a tool that generates verification conditions for
+  annotated programs. Please submit your \texttt{vcgen.ml} file.
+\item Develop a suite of $10$ or more distinct tests, each in a
+  separate file. Your tests should be verified successfully when
+  run. We will give extra credit for any tests that expose a bug in
+  our implementation. Please submit a single archive
+  \texttt{tests.tar.gz} containing the tests in files
+  \texttt{test06.imp} through \texttt{test16.imp}.
+\end{enumerate}
+
+To help you get started, we have provided starter code on CMS. The
+only files you should need to edit submit are \texttt{vcgen.ml} and
+your tests.
+
+\paragraph{Notes}
+%
+\begin{itemize}
+\item The \texttt{README.txt} file gives an overview to the code and
+  includes instructions on how to build and run the executable. Start
+  by reading this file.
+\item To distinguish assertions from command blocks, we write
+  ``$\texttt{@} P \texttt{@}$'' to indicate an assertion instead of
+  ``$\texttt{\{} P \texttt{\}}$''.
+\item To distinguish logical variables from program variables in
+  assertions, we prefix logical variables with a dollar sign, writing
+  ``$\texttt{\$}x$'' for logical variables and ``$x$'' for program
+  variables.
+\item We represent the boolean expressions \texttt{bexp} that appear
+  in programs and assertions \texttt{assn} using different types. To
+  convert a boolean expression into an assertion, you may use the
+  \texttt{assn\_of\_bexp} we have supplied. Similarly, to convert an
+  ordinary arithmetic expression into a logical expression, which can
+  be used in an assertion, use the supplied \texttt{lexp\_of\_aexp}
+  function. Lastly, to substitute an arithmetic expression for a
+  program variable in an assertion, use the supplied
+  \texttt{substAssn} function.
+\item To represent the verification conditions use an OCaml list
+  containing values of type \texttt{assn}. You do not need to worry
+  about duplicate elements.
+
+\item To test your code, you will need a working version of the Z3
+  theorem prover. Pre-installed binaries for many platforms are
+  available at \url{http://z3.codeplex.com/}. After successfully
+  installing Z3, you should see the following if you invoke
+  \texttt{z3} from the command-line:
+\begin{alltt}
+[nate@viva:~> z3
+Error: input file was not specified.
+For usage information: z3 -h
+\end{alltt}
+\end{itemize}
+
+Good luck!
+
+\begin{debriefing} \hfill\\[-4ex]
+\begin{enumerate*}
+\item How many hours did you spend on this assignment? 
+\item Would you rate it as easy, moderate, or difficult? 
+\item Did everyone in your study group participate? 
+\item How deeply do you feel you understand the material it covers (0\%--100\%)? 
+\item If you have any other comments, we would like to hear them!
+  Please write them here or send email to
+  \mtt{jnfoster@cs.cornell.edu}.
+\end{enumerate*}
+\end{debriefing}
+
+\end{document}
+
