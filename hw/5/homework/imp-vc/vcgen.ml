@@ -98,13 +98,19 @@ let rec gens ((pre,sc,post): assn * scom * assn) : assn list =
     we just return a list of assertions that must all be true? E.g. if we run
     into an assignment, should we assert both pre[a/x] and post?
 
+    apa52: based on what's in the homework writeup, our tool generates
+    an assertion equivalent to : 
+    (((x = $m) and (y = $n)) implies ((x = $m) and (y = $n)))
+
+    So, I'm thinking you're right, and we return a list of two things: pre, post. 
+
     Also, I'm going to guess that genc calls gens, so perhaps gens should only
     add assertions other than pre and post? e.g. just pre[a/x]
     *)
   match sc with
-  | Skip ->
-  | Print a ->
-  | Test i,b ->
+  | Skip -> if pre = post then [pre, post] else failwith "what to do here"
+  | Print a -> if pre = post then [pre, post] else failwith "what to do here"
+  | Test i,b -> (* not sure how the info i relates here. thinking something like if b then ... *)
   | Assign v,a ->
 
 
