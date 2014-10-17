@@ -1,25 +1,25 @@
-open Ast 
+open Ast
 
-let valid (a:assn) : bool option = 
+let valid (a:assn) : bool option =
   let buf = Buffer.create 1000 in
-  let binop f o x1 x2 = 
+  let binop f o x1 x2 =
     Printf.bprintf buf "(%s " o;
     f x1;
     Printf.bprintf buf " ";
     f x2;
     Printf.bprintf buf ")" in
   let rec serialize_lexp = function
-    | LInt(n) -> 
+    | LInt(n) ->
       Printf.bprintf buf "%d" n
-    | LLVar(i) -> 
+    | LLVar(i) ->
       Printf.bprintf buf "%s" i
-    | LPVar(x) -> 
+    | LPVar(x) ->
       Printf.bprintf buf "%s" x
     | LPlus(e1,e2) ->
       binop serialize_lexp "+" e1 e2
-    | LMinus(e1,e2) -> 
+    | LMinus(e1,e2) ->
       binop serialize_lexp "-" e1 e2
-    | LTimes(e1,e2) -> 
+    | LTimes(e1,e2) ->
       binop serialize_lexp "*" e1 e2
   and serialize_assn = function
     | ATrue ->
@@ -55,27 +55,28 @@ let valid (a:assn) : bool option =
     | AExists(x,a) ->
       Printf.bprintf buf "(exists ((%s Int)) " x;
       serialize_assn a;
-      Printf.bprintf buf ")" in 
-  begin 
+      Printf.bprintf buf ")" in
+  begin
     VarSet.iter (fun x -> Printf.bprintf buf "(declare-var %s Int)\n" x) (fvsAssn a);
     Printf.bprintf buf "(assert ";
     serialize_assn (ANot a);
     Printf.bprintf buf ")\n";
     Printf.bprintf buf "(check-sat)\n";
-    let str = Buffer.contents buf in 
+    let str = Buffer.contents buf in
     let err o e f a = Printf.printf "%s: %s|%s|%s\n" o (Unix.error_message e) f a; exit 1 in
-    let z3_out,z3_in = 
-      try Unix.open_process "z3 -in -smt2 -nw"
+    let z3_out,z3_in =
+      (*Change back to z3*)
+      try Unix.open_process "./z3 -in -smt2 -nw"
       with Unix.Unix_error (e,f,a) -> err "open" e f a in
     let _ = try output_string z3_in str
       with Unix.Unix_error (e,f,a) -> err "out" e f a in
     let _ = try flush z3_in
-      with Unix.Unix_error (e,f,a) -> err "flush" e f a in 
+      with Unix.Unix_error (e,f,a) -> err "flush" e f a in
     let _ = try close_out z3_in
-      with Unix.Unix_error (e,f,a) -> err "close" e f a in 
+      with Unix.Unix_error (e,f,a) -> err "close" e f a in
     let res_buf = Buffer.create 17 in
-    begin 
-      try 
+    begin
+      try
         while true do
           Buffer.add_string res_buf (input_line z3_out);
           Buffer.add_char res_buf '\n';
@@ -84,12 +85,12 @@ let valid (a:assn) : bool option =
         | End_of_file -> ()
         | Unix.Unix_error (e,f,a) -> err "open" e f a
     end;
-    let _ = 
-      try close_in z3_out  
+    let _ =
+      try close_in z3_out
       with Unix.Unix_error (e,f,a) -> err "close" e f a in
-    let res = Buffer.contents res_buf in 
+    let res = Buffer.contents res_buf in
     Printf.printf "%s\n\n%s\n\n" str res;
-    match res with 
+    match res with
       | "sat\n" -> Some false
       | "unsat\n" -> Some true
       | _ -> None

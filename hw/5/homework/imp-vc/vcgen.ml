@@ -96,18 +96,18 @@ let back_prop sc post =
   | _ -> post
 
 let rec gens ((pre,sc,post): assn * scom * assn) : assn list =
-  AImplies (pre, back_prop post)
+  [AImplies (pre, back_prop sc post)]
 
 and genc ((pre,c,post): assn * com * assn) : assn list =
   match c with
-  | Simple sc -> gens (pre,c,post)
-  | SeqSimple c,sc -> genc (pre, c, back_prop sc post)
-  | Seq c1,a,c2 -> genc (pre, c1, a) @ genc (pre, c2, a)
-  | If b,c_t,c_e ->
+  | Simple sc -> gens (pre,sc,post)
+  | SeqSimple (c, sc) -> genc (pre, c, back_prop sc post)
+  | Seq (c1, a, c2) -> genc (pre, c1, a) @ genc (pre, c2, a)
+  | If (b, c1, c2) ->
       let c1_pre = AAnd (pre, assn_of_bexp b)
       and c2_pre = AAnd (pre, assn_of_bexp (Not b)) in
       genc (c1_pre, c1, post) @ genc (c2_pre, c2, post)
-  | While b,invariant,c ->
+  | While (b, invariant, c) ->
       let c_pre = AAnd(invariant, assn_of_bexp b) in
       (AImplies (pre,invariant))::
       (AImplies (AAnd (invariant, ANot (assn_of_bexp b)), post))::
