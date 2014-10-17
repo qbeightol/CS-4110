@@ -1,5 +1,8 @@
 open Ast
 
+(*TAIL RECURSION!!!*)
+let (@) l1 = List.rev_append (List.rev l1)
+
 (* lexp_of_aexp: convert an aexp into an lexp *)
 let rec lexp_of_aexp (a:aexp) : lexp =
   match a with
@@ -87,7 +90,13 @@ and substAssn (l:lexp) (x:var) (p:assn) : assn =
     | AExists(i,p1) ->
       AExists(i,substAssn l x p1)
 
+let back_prop sc post =
+  match sc with
+  | Assign (v, a) -> substAssn (lexp_of_aexp a) v post
+  | _ -> post
+
 let rec gens ((pre,sc,post): assn * scom * assn) : assn list =
+  AImplies (pre, back_prop post)
   (*qeb2: I think the idea is to use the rules of Hoare Logic to come up with
     constraints for how the pre-condition and post-condition are related. E.g.
     if you hand the command skip, the pre-condition and the post condition must
@@ -98,20 +107,33 @@ let rec gens ((pre,sc,post): assn * scom * assn) : assn list =
     we just return a list of assertions that must all be true? E.g. if we run
     into an assignment, should we assert both pre[a/x] and post?
 
+    apa52: based on what's in the homework writeup, our tool generates
+    an assertion equivalent to :
+    (((x = $m) and (y = $n)) implies ((x = $m) and (y = $n)))
+
+    So, I'm thinking you're right, and we return a list of two things: pre, post.
+
     Also, I'm going to guess that genc calls gens, so perhaps gens should only
     add assertions other than pre and post? e.g. just pre[a/x]
     *)
   match sc with
-  | Skip ->
-  | Print a ->
-  | Test i,b ->
-  | Assign v,a ->
+  | Assign v,a -> A
+      let post_sub_a_for_x = substAssn (lexp_of_aexp a) v post in
+      [Aimplies (pre, post_sub_a_for_x)]
+  | _ -> [AImplies (pre, post)]
 
 
 and genc ((pre,c,post): assn * com * assn) : assn list =
-  match c with3
-  | Simple sc ->
-  | SeqSimple c,sc ->
-  | Seq c1,a,c2 ->
+  match c with
+  | Simple sc -> gens (pre,c,post)
+  | SeqSimple c,sc -> genc (pre, c, back_prop sc post)
+  | Seq c1,a,c2 -> genc (pre, c1, a) @ genc (pre, c2, a)
   | If b,c_t,c_e ->
-  | While b,a,c ->
+      let c1_pre = AAnd (pre, assn_of_bexp b)
+      and c2_pre = AAnd (pre, assn_of_bexp (Not b)) in
+      genc (c1_pre, c1, post) @ genc (c2_pre, c2, post)
+  | While b,invariant,c ->
+      let c_pre = AAnd(invariant, assn_of_bexp b) in
+      (AImplies (pre,invariant))::
+      (AImplies (AAnd (invariant, ANot (assn_of_bexp b)), post))::
+      (genc (c_pre, c, invariant))

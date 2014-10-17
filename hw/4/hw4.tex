@@ -211,9 +211,12 @@
 			
 			
 			Now we can calculate the fixed point of $G'$:
+			
+			   $$ \text{fix}(G') = \bigcup_{i \geq 0} G'^{i}(\emptyset) = \emptyset \cup 
+      \emptyset \cup ... \cup \emptyset = \emptyset$$
 	
 			
-			\begin{eqnarray*}
+	\iffalse	\begin{eqnarray*}
 			  \text{fix}(G') & = & \bigcup_{i \geq 0} (G')^{i}(\emptyset) \\
 			  & = & \emptyset \cup \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \} \cup \emptyset \cup\\
 			  & & \{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} \llbracket x \texttt{:= } x + 1 \rrbracket \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket x < 0 \rrbracket \} \cup \emptyset \cup ... \\
@@ -227,9 +230,10 @@
 			we won't get a value--the relationship is undefined since $\sigma'(x) > 
 			0$, which implies that $\sigma''(x) = \sigma'(x) + 1 > 0$ and therefore $
 			\mathcal{B}\llbracket x < 0 \rrbracket \sigma'' = \texttt{false}$. In other 
-			words, $c_a$ doesn't terminate. Let's look at $c_b$ and prove that it doesn't 
-			terminate as well (which in turn demonstrates that the commands are 
-			equivalent:
+			words, $c_a$ doesn't terminate. \fi
+			
+			
+			Now, let us examine the denotation of $c_b$:
 			
       \begin{eqnarray*}
         \mathcal{C} \llbracket c_b \rrbracket & = & \text{fix}(F) \\
