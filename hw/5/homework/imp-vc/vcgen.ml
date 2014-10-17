@@ -109,7 +109,7 @@ let rec gens ((pre,sc,post): assn * scom * assn) : assn list =
 
 
 and genc ((pre,c,post): assn * com * assn) : assn list =
-  match c with
+  match c with3
   | Simple sc ->
   | SeqSimple c,sc ->
   | Seq c1,a,c2 ->
