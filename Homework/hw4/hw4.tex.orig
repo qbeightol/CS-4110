@@ -1,0 +1,162 @@
+\documentclass[10pt, oneside]{article}
+\usepackage{geometry}
+\geometry{letterpaper}
+\usepackage{amssymb, amsmath, enumerate, stmaryrd}
+
+
+\begin{document}
+\noindent Ameya Acharya (apa52) \& Quinn Beightol (qeb2) \\*
+\noindent CS 4110 \\*
+\noindent hw4
+
+\begin{enumerate}[1.]
+% Exercise 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item
+  \begin{enumerate}[(a)] 
+    \item 
+    \begin{eqnarray*}
+      \mathcal{C}\llbracket \texttt{if } b \texttt{ then } c \rrbracket & = & 
+        \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
+<<<<<<< HEAD
+                                                          \llbracket b \rrbracket \}
+        \cup \{ (\sigma, \sigma') \mid (\sigma, \texttt{false}) \in \mathcal{B}
+=======
+                                                         \llbracket b \rrbracket \}
+        \cup \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in \mathcal{B}
+>>>>>>> 05e22ae76dfa1d8f3dcc07db0642075e5a32269e
+          \llbracket b \rrbracket \wedge (\sigma, \sigma') \in \mathcal{C}
+                                                       \llbracket c \rrbracket \}\\
+      \mathcal{C} \llbracket \texttt{do } c \texttt{ until } b  \rrbracket 
+        & = & \text{fix}(G)\\
+      \text{where } G(f) & = &
+  				\{ (\sigma, \sigma') \mid (\sigma, \sigma') \in \mathcal{C} 
+				                                              \llbracket c \rrbracket
+		 \wedge (\sigma', \texttt{true}) \in \mathcal{B} \llbracket b \rrbracket \} \\
+				& \cup & \{ (\sigma, \sigma'') \mid 
+				            (\sigma, \sigma')  \in \mathcal{C} \llbracket c \rrbracket 
+				     \wedge (\sigma', \texttt{false})\in \mathcal{B} \llbracket b \rrbracket
+				     \wedge \exists \sigma''. (\sigma', \sigma'') \in f \}
+    \end{eqnarray*}
+    \item 
+  \end{enumerate}
+
+% Exercise 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item
+  \begin{enumerate} [(a)]
+  \item 
+{\bf Denotation of}  (x := x + 21; x := x + 21):
+      \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in \mathcal{C} \llbracket x := x + 21\rrbracket \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
+    \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 21 \rrbracket \} \\
+     \mathcal{A} \llbracket x + 21\rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 21 \rrbracket \wedge n = n_1 + n _2\} \\
+       \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
+    \mathcal{A} \llbracket 21 \rrbracket  & = & \{ (\sigma, 21) \} \\
+    \mathcal{A} \llbracket x + 21 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in (\sigma, \sigma(x)) \wedge (\sigma, n_2) \in (\sigma, 21) \wedge n = n_1 + n_2 \} \\
+    & = & \{ (\sigma, n) \mid n = \sigma(x) + 21 \} \\
+    & = & \{ (\sigma, \sigma(x) + 21) \} \\
+      \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma, \sigma[x \mapsto \sigma(x) + 21]) \} \\
+     \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  ((\sigma, \sigma'') \in  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 21]) \} \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
+      \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{ (\sigma, \sigma') \mid \exists \sigma''.  \sigma'' = \sigma[x \mapsto \sigma(x) + 21] \} \wedge (\sigma'', \sigma') \in \mathcal{C} \llbracket x := x + 21\rrbracket )\}\\
+       \mathcal{C} \llbracket x := x + 21\rrbracket & = & \{ (\sigma'', \sigma''[x \mapsto n]) \mid (\sigma'', n) \in \mathcal{A} \llbracket x + 21 \rrbracket \} \\
+     \mathcal{A} \llbracket x + 21\rrbracket & = & \{ (\sigma'', n) \mid (\sigma'', n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma'', n_2) \in \mathcal{A} \llbracket 21 \rrbracket \wedge n = n_1 + n _2\} \\
+       \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma'', \sigma''(x)) \} \\
+         \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma'', \sigma(x) + 21) \} \\
+    \mathcal{A} \llbracket 21 \rrbracket  & = & \{ (\sigma'', 21) \} \\
+    \mathcal{A} \llbracket x + 21 \rrbracket & = & \{ (\sigma'', n) \mid (\sigma'', n_1) \in (\sigma'', \sigma''(x)) \wedge (\sigma'', n_2) \in (\sigma'', 21) \wedge n = n_1 + n_2 \} \\
+    & = & \{ (\sigma'', n) \mid n = \sigma(x) + \sigma(x) + 21 \} \\
+    & = & \{ (\sigma'', \sigma(x) + 42) \} \\
+    \mathcal{C} \llbracket x := x + 21; x := x + 21 \rrbracket & = & \{(\sigma, \sigma[x \mapsto \sigma(x) + 42 ]) \}
+    \end{eqnarray*}
+
+{\bf Denotation of}  (x := x + 42):
+      \begin{eqnarray*}  \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid (\sigma, n) \in \mathcal{A} \llbracket x + 42 \rrbracket \} \\
+    \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in \mathcal{A} \llbracket x \rrbracket \wedge (\sigma, n_2) \in \mathcal{A} \llbracket 42 \rrbracket \wedge n = n_1 + n _2\} \\
+    \mathcal{A} \llbracket x \rrbracket  & = & \{ (\sigma, \sigma(x)) \} \\
+    \mathcal{A} \llbracket 42 \rrbracket  & = & \{ (\sigma, 42) \} \\
+    \mathcal{A} \llbracket x + 42 \rrbracket & = & \{ (\sigma, n) \mid (\sigma, n_1) \in (\sigma, \sigma(x)) \wedge (\sigma, n_2) \in (\sigma, 42) \wedge n = n_1 + n_2 \} \\
+    & = & \{ (\sigma, n) \mid n = \sigma(x) + 42 \} \\
+    & = & \{ (\sigma, \sigma(x) + 42) \} \\
+     \mathcal{C} \llbracket x := x + 42 \rrbracket & = & \{ (\sigma, \sigma[x \mapsto n]) \mid n = \sigma(x) + 42 \} \\
+     & = &  \{ (\sigma, \sigma[x \mapsto \sigma(x) + 42 ])\} \\
+   \end{eqnarray*}
+   
+    \item
+      To reduce the amount of repeated text, we'll refer to 
+      $(x \texttt{:= }1\texttt{; do } x \texttt{:= } x + 1 \texttt{ until } x < 0)$ 
+      as $c_a$, and we'll refer to $\texttt{while true do } c$ as $c_b$. 
+      
+      \begin{eqnarray*}
+        \mathcal{C} \llbracket c_b \rrbracket & = & \text{fix}(F) \\
+        F(f) & = & \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in 
+                                           \mathcal{B} \llbracket b \rrbracket \}\\
+            & \cup & \{(\sigma, \sigma'') 
+               \mid (\sigma, \texttt{true}) \in \mathcal{B} \llbracket b\rrbracket
+             \wedge (\sigma, \sigma') \in \mathcal{c} \llbracket c \rrbracket 
+             \wedge (\sigma', \sigma'') \in f \} \\
+      \end{eqnarray*}
+      Substituting \texttt{true} in for $b$ give the following equation (which is 
+      only true for commands with the same form as $c_b$):
+      \begin{eqnarray*}
+        F'(f) & = & \{ (\sigma, \sigma) \mid (\sigma, \texttt{false}) \in 
+                               \mathcal{B} \llbracket \texttt{true} \rrbracket \}\\
+            & \cup & \{(\sigma, \sigma'') 
+    \mid (\sigma, \texttt{true}) \in \mathcal{B} \llbracket \texttt{true}\rrbracket
+             \wedge (\sigma, \sigma') \in \mathcal{C} \llbracket c \rrbracket 
+             \wedge (\sigma', \sigma'') \in f \} \\
+      \end{eqnarray*} 
+      Since $\mathcal{B} \llbracket \texttt{true} \rrbracket = \{(\sigma, 
+      \texttt{true})\}$, the pair $(\sigma, \texttt{false})$ will never be a subset 
+      of $\mathcal{B} \llbracket \texttt{true} \rrbracket$ and the set preceding 
+      the union operator will be the empty set. Likewise, $(\sigma, \texttt{true})$ 
+      is always a subset of $\{(\sigma, \texttt{true})\}$, so we can refine our 
+      definition of $F'$ as follows:
+            \begin{eqnarray*}
+        F'(f) & = &  \{(\sigma, \sigma'') 
+    					    \mid (\sigma, \sigma') \in \mathcal{C} \llbracket c \rrbracket 
+                \wedge (\sigma', \sigma'') \in f \} \\
+      \end{eqnarray*} 
+      Now we'll show that $f_n$ is undefined on all stores for all $n \in
+      \mathbb{N}$ using induction (and the higher order function $F'$):
+      \begin{eqnarray*}
+        P(n)  & \triangleq & f_n = \emptyset \\
+        P(0): & & f_0 = F^0(\emptyset) = \emptyset \text{ } \checkmark \\
+        P(n+1): & & f_{n+1} = F(f_n) \\
+                & = & \{(\sigma, \sigma'') 
+    					    \mid (\sigma, \sigma') \in \mathcal{C} \llbracket c \rrbracket 
+                \wedge (\sigma', \sigma'') \in f_n \}
+      \end{eqnarray*}
+      Using our inductive hypothesis, we can conclude that $f_n = \emptyset$ which
+      in turn means that the second rule in the set comprehension (e.g. $(\sigma',
+      \sigma'') \in f_n$) is unsatisfiable. So the right hand side of the equation
+      is just the empty set, as desired:
+      
+      $$f_{n+1} = \emptyset \text{ } \checkmark$$ 
+      
+      Therefore, $P(n)$ hold for all $n \in \mathbb{N}$ and the fixed point of $F'$ 
+      is:
+      
+      $$ \text{fix}(F') = \bigcup_{i \geq 0} F'^{i}(\emptyset) = \emptyset \cup 
+      \emptyset \cup ... \cup \emptyset = \emptyset$$.
+      
+      In short, $c_b$ is guaranteed not to terminate.
+    \item 
+  \end{enumerate}
+
+% Exercise 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item
+
+% Exercise 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item
+  \begin{enumerate} [(a)]
+    \item
+    \item
+  \end{enumerate}
+
+% Exercise 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item
+  \begin{enumerate} [(a)]
+    \item
+    \item
+  \end{enumerate}
+
+\end{enumerate}
+\end{document}
