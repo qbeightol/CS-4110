@@ -97,31 +97,6 @@ let back_prop sc post =
 
 let rec gens ((pre,sc,post): assn * scom * assn) : assn list =
   AImplies (pre, back_prop post)
-  (*qeb2: I think the idea is to use the rules of Hoare Logic to come up with
-    constraints for how the pre-condition and post-condition are related. E.g.
-    if you hand the command skip, the pre-condition and the post condition must
-    be equivalant. If you have the assignment, x:= a, it the same sort of thing,
-    but with pre[a/x] = post.
-
-    Wait, no that doesn't quite make sense given the return type (assn list). Do
-    we just return a list of assertions that must all be true? E.g. if we run
-    into an assignment, should we assert both pre[a/x] and post?
-
-    apa52: based on what's in the homework writeup, our tool generates
-    an assertion equivalent to :
-    (((x = $m) and (y = $n)) implies ((x = $m) and (y = $n)))
-
-    So, I'm thinking you're right, and we return a list of two things: pre, post.
-
-    Also, I'm going to guess that genc calls gens, so perhaps gens should only
-    add assertions other than pre and post? e.g. just pre[a/x]
-    *)
-  match sc with
-  | Assign v,a -> A
-      let post_sub_a_for_x = substAssn (lexp_of_aexp a) v post in
-      [Aimplies (pre, post_sub_a_for_x)]
-  | _ -> [AImplies (pre, post)]
-
 
 and genc ((pre,c,post): assn * com * assn) : assn list =
   match c with
