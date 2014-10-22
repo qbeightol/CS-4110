@@ -111,5 +111,5 @@ and genc ((pre,c,post): assn * com * assn) : assn list =
   | While (b, invariant, c) ->
       let c_pre = AAnd(invariant, assn_of_bexp b) in
       (AImplies (pre,invariant))::
-      (AImplies (AAnd (invariant, ANot (assn_of_bexp b)), post))::
+      (AImplies (pre, AImplies (AAnd (invariant, ANot (assn_of_bexp b)), post)))::
       (genc (c_pre, c, invariant))
