@@ -1,0 +1,6 @@
+@ x = $i and y = 1 @
+while (x > 0) do
+  @ y > 0 @
+  { y := y * x;
+    x := x - 1 }
+@ y > 0 @
