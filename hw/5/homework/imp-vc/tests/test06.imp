@@ -1,0 +1,6 @@
+@true@
+while (not (x = 0)) do
+  @ true @
+  {x := 0};
+test x = 0
+@true@
