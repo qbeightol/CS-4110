@@ -1,4 +1,4 @@
-@ x = 0 and z = 0 and y = $i @
+@ x = $i and y = $i @
 while (not (x = y)) do
 @ true @
 {x := y}
