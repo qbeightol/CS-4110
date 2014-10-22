@@ -119,11 +119,11 @@ and evalb (s,b) : bool =
   | Greater(a1,a2) -> 
     let n1 = evala (s,a1) in 
     let n2 = evala (s,a2) in 
-    n1 < n2
+    n1 > n2
   | GreaterEq(a1,a2) -> 
     let n1 = evala (s,a1) in 
     let n2 = evala (s,a2) in 
-    n1 <= n2
+    n1 >= n2
   | Not b -> 
     not (evalb (s,b))
   | And(b1,b2) -> 

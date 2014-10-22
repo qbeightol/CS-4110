@@ -52,3 +52,9 @@ How to execute:
   Run all tests in the "tests" directory by typing "make test".
 
   
+Note for Windows users:
+-----------------------
+
+Depending on your environment, your code may use a different
+end-of-line symbol. If so, you may need to change the "\n" to "\r\n"
+or similar in solve.ml

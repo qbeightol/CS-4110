@@ -112,4 +112,4 @@ aassn: TRUE                              { ATrue }
   | EXISTS DOLLAR VAR LPAREN assn RPAREN { AExists($3,$5) }
   | LPAREN assn RPAREN                   { $2 }
     
-program : spec com spec { ($1,$2,$3) }
+program : spec com spec EOF { ($1,$2,$3) }

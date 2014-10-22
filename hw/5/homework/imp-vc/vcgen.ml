@@ -93,6 +93,7 @@ and substAssn (l:lexp) (x:var) (p:assn) : assn =
 let back_prop sc post =
   match sc with
   | Assign (v, a) -> substAssn (lexp_of_aexp a) v post
+  | Test (_, b) -> AAnd (assn_of_bexp b, post) 
   | _ -> post
 
 let rec gens ((pre,sc,post): assn * scom * assn) : assn list =

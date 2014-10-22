@@ -84,7 +84,7 @@
   63        | EXISTS DOLLAR VAR LPAREN assn RPAREN
   64        | LPAREN assn RPAREN
 
-  65  program : spec com spec
+  65  program : spec com spec EOF
 
   66  %entry% : '\001' program
 
@@ -144,7 +144,7 @@ state 4
 
 
 state 5
-	program : spec . com spec  (65)
+	program : spec . com spec EOF  (65)
 
 	VAR  shift 23
 	TEST  shift 24
@@ -446,7 +446,7 @@ state 29
 state 30
 	com : com . SEMI spec icom  (37)
 	com : com . SEMI scom  (38)
-	program : spec com . spec  (65)
+	program : spec com . spec EOF  (65)
 
 	SEMI  shift 72
 	AT  shift 3
@@ -958,9 +958,10 @@ state 72
 
 
 state 73
-	program : spec com spec .  (65)
+	program : spec com spec . EOF  (65)
 
-	.  reduce 65
+	EOF  shift 112
+	.  error
 
 
 state 74
@@ -978,14 +979,14 @@ state 75
 state 76
 	aassn : FORALL DOLLAR VAR . LPAREN assn RPAREN  (62)
 
-	LPAREN  shift 112
+	LPAREN  shift 113
 	.  error
 
 
 state 77
 	aassn : EXISTS DOLLAR VAR . LPAREN assn RPAREN  (63)
 
-	LPAREN  shift 113
+	LPAREN  shift 114
 	.  error
 
 
@@ -998,7 +999,7 @@ state 78
 	DOLLAR  shift 14
 	.  error
 
-	lexp  goto 114
+	lexp  goto 115
 	tlexp  goto 16
 	alexp  goto 17
 
@@ -1186,7 +1187,7 @@ state 92
 
 	PLUS  shift 95
 	MINUS  shift 96
-	RPAREN  shift 115
+	RPAREN  shift 116
 	EQUALS  shift 97
 	NOTEQUALS  shift 98
 	LESS  shift 99
@@ -1200,7 +1201,7 @@ state 93
 	bexp : bexp . OR cbexp  (18)
 	abexp : LPAREN bexp . RPAREN  (32)
 
-	RPAREN  shift 116
+	RPAREN  shift 117
 	OR  shift 103
 	.  error
 
@@ -1219,7 +1220,7 @@ state 95
 	LPAREN  shift 67
 	.  error
 
-	taexp  goto 117
+	taexp  goto 118
 	aaexp  goto 63
 
 
@@ -1231,7 +1232,7 @@ state 96
 	LPAREN  shift 67
 	.  error
 
-	taexp  goto 118
+	taexp  goto 119
 	aaexp  goto 63
 
 
@@ -1243,7 +1244,7 @@ state 97
 	LPAREN  shift 67
 	.  error
 
-	aexp  goto 119
+	aexp  goto 120
 	taexp  goto 62
 	aaexp  goto 63
 
@@ -1256,7 +1257,7 @@ state 98
 	LPAREN  shift 67
 	.  error
 
-	aexp  goto 120
+	aexp  goto 121
 	taexp  goto 62
 	aaexp  goto 63
 
@@ -1269,7 +1270,7 @@ state 99
 	LPAREN  shift 67
 	.  error
 
-	aexp  goto 121
+	aexp  goto 122
 	taexp  goto 62
 	aaexp  goto 63
 
@@ -1282,7 +1283,7 @@ state 100
 	LPAREN  shift 67
 	.  error
 
-	aexp  goto 122
+	aexp  goto 123
 	taexp  goto 62
 	aaexp  goto 63
 
@@ -1295,7 +1296,7 @@ state 101
 	LPAREN  shift 67
 	.  error
 
-	aexp  goto 123
+	aexp  goto 124
 	taexp  goto 62
 	aaexp  goto 63
 
@@ -1308,7 +1309,7 @@ state 102
 	LPAREN  shift 67
 	.  error
 
-	aexp  goto 124
+	aexp  goto 125
 	taexp  goto 62
 	aaexp  goto 63
 
@@ -1327,7 +1328,7 @@ state 103
 	aexp  goto 60
 	taexp  goto 62
 	aaexp  goto 63
-	cbexp  goto 125
+	cbexp  goto 126
 	nbexp  goto 65
 	abexp  goto 66
 
@@ -1340,7 +1341,7 @@ state 104
 	LPAREN  shift 67
 	.  error
 
-	aaexp  goto 126
+	aaexp  goto 127
 
 
 state 105
@@ -1357,7 +1358,7 @@ state 105
 	aexp  goto 60
 	taexp  goto 62
 	aaexp  goto 63
-	nbexp  goto 127
+	nbexp  goto 128
 	abexp  goto 66
 
 
@@ -1368,7 +1369,7 @@ state 106
 
 	PLUS  shift 95
 	MINUS  shift 96
-	RPAREN  shift 115
+	RPAREN  shift 116
 	.  error
 
 
@@ -1383,7 +1384,7 @@ state 107
 	.  error
 
 	scom  goto 31
-	acom  goto 128
+	acom  goto 129
 
 
 state 108
@@ -1392,7 +1393,7 @@ state 108
 	AT  shift 3
 	.  error
 
-	spec  goto 129
+	spec  goto 130
 
 
 state 109
@@ -1420,36 +1421,18 @@ state 111
 	.  error
 
 	scom  goto 31
-	icom  goto 130
+	icom  goto 131
 	acom  goto 33
 
 
 state 112
-	aassn : FORALL DOLLAR VAR LPAREN . assn RPAREN  (62)
+	program : spec com spec EOF .  (65)
 
-	INT  shift 6
-	VAR  shift 7
-	LPAREN  shift 8
-	TRUE  shift 9
-	FALSE  shift 10
-	FORALL  shift 11
-	EXISTS  shift 12
-	NOT  shift 13
-	DOLLAR  shift 14
-	.  error
-
-	lexp  goto 15
-	tlexp  goto 16
-	alexp  goto 17
-	assn  goto 131
-	dassn  goto 19
-	cassn  goto 20
-	nassn  goto 21
-	aassn  goto 22
+	.  reduce 65
 
 
 state 113
-	aassn : EXISTS DOLLAR VAR LPAREN . assn RPAREN  (63)
+	aassn : FORALL DOLLAR VAR LPAREN . assn RPAREN  (62)
 
 	INT  shift 6
 	VAR  shift 7
@@ -1473,6 +1456,30 @@ state 113
 
 
 state 114
+	aassn : EXISTS DOLLAR VAR LPAREN . assn RPAREN  (63)
+
+	INT  shift 6
+	VAR  shift 7
+	LPAREN  shift 8
+	TRUE  shift 9
+	FALSE  shift 10
+	FORALL  shift 11
+	EXISTS  shift 12
+	NOT  shift 13
+	DOLLAR  shift 14
+	.  error
+
+	lexp  goto 15
+	tlexp  goto 16
+	alexp  goto 17
+	assn  goto 133
+	dassn  goto 19
+	cassn  goto 20
+	nassn  goto 21
+	aassn  goto 22
+
+
+state 115
 	lexp : lexp . PLUS tlexp  (9)
 	lexp : lexp . MINUS tlexp  (10)
 	alexp : LPAREN lexp . RPAREN  (17)
@@ -1483,19 +1490,19 @@ state 114
 	.  error
 
 
-state 115
+state 116
 	aaexp : LPAREN aexp RPAREN .  (8)
 
 	.  reduce 8
 
 
-state 116
+state 117
 	abexp : LPAREN bexp RPAREN .  (32)
 
 	.  reduce 32
 
 
-state 117
+state 118
 	aexp : aexp PLUS taexp .  (1)
 	taexp : taexp . TIMES aaexp  (4)
 
@@ -1519,7 +1526,7 @@ state 117
 	AT  reduce 1
 
 
-state 118
+state 119
 	aexp : aexp MINUS taexp .  (2)
 	taexp : taexp . TIMES aaexp  (4)
 
@@ -1543,7 +1550,7 @@ state 118
 	AT  reduce 2
 
 
-state 119
+state 120
 	aexp : aexp . PLUS taexp  (1)
 	aexp : aexp . MINUS taexp  (2)
 	abexp : aexp EQUALS aexp .  (26)
@@ -1561,7 +1568,7 @@ state 119
 	AT  reduce 26
 
 
-state 120
+state 121
 	aexp : aexp . PLUS taexp  (1)
 	aexp : aexp . MINUS taexp  (2)
 	abexp : aexp NOTEQUALS aexp .  (27)
@@ -1579,7 +1586,7 @@ state 120
 	AT  reduce 27
 
 
-state 121
+state 122
 	aexp : aexp . PLUS taexp  (1)
 	aexp : aexp . MINUS taexp  (2)
 	abexp : aexp LESS aexp .  (28)
@@ -1597,7 +1604,7 @@ state 121
 	AT  reduce 28
 
 
-state 122
+state 123
 	aexp : aexp . PLUS taexp  (1)
 	aexp : aexp . MINUS taexp  (2)
 	abexp : aexp LESSEQ aexp .  (29)
@@ -1615,7 +1622,7 @@ state 122
 	AT  reduce 29
 
 
-state 123
+state 124
 	aexp : aexp . PLUS taexp  (1)
 	aexp : aexp . MINUS taexp  (2)
 	abexp : aexp GREATER aexp .  (30)
@@ -1633,7 +1640,7 @@ state 123
 	AT  reduce 30
 
 
-state 124
+state 125
 	aexp : aexp . PLUS taexp  (1)
 	aexp : aexp . MINUS taexp  (2)
 	abexp : aexp GREATEREQ aexp .  (31)
@@ -1651,7 +1658,7 @@ state 124
 	AT  reduce 31
 
 
-state 125
+state 126
 	bexp : bexp OR cbexp .  (18)
 	cbexp : cbexp . AND nbexp  (20)
 
@@ -1666,26 +1673,26 @@ state 125
 	AT  reduce 18
 
 
-state 126
+state 127
 	taexp : taexp TIMES aaexp .  (4)
 
 	.  reduce 4
 
 
-state 127
+state 128
 	cbexp : cbexp AND nbexp .  (20)
 
 	.  reduce 20
 
 
-state 128
+state 129
 	icom : IF bexp THEN acom . ELSE acom  (40)
 
-	ELSE  shift 133
+	ELSE  shift 134
 	.  error
 
 
-state 129
+state 130
 	icom : WHILE bexp DO spec . acom  (41)
 
 	VAR  shift 23
@@ -1696,27 +1703,18 @@ state 129
 	.  error
 
 	scom  goto 31
-	acom  goto 134
+	acom  goto 135
 
 
-state 130
+state 131
 	com : com SEMI spec icom .  (37)
 
 	.  reduce 37
 
 
-state 131
-	assn : assn . IMPLIES dassn  (46)
-	aassn : FORALL DOLLAR VAR LPAREN assn . RPAREN  (62)
-
-	RPAREN  shift 135
-	IMPLIES  shift 49
-	.  error
-
-
 state 132
 	assn : assn . IMPLIES dassn  (46)
-	aassn : EXISTS DOLLAR VAR LPAREN assn . RPAREN  (63)
+	aassn : FORALL DOLLAR VAR LPAREN assn . RPAREN  (62)
 
 	RPAREN  shift 136
 	IMPLIES  shift 49
@@ -1724,6 +1722,15 @@ state 132
 
 
 state 133
+	assn : assn . IMPLIES dassn  (46)
+	aassn : EXISTS DOLLAR VAR LPAREN assn . RPAREN  (63)
+
+	RPAREN  shift 137
+	IMPLIES  shift 49
+	.  error
+
+
+state 134
 	icom : IF bexp THEN acom ELSE . acom  (40)
 
 	VAR  shift 23
@@ -1734,32 +1741,32 @@ state 133
 	.  error
 
 	scom  goto 31
-	acom  goto 137
+	acom  goto 138
 
 
-state 134
+state 135
 	icom : WHILE bexp DO spec acom .  (41)
 
 	.  reduce 41
 
 
-state 135
+state 136
 	aassn : FORALL DOLLAR VAR LPAREN assn RPAREN .  (62)
 
 	.  reduce 62
 
 
-state 136
+state 137
 	aassn : EXISTS DOLLAR VAR LPAREN assn RPAREN .  (63)
 
 	.  reduce 63
 
 
-state 137
+state 138
 	icom : IF bexp THEN acom ELSE acom .  (40)
 
 	.  reduce 40
 
 
 39 terminals, 23 nonterminals
-67 grammar rules, 138 states
+67 grammar rules, 139 states

@@ -65,7 +65,6 @@ let valid (a:assn) : bool option =
     let str = Buffer.contents buf in
     let err o e f a = Printf.printf "%s: %s|%s|%s\n" o (Unix.error_message e) f a; exit 1 in
     let z3_out,z3_in =
-      (*Change back to z3*)
       try Unix.open_process "./z3 -in -smt2 -nw"
       with Unix.Unix_error (e,f,a) -> err "open" e f a in
     let _ = try output_string z3_in str
