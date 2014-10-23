@@ -93,7 +93,7 @@ and substAssn (l:lexp) (x:var) (p:assn) : assn =
 let back_prop sc post =
   match sc with
   | Assign (v, a) -> substAssn (lexp_of_aexp a) v post
-  | Test (_, b) -> AAnd (assn_of_bexp b, post) (* Should be pre^b => post *)
+  | Test (_, b) -> AAnd (assn_of_bexp b, post)
   | _ -> post
 
 let rec gens ((pre,sc,post): assn * scom * assn) : assn list =
@@ -103,7 +103,7 @@ and genc ((pre,c,post): assn * com * assn) : assn list =
   match c with
   | Simple sc -> gens (pre,sc,post)
   | SeqSimple (c, sc) -> genc (pre, c, back_prop sc post)
-  | Seq (c1, a, c2) -> (genc (pre, c1, a)) @ (genc (a, c2, post))
+  | Seq (c1, a, c2) -> genc (pre, c1, a) @ (genc (a, c2, post))
   | If (b, c1, c2) ->
       let c1_pre = AAnd (pre, assn_of_bexp b)
       and c2_pre = AAnd (pre, assn_of_bexp (Not b)) in
@@ -111,5 +111,5 @@ and genc ((pre,c,post): assn * com * assn) : assn list =
   | While (b, invariant, c) ->
       let c_pre = AAnd(invariant, assn_of_bexp b) in
       (AImplies (pre,invariant))::
-      (AImplies (pre, AImplies (AAnd (invariant, ANot (assn_of_bexp b)), post)))::
+      (AImplies (AAnd (invariant, ANot (assn_of_bexp b)), post))::
       (genc (c_pre, c, invariant))
