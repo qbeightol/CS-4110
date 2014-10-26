@@ -1,0 +1,50 @@
+\documentclass[10pt, oneside]{article}
+\usepackage{geometry}
+\geometry{letterpaper}
+\usepackage{amssymb, amsmath, enumerate, bussproofs}
+
+
+\begin{document}
+\noindent Ameya Acharya (apa52) and Quinn Beightol (qeb2) \\
+\noindent CS 4110 \\
+\noindent hw6 \\
+
+\begin{enumerate}
+	\item
+	\begin{prooftree}
+		\AxiomC{$e1 \Downarrow v1$}
+		\AxiomC{$v1 e2 \Downarrow v$}
+		\BinaryInfC{$e1 e2 \Downarrow v$}
+	\end{prooftree}
+	\begin{prooftree}
+		\AxiomC{$e1\{e2/x\} \Downarrow v$}
+		\UnaryInfC{$(\lambda x.e1) e2 \Downarrow v$}
+	\end{prooftree}
+	\item
+	\begin{enumerate}
+		\item
+		\item
+		\begin{eqnarray*}
+			\textsf{NIL} & \triangleq & \lambda n.\lambda c.n\\
+			\textsf{CONS} & \triangleq & \lambda h.\lambda t.\lambda n.\lambda c. c \text{ } h \text{ } t\\
+			\textsf{HD} & \triangleq & \lambda l.l \textsf{ NIL } (\lambda h.\lambda t.h)\\
+			\textsf{TL} & \triangleq & \lambda l.l \textsf{ NIL } (\lambda h.\lambda t.t)\\
+			\textsf{IS\_NIL} & \triangleq & \lambda l.l \textsf{ TRUE } (\lambda h.\lambda t.\textsf{FALSE})\\
+		\end{eqnarray*}
+		\item Idea:
+		$$\textsf{SUM} \triangleq \lambda l.l \text{ } \bar{0} \text{ } (\lambda h.\lambda t.\textsf{PLUS } h \text{ } (\textsf{SUM } t))$$
+		We may need to take the fix point of the above definition (or something similar), but I think its a good start.
+		
+	\end{enumerate}
+	\item 
+	\begin{enumerate}
+		\item
+		\item
+		\item
+	\end{enumerate}
+\end{enumerate}
+
+
+
+
+\end{document}

@@ -1,5 +1,5 @@
-@ x = $i and y = $i @
-while (not (x = y)) do
+@ x = 0 and y = 0 @
+while (x = y) do
 @ true @
-{x := y}
-@ y = $i @
+{x := x + 1}
+@ not (x = y) @

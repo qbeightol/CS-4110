@@ -1,0 +1,3 @@
+@ y = $i and x = 0 and y > 0 @
+if (x > y) then {x := 42} else {skip}
+@ not (x = 42) @
