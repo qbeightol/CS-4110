@@ -1,0 +1,5 @@
+@ x = $i and y = 2 * $i@
+x := x * 2;
+@ x = 2 * $i and y = 2 * $i @
+test x = y
+@ true @
