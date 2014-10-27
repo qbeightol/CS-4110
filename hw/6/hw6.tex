@@ -13,16 +13,17 @@
 	\item
 	\begin{prooftree}
 		\AxiomC{$e1 \Downarrow v1$}
-		\AxiomC{$v1 e2 \Downarrow v$}
-		\BinaryInfC{$e1 e2 \Downarrow v$}
+		\AxiomC{$v1 \text{ } e2 \Downarrow v$}
+		\BinaryInfC{$e1 \text{ } e2 \Downarrow v$}
 	\end{prooftree}
 	\begin{prooftree}
 		\AxiomC{$e1\{e2/x\} \Downarrow v$}
-		\UnaryInfC{$(\lambda x.e1) e2 \Downarrow v$}
+		\UnaryInfC{$(\lambda x.e1) \text{ } e2 \Downarrow v$}
 	\end{prooftree}
 	\item
 	\begin{enumerate}
-		\item
+		\item $\textsf{EQUAL} = \lambda m. \lambda n. \textsf{ AND } (\textsf{IS\_ZERO } (\textsf{SUB } m \text{ } n)) \text{ } (\textsf{IS\_ZERO } (\text{SUB } n \text{ } m))$
+		
 		\item
 		\begin{eqnarray*}
 			\textsf{NIL} & \triangleq & \lambda n.\lambda c.n\\
@@ -31,9 +32,12 @@
 			\textsf{TL} & \triangleq & \lambda l.l \textsf{ NIL } (\lambda h.\lambda t.t)\\
 			\textsf{IS\_NIL} & \triangleq & \lambda l.l \textsf{ TRUE } (\lambda h.\lambda t.\textsf{FALSE})\\
 		\end{eqnarray*}
-		\item Idea:
-		$$\textsf{SUM} \triangleq \lambda l.l \text{ } \bar{0} \text{ } (\lambda h.\lambda t.\textsf{PLUS } h \text{ } (\textsf{SUM } t))$$
-		We may need to take the fix point of the above definition (or something similar), but I think its a good start.
+		
+		
+		
+		\item $$\textsf{SUM'} \triangleq \lambda f\lambda l.l \text{ } \bar{0} \text{ } (\lambda h.\lambda t.\textsf{ PLUS } h \text{ } (\textsf{f f } t))$$
+		
+			$$\textsf{SUM} \triangleq \textsf{SUM'} \textsf{ } \textsf{SUM'}$$
 		
 	\end{enumerate}
 	\item 
