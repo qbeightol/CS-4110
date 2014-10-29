@@ -11,7 +11,7 @@
 \noindent Wednesday, October 29 \\
 
 \begin{enumerate}
-	\item
+	\item \text{ } \\
 	\begin{prooftree}
 		\AxiomC{$e1 \Downarrow v1$}
 		\AxiomC{$v1 \text{ } e2 \Downarrow v$}
@@ -23,7 +23,14 @@
 	\end{prooftree}
 	\item
 	\begin{enumerate}
-		\item $\textsf{EQUAL} = \lambda m. \lambda n. \textsf{ AND } (\textsf{IS\_ZERO } (\textsf{SUB } m \text{ } n)) \text{ } (\textsf{IS\_ZERO } (\text{SUB } n \text{ } m))$
+		\item Here, we'll assume that applying \textsf{PRED} to $\bar{0}$ reproduces $
+		\bar{0}$, and by extension performing $\textsf{SUB } \bar{4} \text{ } \bar{5}$ 
+		produces $\bar{0}$. In other words, $\textsf{LESS\_THEN\_OR\_EQUAL\_TO}$ could 
+		be defined as $\lambda m. \lambda n. \textsf{IS\_ZERO} (\textsf{SUB } m 
+		\text{ } n)$. Our definition, then checks that $m \leq n$ and $n \leq m$ which 
+		implies $ m = n$: \\
+		
+		$\textsf{EQUAL} = \lambda m. \lambda n. \textsf{ AND } (\textsf{IS\_ZERO } (\textsf{SUB } m \text{ } n)) \text{ } (\textsf{IS\_ZERO } (\text{SUB } n \text{ } m))$
 		
 		\item
 		\begin{eqnarray*}
@@ -45,10 +52,12 @@
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%3%%%%%%%%%%%%%%%%%%%%%%%
 	\item 
 		\begin{enumerate}
-		\item \begin{prooftree}
-		\AxiomC{$\Gamma \vdash e: \tau \rightarrow \tau_1$}
-		\UnaryInfC{$\Gamma \vdash \textsf{fix } e: \tau \rightarrow \tau_1$}
-	\end{prooftree}
+		\item \text{ } \\
+		\begin{prooftree}
+			\AxiomC{$\Gamma \vdash e: \tau \rightarrow \tau$}
+			\UnaryInfC{$\Gamma \vdash \textsf{fix } e:  \tau$}
+		\end{prooftree}
+		
 
 		\item The progress lemma states that if $\vdash e : \tau $ then either $e$ is a value or there exists an $e'$ such that $ e \rightarrow e'.$
 		We proceed by induction on the derivation of e.\\
@@ -60,49 +69,21 @@
 		From our inductive hypothesis, since  $e_1: \tau$,  either $e_1$ is a value or there exists an $e_1'$ such that $e_1 \rightarrow e_1'.$\\
 		
 		\begin{itemize}
-		\item {\sc Subcase} $e_1 \rightarrow e_1'$ \\
+		\item {\sc Sub-case} $e_1 \rightarrow e_1'$ \\
 		
-		By {\sc context}, since $e_1 \rightarrow e_1',$ $\textsf{fix } e_1 \rightarrow \textsf{fix }e_1'.$ Therefore, $\exists e'' = \textsf{fix }e_1'$ such that $e \rightarrow e''.$ That concludes this subcase. \checkmark \checkmark \\
+		By {\sc context}, since $e_1 \rightarrow e_1',$ $\textsf{fix } e_1 \rightarrow \textsf{fix }e_1'.$ Therefore, $\exists e'' = \textsf{fix }e_1'$ such that $e \rightarrow e''.$ That concludes this sub-case. \checkmark \checkmark \\
 		
-		\item {\sc Subcase} $e_1$ is a value:\\
+		\item {\sc Sub-case} $e_1$ is a value:\\
 		
-		Since $e_1: \tau \rightarrow \tau',$ by canonical forms, we know that $e_1 = \lambda x:\tau e_2$\\
-
-		\begin{itemize}
-		\item {\sc Subsubcase} $e_1 = n$\\ 
+		Since $e_1: \tau \rightarrow \tau',$ by canonical forms, we know that $e_1 = \lambda x:\tau \text{ } e_2,$ or, that $e_1$ is a lambda abstraction.\\
 		
-		\item {\sc Subsubcase} $e_1 = ()$\\  
-		
-		\item {\sc Subsubcase} $e_1 = \lambda x: e_2$\\
-		This case steps, by the small-step semantics rule given to us in problem 3 of the homework. That concludes this subcase and the whole case.\\
-		\end{itemize}
+		We know that $\textsf{fix } (\lambda x:\tau \text{ } e_2)$ steps, using the small-step semantics rule given to us in problem 3. Therefore, the progress lemma holds, concluding this sub-case and our proof.\\
 		\end{itemize}
 
 		
-		\item The preservation lemma states that if $\vdash e : \tau $ and $e \rightarrow e'$ then $\vdash e' : \tau.$ We assume $\vdash e : \tau $ and $e \rightarrow e'$, and would like to show that $\vdash e' : \tau $. We proceed by induction on the derivation of $e \rightarrow e'.$\\
-		
+		\item The preservation lemma states that if $\vdash e : \tau_e $ and $e \rightarrow e'$ then $\vdash e' : \tau_e.$ We assume $\vdash e : \tau_e $ and $e \rightarrow e'$, and would like to show that $\vdash e' : \tau_e $. We proceed by induction on the derivation of $e \rightarrow e'.$\\
+
 		Consider the last rule used in the derivation of $e \rightarrow e'.$\\
-		
-		{\sc Case fix:} 
-		We have $e:\tau = \textsf{fix } e_1.$
-		\begin{itemize}
-		\item {\sc subcase} $e_1$
-		\item {\sc subcase} $e_1$ is not a lambda then things
-		
-		\end{itemize}
-		
-		
-		===========================================
-		
-		SEE NEW PROOF FOR 3C BELOW
-
-		New type-inference rule:
-		\begin{prooftree}
-			\AxiomC{$\Gamma \vdash e:(\tau \rightarrow \tau) \rightarrow (\tau \rightarrow \tau)$}
-			\UnaryInfC{$\Gamma \vdash \textsf{fix } e: \tau \rightarrow \tau$}
-		\end{prooftree}
-		
-		Assume $\vdash e:\tau_e$ and $e \rightarrow e'$ \\
 		
 		\underline{Case: $\textsf{fix } e$ evaluation rule:} \\
 		Matching on the form of the rule, we can infer
@@ -114,33 +95,32 @@
 		Since $e$ is a fix point, the only rule that could have been used to determine its type is the inference rule we wrote in 3a:
 		
 		\begin{prooftree}
-			\AxiomC{$ \vdash (\lambda x: \tau_x.e_\text{body}):(\tau \rightarrow \tau) \rightarrow (\tau \rightarrow \tau)$}
-			\UnaryInfC{$ \vdash \textsf{fix } (\lambda x: \tau_x.e_\text{body}): \tau \rightarrow \tau$}
+			\AxiomC{$ \vdash (\lambda x: \tau_x.e_\text{body}): \tau \rightarrow \tau$}
+			\UnaryInfC{$ \vdash \textsf{fix } (\lambda x: \tau_x.e_\text{body}): \tau$}
 		\end{prooftree}
 		
 		We can end this tree using the inference rule for lambda abstractions (again, 
 		only one rule--T-ABS--could have been used to produce a type judgment):
 		
 		\begin{prooftree}
-			\AxiomC{$x : \tau \rightarrow \tau \vdash e_\text{body}: \tau \rightarrow \tau$}
-			\UnaryInfC{$ \vdash (\lambda x: \tau_x.e_\text{body}):(\tau \rightarrow \tau) \rightarrow (\tau \rightarrow \tau)$}
-			\UnaryInfC{$ \vdash \textsf{fix } (\lambda x: \tau_x.e_\text{body}): \tau \rightarrow \tau$}
+			\AxiomC{$x :  \tau \vdash e_\text{body}: \tau$}
+			\UnaryInfC{$ \vdash (\lambda x: \tau_x.e_\text{body}): \tau \rightarrow \tau$}
+			\UnaryInfC{$ \vdash \textsf{fix } (\lambda x: \tau_x.e_\text{body}): \tau$}
+
+			
 		\end{prooftree}
 		
 		From the above derivation, we know now:
 		\begin{itemize}
-			\item $x: \tau \rightarrow \tau \vdash e_\text{body} : \tau \rightarrow \tau$
-			\item $v = \textsf{fix } (\lambda x: \tau_x.e_\text{body}): \tau \rightarrow \tau$
+			\item $x: \tau \vdash e_\text{body} :  \tau$
+			\item $v = \textsf{fix } (\lambda x: \tau_x.e_\text{body}): \tau$
 		\end{itemize}
 		
-		So we can know use the substitution lemma (if $x:\tau' \vdash e:\tau$ and 
+		So we can now use the substitution lemma (if $x:\tau' \vdash e:\tau$ and 
 		$\vdash v:\tau'$ then $\vdash e{v/x}: \tau$ to conclude $e' = e_\text{body} 
 		\{\textsf{fix } (\lambda x: \tau_x.e_\text{body}) \}$ has type $\tau_e 
 		\checkmark$
 		
-		Note: I think we might be able to change the type of $x$ to $\tau_a \rightarrow 
-		\tau_b$ without breaking the proof--which we should probably do if still works 
-		for 3b).
 	\end{enumerate}
 \end{enumerate}
 
