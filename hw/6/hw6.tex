@@ -7,7 +7,8 @@
 \begin{document}
 \noindent Ameya Acharya (apa52) and Quinn Beightol (qeb2) \\
 \noindent CS 4110 \\
-\noindent hw6 \\
+\noindent Homework 6 \\
+\noindent Wednesday, October 29 \\
 
 \begin{enumerate}
 	\item
@@ -40,11 +41,62 @@
 			$$\textsf{SUM} \triangleq \textsf{SUM'} \textsf{ } \textsf{SUM'}$$
 		
 	\end{enumerate}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%3%%%%%%%%%%%%%%%%%%%%%%%
 	\item 
-	\begin{enumerate}
-		\item
-		\item
-		\item New type-inference rule:
+		\begin{enumerate}
+		\item \begin{prooftree}
+		\AxiomC{$\Gamma \vdash e: \tau \rightarrow \tau_1$}
+		\UnaryInfC{$\Gamma \vdash \textsf{fix } e: \tau \rightarrow \tau_1$}
+	\end{prooftree}
+
+		\item The progress lemma states that if $\vdash e : \tau $ then either $e$ is a value or there exists an $e'$ such that $ e \rightarrow e'.$
+		We proceed by induction on the derivation of e.\\
+					
+		{\sc Case} $e =  \textsf{fix } e_1: \tau$\\
+		
+		Using our typing rule in a), if $e: \tau$, $\tau =  \tau_1 \rightarrow \tau_2.$ So, we know that $e_1: \tau$, or, more specifically, $e_1: \tau_1 \rightarrow \tau_2$ as well.\\
+		
+		From our inductive hypothesis, since  $e_1: \tau$,  either $e_1$ is a value or there exists an $e_1'$ such that $e_1 \rightarrow e_1'.$\\
+		
+		\begin{itemize}
+		\item {\sc Subcase} $e_1 \rightarrow e_1'$ \\
+		
+		By {\sc context}, since $e_1 \rightarrow e_1',$ $\textsf{fix } e_1 \rightarrow \textsf{fix }e_1'.$ Therefore, $\exists e'' = \textsf{fix }e_1'$ such that $e \rightarrow e''.$ That concludes this subcase. \checkmark \checkmark \\
+		
+		\item {\sc Subcase} $e_1$ is a value:\\
+		
+		Since $e_1: \tau \rightarrow \tau',$ by canonical forms, we know that $e_1 = \lambda x:\tau e_2$\\
+
+		\begin{itemize}
+		\item {\sc Subsubcase} $e_1 = n$\\ 
+		
+		\item {\sc Subsubcase} $e_1 = ()$\\  
+		
+		\item {\sc Subsubcase} $e_1 = \lambda x: e_2$\\
+		This case steps, by the small-step semantics rule given to us in problem 3 of the homework. That concludes this subcase and the whole case.\\
+		\end{itemize}
+		\end{itemize}
+
+		
+		\item The preservation lemma states that if $\vdash e : \tau $ and $e \rightarrow e'$ then $\vdash e' : \tau.$ We assume $\vdash e : \tau $ and $e \rightarrow e'$, and would like to show that $\vdash e' : \tau $. We proceed by induction on the derivation of $e \rightarrow e'.$\\
+		
+		Consider the last rule used in the derivation of $e \rightarrow e'.$\\
+		
+		{\sc Case fix:} 
+		We have $e:\tau = \textsf{fix } e_1.$
+		\begin{itemize}
+		\item {\sc subcase} $e_1$
+		\item {\sc subcase} $e_1$ is not a lambda then things
+		
+		\end{itemize}
+		
+		
+		===========================================
+		
+		SEE NEW PROOF FOR 3C BELOW
+
+		New type-inference rule:
 		\begin{prooftree}
 			\AxiomC{$\Gamma \vdash e:(\tau \rightarrow \tau) \rightarrow (\tau \rightarrow \tau)$}
 			\UnaryInfC{$\Gamma \vdash \textsf{fix } e: \tau \rightarrow \tau$}
@@ -89,7 +141,6 @@
 		Note: I think we might be able to change the type of $x$ to $\tau_a \rightarrow 
 		\tau_b$ without breaking the proof--which we should probably do if still works 
 		for 3b).
-		
 	\end{enumerate}
 \end{enumerate}
 
