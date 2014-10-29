@@ -44,7 +44,52 @@
 	\begin{enumerate}
 		\item
 		\item
-		\item
+		\item New type-inference rule:
+		\begin{prooftree}
+			\AxiomC{$\Gamma \vdash e:(\tau \rightarrow \tau) \rightarrow (\tau \rightarrow \tau)$}
+			\UnaryInfC{$\Gamma \vdash \textsf{fix } e: \tau \rightarrow \tau$}
+		\end{prooftree}
+		
+		Assume $\vdash e:\tau_e$ and $e \rightarrow e'$ \\
+		
+		\underline{Case: $\textsf{fix } e$ evaluation rule:} \\
+		Matching on the form of the rule, we can infer
+		\begin{itemize}
+			\item $e = \textsf{fix } (\lambda x: \tau_x.e_\text{body})$
+			\item $e' = e_\text{body} \{\textsf{fix } (\lambda x: \tau_x.e_\text{body}) / x\}$
+		\end{itemize}
+		
+		Since $e$ is a fix point, the only rule that could have been used to determine its type is the inference rule we wrote in 3a:
+		
+		\begin{prooftree}
+			\AxiomC{$ \vdash (\lambda x: \tau_x.e_\text{body}):(\tau \rightarrow \tau) \rightarrow (\tau \rightarrow \tau)$}
+			\UnaryInfC{$ \vdash \textsf{fix } (\lambda x: \tau_x.e_\text{body}): \tau \rightarrow \tau$}
+		\end{prooftree}
+		
+		We can end this tree using the inference rule for lambda abstractions (again, 
+		only one rule--T-ABS--could have been used to produce a type judgment):
+		
+		\begin{prooftree}
+			\AxiomC{$x : \tau \rightarrow \tau \vdash e_\text{body}: \tau \rightarrow \tau$}
+			\UnaryInfC{$ \vdash (\lambda x: \tau_x.e_\text{body}):(\tau \rightarrow \tau) \rightarrow (\tau \rightarrow \tau)$}
+			\UnaryInfC{$ \vdash \textsf{fix } (\lambda x: \tau_x.e_\text{body}): \tau \rightarrow \tau$}
+		\end{prooftree}
+		
+		From the above derivation, we know now:
+		\begin{itemize}
+			\item $x: \tau \rightarrow \tau \vdash e_\text{body} : \tau \rightarrow \tau$
+			\item $v = \textsf{fix } (\lambda x: \tau_x.e_\text{body}): \tau \rightarrow \tau$
+		\end{itemize}
+		
+		So we can know use the substitution lemma (if $x:\tau' \vdash e:\tau$ and 
+		$\vdash v:\tau'$ then $\vdash e{v/x}: \tau$ to conclude $e' = e_\text{body} 
+		\{\textsf{fix } (\lambda x: \tau_x.e_\text{body}) \}$ has type $\tau_e 
+		\checkmark$
+		
+		Note: I think we might be able to change the type of $x$ to $\tau_a \rightarrow 
+		\tau_b$ without breaking the proof--which we should probably do if still works 
+		for 3b).
+		
 	\end{enumerate}
 \end{enumerate}
 
