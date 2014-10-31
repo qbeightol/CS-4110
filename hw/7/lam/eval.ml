@@ -6,8 +6,7 @@ exception IllformedExpression
 let rec eval (g:cps_env) (c:cps_exp) : cps_val = 
   match c with
   | CApp (exp, atom) -> failwith "hello"
-  | CAtom atom -> failwith "bonjour"
-
+  | CAtom atom -> eval_atom g atom
 (* evaluate CPS atom a in environment g *) 
 and eval_atom (g:cps_env) (a:cps_atom) : cps_val = 
   match a with
