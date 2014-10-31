@@ -1,0 +1,143 @@
+\newif\ifbeamer\beamerfalse
+\documentclass[10pt]{article}
+
+\usepackage{../tex/jnf}
+\usepackage{alltt}
+
+\renewcommand{\labelenumi}{\textbf{(\alph{enumi})}}
+
+\begin{document}
+
+\bigredheader{Homework \#7}
+
+\paragraph{Due} Wedneday, November 5, 2014 by 11:59pm 
+
+\paragraph{Instructions} 
+This assignment may be completed with one partner.  You and your
+partner should submit a single solution on CMS. Please do not offer or
+accept any other assistance on this assignment. Late submissions will
+not be accepted.
+
+\begin{exercise}
+Your task in this assignment is to implement an interpreter for the
+$\lambda$-calculus extended with unit, integers, booleans, and pairs:
+%
+\begin{alltt}
+type exp =
+    Var of var
+  | App of exp * exp
+  | Lam of var * exp
+  | Let of var * exp * exp
+  | Unit 
+  | Int of int
+  | Plus of exp * exp
+  | Pair of exp * exp
+  | Fst of exp
+  | Snd of exp
+  | True
+  | False
+  | Eq of exp * exp
+  | If of exp * exp * exp
+\end{alltt}
+%
+However, there's a twist: before evaluating the expression, we want to
+you first transform it into continuation-passing style (see Lecture
+18) so that it has the following form:
+%
+\begin{alltt}
+type cps{\char95}exp = 
+    CApp of cps{\char95}exp * cps{\char95}atom
+  | CAtom of cps{\char95}atom 
+
+and cps{\char95}atom = 
+    CVar of var
+  | CLam of var * cps{\char95}exp
+  | CUnit 
+  | CInt of int
+  | CPlus of var * var 
+  | CPair of var * var
+  | CFst of var
+  | CSnd of var
+  | CTrue
+  | CFalse
+  | CEq of var * var
+  | CIf of var * var * var
+\end{alltt} 
+Intuitively, a CPS expression (\texttt{cps{\char95}exp}) represents
+either a single CPS atom (\texttt{cps{\char95}atom}), or an
+application of atoms. A CPS atom is either a variable, a value, a data
+constructor applied to zero or more variables
+(e.g., \texttt{CPair(x,y)}, or a primitive function applied to zero or
+more variables (e.g., \texttt{CFst(x)}). To put an arbitrary
+expression into this form, you will have to instrument the program
+with continuations, which will have the effect of making the control
+flow explicit.
+
+Then, to finish your interpreter, you should write a large-step
+interpreter that evaluates a CPS expression to a value:
+\begin{alltt}
+and cps_val = 
+  | VUnit 
+  | VInt of int
+  | VClosure of cps_env * var * cps_exp 
+  | VPair of cps_val * cps_val
+  | VTrue 
+  | VFalse
+\end{alltt}  
+A closure \texttt{VClosure(g,x,e)} reprsents a function with
+argument \texttt{x} and body \texttt{e}. The environment \texttt{g}
+gives the bindings for any free variables
+in \texttt{e}. The \texttt{Ast} module defines a representation of
+environments and accompanying operations on them.
+
+To help you get started, we have provided some files in a tarball on
+CMS. The only files you need to submit are \texttt{cps.ml}
+and \texttt{eval.ml}.
+
+Some additional notes:
+\begin{itemize}
+\item Your CPS translation and interpreter should implement  
+left-to-right, call-by-value semantics.
+\item It will not be possible to evaluate certain expressions---e.g., 
+the application \texttt{(3 5)}. Your interpreter should raise
+the \texttt{IllformedExpression} exception on such inputs.
+\item The \texttt{Fvs} module contains a number of useful definitions 
+for calculating free variables and obtaining fresh variables. In
+particular, the function \texttt{fresh} generates a variable like its
+first argument that is guaranteed to be fresh for its second
+argument. For example, evaluating \texttt{fresh "y" (fvs (App(Var "x",
+Var "y")))} returns \texttt{"y\_0"}.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}
+Develop a suite of $10$ or more distinct tests, each contained in a
+separate file. Your tests should execute successfully and terminate
+with a value. We will give extra credit for any tests that expose a
+bug in our interpreter. Please submit a single archive
+\texttt{tests.tar.gz} containing the tests in files \texttt{test-01.lam}
+through \texttt{test-10.lam}.
+\end{exercise}
+
+\bigskip
+
+\noindent \textbf{Karma Extensions:}
+\begin{itemize}
+\item Modify your interpreter (but not the CPS translation) to have call-by-name semantics.
+\item Optimize your CPS translation to remove extra ``administrative'' $\lambda$-abstractions. 
+\item Extend the langauge with control constructs such as exceptions or call/cc.
+\end{itemize}
+
+\begin{debriefing} \hfill\\[-4ex]
+\begin{enumerate*}
+\item How many hours did you spend on this assignment? 
+\item Would you rate it as easy, moderate, or difficult? 
+\item Did everyone in your study group participate? 
+\item How deeply do you feel you understand the material it covers (0\%--100\%)? 
+\item If you have any other comments, we would like to hear them!
+  Please send email to \texttt{jnfoster@cs.cornell.edu}.
+\end{enumerate*}
+\end{debriefing}
+
+\end{document}
+
