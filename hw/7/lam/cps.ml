@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 open Ast
 open Fvs
@@ -49,3 +50,10 @@ and if_new_k (e2:exp) (e3:exp) (k:cps_atom) : cps_atom =
   let v2 = fresh "v2" (fvs_exp e3) in
   let temp = CLam ("v3", CApp (CAtom k, CIf (b, v2, "v3"))) in
   CLam (b, cps e2 (CLam (v2, cps e3 temp)))
+=======
+open Ast
+open Fvs
+
+let rec cps (e:exp) (k:cps_atom) : cps_exp = 
+  failwith "John C. Reynolds"
+>>>>>>> 64474e6ad04efbfa8ddc9ef574c13cb0fc6c78f0
