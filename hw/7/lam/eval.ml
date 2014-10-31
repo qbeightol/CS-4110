@@ -13,14 +13,14 @@ and eval_atom (g:cps_env) (a:cps_atom) : cps_val =
   match a with
   | CVar var -> failwith "hola"
   | CLam (var, exp) -> failwith "salaam"
-  | CUnit -> failwith "namaste"
-  | CInt i -> failwith "shalom"
+  | CUnit -> VUnit
+  | CInt i -> VInt i
   | CPlus (var1, var2) -> failwith "guten tag" 
   | CPair (var1, var2) -> failwith "aloha" 
   | CFst var -> failwith "ciao"
   | CSnd var -> failwith "jambo"
-  | CTrue -> failwith "hei"
-  | CFalse -> failwith "goddag"
+  | CTrue -> VTrue
+  | CFalse -> VFalse
   | CEq (var1, var2) -> failwith "hallo"
   | CIf (b, branch_true, branch_false) -> failwith "ola"
 
