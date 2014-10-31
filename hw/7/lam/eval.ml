@@ -1,6 +1,6 @@
 open Ast
 
-<<<<<<< HEAD
+
 exception IllformedExpression
 
 (******************************************************************************)
@@ -23,8 +23,8 @@ let snd = function
 let if' g x y z =
   match (g x) with
   (*I'm including the environment here in order to lazily evaluate x y *)
-  | VTrue -> g x
-  | VFalse -> g y
+  | VTrue -> g y
+  | VFalse -> g z
   | _ -> failwith "not a bool"
 
 (*adds all the bindings in env1 to env2, overwriting the old bindings in env2,
@@ -67,28 +67,3 @@ and eval_atom (g:cps_env) (a:cps_atom) : cps_val =
   | CEq (x, y) -> if g x == g y then VTrue else VFalse
     (*we may want to disallow comparing closures...*)
   | CIf (x, y, z) -> if' g x y z
-=======
-exception IllformedExpression 
-
-(* evaluate CPS expression e in environment g *)
-let rec eval (g:cps_env) (c:cps_exp) : cps_val = 
-  match c with
-  | CApp (exp, atom) -> failwith "hello"
-  | CAtom atom -> eval_atom g atom
-(* evaluate CPS atom a in environment g *) 
-and eval_atom (g:cps_env) (a:cps_atom) : cps_val = 
-  match a with
-  | CVar var -> failwith "hola"
-  | CLam (var, exp) -> failwith "salaam"
-  | CUnit -> VUnit
-  | CInt i -> VInt i
-  | CPlus (var1, var2) -> failwith "guten tag" 
-  | CPair (var1, var2) -> failwith "aloha" 
-  | CFst var -> failwith "ciao"
-  | CSnd var -> failwith "jambo"
-  | CTrue -> VTrue
-  | CFalse -> VFalse
-  | CEq (var1, var2) -> failwith "hallo"
-  | CIf (b, branch_true, branch_false) -> failwith "ola"
-
->>>>>>> 64474e6ad04efbfa8ddc9ef574c13cb0fc6c78f0

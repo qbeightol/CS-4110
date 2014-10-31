@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 open Ast
 open Fvs
 
@@ -14,7 +12,7 @@ let rec cps (e:exp) (k:cps_atom) : cps_exp =
   | Unit -> CApp (CAtom k, CUnit)
   | Int n -> CApp (CAtom k, CInt n)
   | Plus (e1, e2) -> cps e1 (plus_new_k e2 k)
-  | Pair (e1, e2) -> cps e2 (pair_new_k e2 k)
+  | Pair (e1, e2) -> cps e1 (pair_new_k e2 k)
   | Fst p -> cps p (fst_new_k k)
   | Snd p -> cps p (snd_new_k k)
   | True -> CApp (CAtom k, CTrue)
@@ -50,10 +48,3 @@ and if_new_k (e2:exp) (e3:exp) (k:cps_atom) : cps_atom =
   let v2 = fresh "v2" (fvs_exp e3) in
   let temp = CLam ("v3", CApp (CAtom k, CIf (b, v2, "v3"))) in
   CLam (b, cps e2 (CLam (v2, cps e3 temp)))
-=======
-open Ast
-open Fvs
-
-let rec cps (e:exp) (k:cps_atom) : cps_exp = 
-  failwith "John C. Reynolds"
->>>>>>> 64474e6ad04efbfa8ddc9ef574c13cb0fc6c78f0
