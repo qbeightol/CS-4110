@@ -1,0 +1,11 @@
+Ameya Acharya (apa52) and Quinn Beightol (qeb2)
+
+1. We spent roughly six hours on this assignment.
+2. Overall, we thought the assignment was moderately difficult--getting some
+   small details right was challenging, but otherwise we thought it was
+   straightforward (and we definitely thought last friday's lecture helped).
+3. Everyone participated.
+4. We feel like we know roughly 70% well. To an extent, it felt like completing
+   this assignment was a little mechanical--that we were mostly re-writing
+   the CPS rules in OCaml--but we also understand the rules much better.
+   

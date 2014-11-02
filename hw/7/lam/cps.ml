@@ -21,11 +21,11 @@ let rec cps (e:exp) (k:cps_atom) : cps_exp =
   | If (e1, e2, e3) -> cps e1 (if_new_k e2 e3 k)
 
 and plus_new_k (e2: exp) (k: cps_atom) : cps_atom =
-  let n = fresh "n" (fvs_exp e2) in
+  let n = fresh "n" (VarSet.union (fvs_exp e2) (fvs_cps_atom k)) in
   CLam (n, cps e2 (CLam ("m", CApp (CAtom k, CPlus (n, "m")))))
 
 and pair_new_k (e2: exp) (k: cps_atom) : cps_atom =
-  let v = fresh "v" (fvs_exp e2) in
+  let v = fresh "v" (VarSet.union (fvs_exp e2) (fvs_cps_atom k)) in
   CLam (v, cps e2 (CLam ("w", CApp (CAtom k, CPair(v,"w")))))
 
 and fst_new_k (k: cps_atom) : cps_atom =
@@ -39,7 +39,7 @@ and app_new_k (e2:exp) (k:cps_atom) : cps_atom =
   CLam (f, cps e2 (CLam ("v", CApp ((CApp (CAtom (CVar f), CVar "v"), k)))))
 
 and eq_new_k (e2:exp) (k:cps_atom) : cps_atom =
-  let v1 = fresh "v1" (fvs_exp e2) in
+  let v1 = fresh "v1" (VarSet.union (fvs_exp e2) (fvs_cps_atom k)) in
   let temp = CApp (CAtom k, CEq (v1, "v2")) in
   CLam (v1, cps e2 (CLam ("v2", temp)))
 
