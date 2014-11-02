@@ -35,7 +35,7 @@ and snd_new_k (k:cps_atom) : cps_atom =
   CLam ("v", CApp (CAtom k, CSnd "v"))
 
 and app_new_k (e2:exp) (k:cps_atom) : cps_atom =
-  let f = fresh "f" (fvs_exp e2) in
+  let f = fresh "f" (VarSet.union (fvs_exp e2) (fvs_cps_atom k)) in
   CLam (f, cps e2 (CLam ("v", CApp ((CApp (CAtom (CVar f), CVar "v"), k)))))
 
 and eq_new_k (e2:exp) (k:cps_atom) : cps_atom =
@@ -44,7 +44,7 @@ and eq_new_k (e2:exp) (k:cps_atom) : cps_atom =
   CLam (v1, cps e2 (CLam ("v2", temp)))
 
 and if_new_k (e2:exp) (e3:exp) (k:cps_atom) : cps_atom =
-  let b = fresh "b" (fvs_exp e2) in
+  let b = fresh "b" (VarSet.union (fvs_exp e2) (fvs_exp e3)) in
   let v2 = fresh "v2" (fvs_exp e3) in
   let temp = CLam ("v3", CApp (CAtom k, CIf (b, v2, "v3"))) in
   CLam (b, cps e2 (CLam (v2, cps e3 temp)))
