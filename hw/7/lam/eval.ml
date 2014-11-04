@@ -64,6 +64,5 @@ and eval_atom (g:cps_env) (a:cps_atom) : cps_val =
   | CSnd p -> snd (g p)
   | CTrue -> VTrue
   | CFalse -> VFalse
-  | CEq (x, y) -> if g x == g y then VTrue else VFalse
-    (*we may want to disallow comparing closures...*)
+  | CEq (x, y) -> if (pop_int (g x)) = (pop_int (g y)) then VTrue else VFalse
   | CIf (x, y, z) -> if' g x y z
