@@ -15,16 +15,9 @@ Homework 8\\
 
 \begin{exercise}
 \begin{enumerate}
-\item   Suppose that we add a new typing rule to the simply-typed
-  $\lambda$-calculus, extended with integers and unit:
-\begin{center}
-\infrule[T-Funny]
-{}
-{ \Gamma \vdash (\lambda x\!:\!\typ{unit}.~x) : \typ{int} }
-{}
-\end{center} 
-Does progress still hold?  Does preservation still hold? If so,
-explain why (briefly). If not, give a counterexample.
+\item   Progress does not hold: (consider ($\lambda x: unit x) + 5).\\
+
+Preservation is 
 
 \item Now suppose instead that we add a new evaluation rule to the
 simply-typed $\lambda$-calculus:
@@ -62,43 +55,21 @@ relation for the pure $\lambda$-calculus). Although this property is
 \end{exercise}
 
 \begin{exercise}
-Consider System F extended with integers, booleans, and sums:
-\begin{align*}
-e    &::= x \mid \lam{x\ty\tau}{e} \mid e_1~e_2 \mid \Lam{X}{e} \mid e~[\tau] \mid n \mid e_1 + e_2  \\
-     & \qquad \mid \lamfnt{true}  \mid \lamfnt{false} \mid e_1 = e_2 \mid \cond[\lamfnt]{e_1}{e_2}{e_3}  \\
-     & \qquad \mid \inleft{\tau_1}{\tau_2}{e} \mid \inright{\tau_1}{\tau_2}{e} \mid \sumcase{e_1}{e_2}{e_3}\\
-\tau &::= \typ{int} \mid \typ{bool} \mid \tau_1 \arrow \tau_2 \mid X \mid \forall X.~\tau \mid \tau_1 + \tau_2
-\end{align*}
-%
-Two expressions $e_1$ and $e_2$ are said to be \emph{behaviorally
-equivalent} if for any expression $f$, the expression $f~e_1$ behaves
-the same as $f~e_2$. That is, it is impossible for $f$ to distinguish
-$e_1$ from $e_2$. For example, the expressions
-$\lam{x\ty\typ{unit}}{4+9}$ and $\lam{x\ty\typ{unit}}{13}$ are
-behaviorally equivalent, since any function $f$, say
-$\lam{t\ty\typ{unit}\arrow\typ{int}}{29+(t~())}$, behaves exactly the
-same when given either one. However, the expressions
-$\lam{x\ty\typ{int}}{0}$ and
-$\lam{x\ty\typ{int}}{\cond[\lamfnt]{x=42}{1}{0}}$ are not behaviorally
-equivalent because the expression
-$\lam{y\ty{\typ{int}\arrow\typ{int}}}{y~42}$ distinguishes them.
-
-For each of the following types, list the behaviorally \emph{distinct}
-expressions of that type. That is, any expression that has that type
-should be behaviorally equivalent to one of the expressions in your
-list.  (Recall that all System F expressions terminate so you do not
-need to consider non-termination as a possible behavior.)
-%
 \begin{enumerate}
 \begin{minipage}{.5\textwidth}
-\item $\forall A.~ A \rightarrow A$\\
-\item $\forall A.~ A \rightarrow A \rightarrow A$\\
-\item $\forall A.~\forall B.~ A \rightarrow (A \rightarrow B) \rightarrow B$\\
-\item $\forall A.~\forall B.~ A \rightarrow B \rightarrow A + B$\\
+\item  $\Lambda A. \lambda x:A. x$   \\
+\item $\Lambda A. \lambda x:A. \lambda y:A. x$\\
+$\Lambda A. \lambda x:A. \lambda y:A. y$
+\item $\Lambda A. \Lambda B. \lambda x:A. \lambda f:A \rightarrow B. \text{ } f x$ \\
+\item $\Lambda A. \Lambda B. \lambda x:A. \lambda y:B. \text{inl } x$\\
+$\Lambda A. \Lambda B. \lambda x:A. \lambda y:B. \text{inr } y$
 \end{minipage}\begin{minipage}{.5\textwidth}
-\item $\forall A.~ A$\\
-\item $\forall A.~ A \rightarrow \typ{bool} \rightarrow A$\\
-\item $\forall A.~ A \rightarrow A \rightarrow \typ{bool} \rightarrow A$\\
+\item Nothing\\
+\item $\Lambda A. \lambda x:A. \lambda b:\text{bool}. x $\\
+\item  $\Lambda A. \lambda x:A. \lambda y:A. \lambda b:\text{bool}. x $\\
+$\Lambda A. \lambda x:A. \lambda y:A. \lambda b:\text{bool}. y $\\
+$\Lambda A. \lambda x:A. \lambda y:A. \lambda b:\text{bool}. \text{if } b \text{ then } x \text{ else } y $\\
+$\Lambda A. \lambda x:A. \lambda y:A. \lambda b:\text{bool}. \text{if } b \text{ then } y \text{ else } x$\\
 \bigskip\bigskip
 \end{minipage}
 \end{enumerate}
