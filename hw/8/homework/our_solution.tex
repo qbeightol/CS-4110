@@ -41,10 +41,36 @@ Preservation breaks: consider $(4 + 5) : int$. Using the new rules, we have $(4 
 %\]
 %
 We prove that if $e \arrow e'$ then
-$\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$ by induction on the derivation of e.\\
+$\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$ by structural induction on e.\\
 
 First, we prove the following lemma: $\mathit{erase}(e\{v/x\}) = \mathit{erase}(e)\{v/x\}$.\\
-TODO: prove.\\
+We proceed by structural induction on $e.$\\
+
+{\sc case} $e = y$:
+\begin{itemize}
+\item $\mathit{erase}(y \{v/x\}) = \mathit{erase}(y) = y.$
+\item $\mathit{erase}(y) \{v/x\} = (y)\{v/x\} = y.$\\
+
+\checkmark
+\end{itemize}
+
+{\sc case} $e = \lambda y: \tau. e_{body}$:
+\begin{itemize}
+\item $\mathit{erase}(\lambda y: \tau. e_{body} \{v/x\}) = \mathit{erase}(\lambda y: \tau. e_{body})\{v/x\}$ 
+= $\lambda y. \mathit{erase}(e_{body} \{v/x\}).$\\
+\item $\mathit{erase}(\lambda y: \tau. e_{body}) \{v/x\} = (\lambda y: \tau. \mathit{erase} (e_{body})) \{v/x\} = \lambda y. \mathit{erase} (e_{body}) \{v/x\}.$\\
+
+\end{itemize}
+
+By the inductive hypothesis, $\mathit{erase}(e\{v/x\}) = \mathit{erase}(e)\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case. \checkmark\\
+
+{\sc case} $e = e_1e_2$: TODO.\\
+
+{\sc case context}: TODO.\\
+
+{\sc case}: TODO: are there other cases?\\
+
+
 
 Now, we return to our original proof: $e \arrow e'$ then
 $\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$.\\
