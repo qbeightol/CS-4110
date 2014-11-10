@@ -15,34 +15,54 @@ Homework 8\\
 
 \begin{exercise}
 \begin{enumerate}
-\item   Progress does not hold: (consider ($\lambda x: unit x) + 5$).\\
+\item   Progress does not hold. Progress states that if $\vdash e: \tau$ then e is either a value or $\exists e'. e \rightarrow e'.$ Consider ($\lambda x: unit \text{ } x) + 5$. This is not a value. So, we consider if it can step. We see that the expression is well-typed, because$\lambda x: unit \text{ } x$ has type $int$ according to our new rule. However, there is no value to which this steps. Therefore, our new rule breaks progress. \\
 
-Preservation is 
+Preservation holds. Preservation states that if $\vdash e: \tau$ and $e \rightarrow e'$ then $\vdash e': \tau$. We are changing the typing rule for a value, which doesn't step. 
 
-\item    
+\item  Progress holds: we still have all the old evaluation rules and we haven't changed the type rules. Therefore, we can just re-use the old evaluation rules if necessary.\\
+
+Preservation breaks: consider $(4 + 5) : int$. Using the new rules, we have $(4 + 5) \rightarrow ()$, and $() : unit.$ Under preservation, if $4 + 5$ steps, it is expected to step to an expression of type $int,$ which we do not have. Therefore, preservation breaks.
+ 
 \end{enumerate}
 \end{exercise}
 
 \begin{exercise}
-  The ``erasure'' of a System F term into a pure $\lambda$-calculus
-  term can be defined as follows:
+%  The ``erasure'' of a System F term into a pure $\lambda$-calculus
+  %term can be defined as follows:
 %
-\[
-\begin{array}{rcl}
-\mathit{erase}(x) & = & x\\
-\mathit{erase}(\lam{x \ty \tau}{e}) & = & \lam{x}{\mathit{erase}(e)}\\
-\mathit{erase}(e_1~e_2) & = & (\mathit{erase}(e_1)~ \mathit{erase}(e_2))\\
-\mathit{erase}(\Lam{X}{e}) & = & \lam{z}{\mathit{erase}(e)}~\qquad \text{where}~z~\text{fresh}\\
-\mathit{erase}(e~[\tau]) & =& \mathit{erase}(e)~\lam{z}{z}
-\end{array}
-\]
+%\[
+%\begin{array}{rcl}
+%\mathit{erase}(x) & = & x\\
+%\mathit{erase}(\lam{x \ty \tau}{e}) & = & \lam{x}{\mathit{erase}(e)}\\
+%\mathit{erase}(e_1~e_2) & = & (\mathit{erase}(e_1)~ \mathit{erase}(e_2))\\
+%\mathit{erase}(\Lam{X}{e}) & = & \lam{z}{\mathit{erase}(e)}~\qquad \text{where}~z~\text{fresh}\\
+%\mathit{erase}(e~[\tau]) & =& \mathit{erase}(e)~\lam{z}{z}
+%\end{array}
+%\]
 %
-Prove that if $e \arrow e'$ then
-$\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$ by induction (where
-to avoid any confusion we let ``$\arrow$'' stand for the evaluation
-relation in System F and ``$\Rightarrow$'' stand for the evaluation
-relation for the pure $\lambda$-calculus). Although this property is
-``obvious,'' proving it rigorously is still good practice!
+We prove that if $e \arrow e'$ then
+$\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$ by induction on the derivation of e.\\
+
+First, we prove the following lemma: $\mathit{erase}(e\{v/x\}) = \mathit{erase}(e)\{v/x\}$.\\
+TODO: prove.\\
+
+Now, we return to our original proof: $e \arrow e'$ then
+$\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$.\\
+
+{\sc case} $\beta$ {\sc -reduction}: TODO.\\
+
+{\sc case type-reduction}: TODO.\\
+
+{\sc case context}: TODO.\\
+
+
+  
+
+%(where
+%to avoid any confusion we let ``$\arrow$'' stand for the evaluation
+%relation in System F and ``$\Rightarrow$'' stand for the evaluation
+%relation for the pure $\lambda$-calculus). Although this property is
+%``obvious,'' proving it rigorously is still good practice!
 \end{exercise}
 
 \begin{exercise}
