@@ -41,7 +41,7 @@ Preservation breaks: consider $(4 + 5) : int$. Using the new rules, we have $(4 
 %\]
 %
 We prove that if $e \arrow e'$ then
-$\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$ by structural induction on e.\\
+$\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$ by induction on the derivation of e.\\
 
 First, we prove the following lemma: $\mathit{erase}(e\{v/x\}) = \mathit{erase}(e)\{v/x\}$.\\
 We proceed by structural induction on $e.$\\
@@ -72,18 +72,53 @@ By the inductive hypothesis, $\mathit{erase}(e_{body}\{v/x\}) = \mathit{erase}(e
 
 By the inductive hypothesis, $\mathit{erase}(e_1\{v/x\}) = \mathit{erase}(e_1)\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case. \checkmark\\
 
-{\sc case}$e = \Lambda X.e_{body} $: TODO.\\
+{\sc case} $e = \Lambda X.e_{body}$: TODO: check this case.
+\begin{itemize}
+\item $\mathit{erase}(\Lambda X.e_{body}\{v/x\}) = (\lambda z. \mathit{erase}(e_{body}))\{v/x\} = (\lambda z. \mathit{erase}(e_{body})) \{v/x\}$
+\item $\mathit{erase}(\Lambda X.e_{body})\{v/x\} = (\lambda z. \mathit{erase}(e_{body}))\{v/x\} = (\lambda z. \mathit{erase}(e_{body})) \{v/x\}$\\
 
-{\sc case}$e = e_{poly}[\tau] $: TODO.\\
+\checkmark
+\end{itemize}
 
+{\sc case} $e = e_{poly}[\tau] $:\\
+
+TODO: what is the rule we use for the first case?\\
+
+\begin{itemize}
+\item $\mathit{erase}((e_{poly}[\tau])\{v/x\}) = \mathit{erase}(e_{poly}\{v/x\}[\tau]) = \mathit{erase}(e_{poly} \{v/x\}) \lambda z.z$
+\item $(\mathit{erase}(e_{poly}[\tau]))\{v/x\} = (\mathit{erase}(e_{poly}[\tau]) \lambda z.z)\{v/x\} = (\mathit{erase}(e_{poly}[\tau])\{v/x\} (\lambda z.z) \{v/x\}$\\
+\end{itemize}
+
+By the inductive hypothesis, $\mathit{erase}(e_{poly}[tau]\{v/x\}) = \mathit{erase}(e_{poly}[tau])\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case and the proof. \checkmark\\
 
 
 Now, we return to our original proof: $e \arrow e'$ then
 $\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$.\\
 
-{\sc case} $\beta$ {\sc -reduction}: TODO.\\
+{\sc case} $\beta$ {\sc -reduction}:\\
+\begin{itemize}
 
-{\sc case type-reduction}: TODO.\\
+\item $e = (\lambda x: \tau. e_{body}) v$
+
+\item $e' = e_{body}\{v/x\}$
+
+\item $\mathit{erase}(e) = \mathit{erase}((\lambda x:\tau. e_{body}) v) = \mathit{erase}(\lambda x.\mathit{erase}(e_{body})) \mathit{erase}(v) = \lambda x.\mathit{erase}(e_{body}) v \rightarrow \mathit{erase}(e_{body})\{v/x\}$
+
+\item $\mathit{erase}(e') = \mathit{erase}(e_{body} \{v/x\}) = \mathit{erase}(e_{body})\{v/x\}$\\
+
+\end{itemize}
+
+So, $\mathit{erase}(e) \Rightarrow \mathit{erase}(e').$ \checkmark \\
+
+{\sc case type-reduction}:
+
+\begin{itemize}
+\item $e = \Lambda X. e_{body} [\tau]$
+\item $e' = e_{body} \{\tau / x\}$
+\item $\mathit{erase}(e) = \mathit{erase}(\Lambda X. e_{body}[\tau]) = \mathit{erase}(\Lambda X. e_{body}) \lambda z.z = \lambda z.\mathit{erase}(e_{body}) \lambda z. z = \mathit{erase}(e_{body})$
+\item $\mathit{erase}(e') = \mathit{erase}(e_{body} \{\tau/x\})$ TODO complete this case
+\end{itemize}
+
 
 {\sc case context}: TODO.\\
 
