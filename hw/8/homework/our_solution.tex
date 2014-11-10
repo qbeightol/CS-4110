@@ -2,7 +2,7 @@
 \documentclass[10pt]{article}
 
 \usepackage{../tex/jnf}
-\usepackage{alltt}
+\usepackage{alltt, enumerate}
 
 \renewcommand{\labelenumi}{\textbf{(\alph{enumi})}}
 
@@ -238,7 +238,93 @@ e    & ::= & x \mid e_1~e_2 \mid \lambda x \ty\tau .~ e \mid \{ l_1 = e_1 , \dot
 \end{array}
 \]
 %
-Prove progress and preservation. 
+Prove progress and preservation. \\
+
+\noindent \underline{Progress}: If $\vdash e:\tau$ then either $e$ is a value or $\exists e'. e \rightarrow e'$. \\
+
+\begin{enumerate}[\hspace{20pt}]
+
+\item 
+\underline{Proof: by induction on the typing derivation} \\
+
+Assume that we have some expression $e$ that has type $\tau$. To get that type 
+judgement, we must have used one of our typing rules. \\
+
+
+\underline{Case: T-Var} \\
+This case is actually impossible--if you don't have a type context, its impossible to look up a variable and find its corresponding type, so T-Var couldn't have been used. \checkmark \checkmark \\
+
+\underline{Case: T-App} \\
+Here, we can use the form of the rule to conclude that 
+\begin{itemize}
+	\item $e = e_f e_{arg}$
+	\item $e_f: \tau_{in} \rightarrow \tau_{out}$
+	\item $e_{arg}: \tau_{in}$
+\end{itemize}
+
+And using our inductive hypothesis (i.e. progress) on $e_f$ and $e_arg$, we can conclude that because each expression is typed, they either are values or can step
+forward to a new expression. This observation leads us to consider 3 cases:\\
+
+\begin{enumerate}[\hspace{20pt}]
+	\item
+	\underline{Subcase: $e_f \rightarrow e_f'$} \\
+	In this case, we can use the context
+	rule to conclude that $e_f \text{ } e_{arg} \rightarrow e_f' \text{ } e_{arg}$. 
+	In other words, the
+	overall expression, $e \rightarrow e'$, where $e' = e_f' e_{arg}$. Progress holds
+	in this case. \checkmark \\
+	
+	\underline{Subcase: $e_f$ is a value and $e_{arg} \rightarrow e_{arg}'$} \\
+	Like the previous case $e = e_f \text{ } e_{arg} \rightarrow e_f \text{ } 
+	e_{arg}'$, so $e$ can step forward again. \checkmark \\
+	
+	\underline{Subcase: $e_f$ and $e_{arg}$ are values} \\
+	Here, we can use canonical forms to conclude that because $e_f$ has type 
+	$\tau_{in} \rightarrow \tau_{out}$ and is value, it must be a lambda term. I.e.
+	it has the form $\lambda x\ty\tau_{in}.e_{body}$, which means that $e_f
+	\text{ }e_{arg}$ steps to
+	$e_{body} \{e_{arg} / x\}$ by the $\beta$-reduction rule (which we realize looks 
+	a little strange--it is valid, however, because $e_{arg}$ is really a value).
+	\checkmark \\
+\end{enumerate}
+
+Regardless of whether $e_f$ and $e_arg$ are values or expressions that step, $e$ 
+can still step forward $\checkmark \checkmark$ \\
+
+\underline{Case: T-Abs} \\
+Here, we can use the typing rule to infer that $e = \lambda x \ty 
+\tau_in.e_{body} : \tau_{in} \rightarrow \tau_{out}$. So e is a value. \checkmark \checkmark \\
+
+\underline{Case: T-RecordAccess} \\
+Based off the form of the rule, we can conclude that $e = e_r.l_i$ and $e_r \ty 
+\{l_1 \ty \tau_1, ... , l_n\ty\tau_n\}$. Applying the inductive hypothesis to $e_r$
+we can conclude that the record expression can either step forward ($e_r 
+\rightarrow e_r'$) or is already a value. In the first case, we can use the context 
+rule to show that
+
+$$e = e_r.l_i \rightarrow e_r'.l_i$$
+
+So the expressions steps. And in the second case, we can apply the record access 
+evaluation rule to conclude that $e = \{l_1 = v_1, ... \l_n = v_n\}.l_i \rightarrow v_i$. In either case, $e$ can take a step. \checkmark \checkmark \\
+
+\underline{Case: T-RecordComposition} \\
+Here, we know that $\vdash e = \{l_1 = e_1, ... , l_n = e_n \} \ty \{l_1 \ty 
+\tau_1, ... l_n \ty \tau_n\}$ and $\forall i \in 1..n. \vdash e_i = \tau_i$. At
+this point, either every sub-expression of the record is a value (in which case, 
+the overall record is a value according to the syntax of our language), or there is 
+a left-most sub-expression, $e_i$ that isn't a value. In the latter case, we can 
+use the inductive hypothesis to assume that because $\vdash e_i \ty \tau_i$ it 
+must either be a value or can take a step. Since $e_i$ isn't a value, $e_i 
+\rightarrow e_i'$, and by context 
+
+$$e= \{l_1 = v_1, ... , l_i = e_i, ... l_n = e_n \} \rightarrow \{l_1 = v_1, ... , 
+l_i = e_i', ... l_n = e_n \}$$
+
+Now its clear that in the latter case, $e$ can take a step forward, so in either 
+case, progress holds. 
+\checkmark \checkmark
+\end{enumerate}
+
 \end{exercise}
 
 \begin{debriefing} \hfill\\[-4ex]
