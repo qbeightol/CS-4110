@@ -158,13 +158,72 @@ $\Lambda A. \lambda x:A. \lambda y:A. \lambda b:\text{bool}. \text{if } b \text{
   these types to be in the subtype relation or ``No'' if not. In
   addition, if your answer is ``No'' give a counterexample that shows
   how type soundness would break.
+
+\begin{center}
+\begin{tabular}{c|l}
+	Subtyping Rule & Okay? \\
+	\hline 
+	$\typ{int} \subty \typ{unit}$ & Yes \\
+	
+	$\{ l : \top \} \subty \{ l : \typ{bool} \}$ & No--consider $(\lambda 4:\{l:
+	\typ{bool}\}.r.l) \{l = 5\}$. We can use our typing rules to conclude that this
+	expression has type $\typ{bool}$, but when we use our dynamic semantics to 
+	evaluate the expression, we'll get an $\typ{int}$, which isn't a subtype of 
+	$\typ{bool}$.\\ 
+	
+	$(\top \times \{ x \ty \typ{unit} \}) \subty (\{\} \times \top)$ & \\
+	
+	$(\{ x \ty \typ{int} \} \arrow \typ{int}) \subty (\{ x \ty \typ{int}, y \ty
+	\typ{int} \} \arrow \typ{int})$ & \\
+	
+	$(\{ x \ty \typ{int}, y \ty \typ{int} \} \arrow \typ{int}) \subty (\{ x \ty
+	\typ{int} \} \arrow \typ{int})$
+	
+\end{tabular}
+\end{center}
+
 \begin{itemize}
-\item $\typ{int} \subty \typ{unit}$
-\item $\{ l : \top \} \subty \{ l : \typ{bool} \}$
-\item $\{ \} \subty \{ x : \top \}$ 
-\item $(\top \times \{ x \ty \typ{unit} \}) \subty (\{\} \times \top)$
-\item $(\{ x \ty \typ{int} \} \arrow \typ{int}) \subty (\{ x \ty \typ{int}, y \ty \typ{int} \} \arrow \typ{int})$
-\item $(\{ x \ty \typ{int}, y \ty \typ{int} \} \arrow \typ{int}) \subty (\{ x \ty \typ{int} \} \arrow \typ{int})$
+\item $\typ{int} \subty \typ{unit}$: 
+			Yes \\
+\item $\{ l : \top \} \subty \{ l : \typ{bool} \}$: 
+			No \\
+			Consider 
+			
+			$$(\lambda r:\{l:\typ{bool}\}.r.l) \text{ } \{l = 5\}$$ 
+			
+			We can use our typing rules to conclude that this
+			expression has type $\typ{bool}$, but when we use our dynamic semantics to 
+			evaluate the expression, we'll get an $\typ{int}$, which isn't a subtype of 
+			$\typ{bool}$.\\ 
+
+\item $\{ \} \subty \{ x : \top \}$: 
+			No \\
+			Consider 
+			
+			$$(\lambda r:\{x:\top\}.r.x) \text{ } \{\}$$ 
+			
+			Again, we can give this expression a type (specifically, $\top$), but 
+			when we evaluate the expression, we get stuck (the input record has no "x"
+			field) even though the expression isn't a value.\\
+			
+\item $(\top \times \{ x \ty \typ{unit} \}) \subty (\{\} \times \top)$"
+			Yes \\
+			
+			
+\item $(\{ x \ty \typ{int} \} \arrow \typ{int}) \subty (\{ x \ty \typ{int}, y \ty 			\typ{int} \} \arrow \typ{int})$: 
+			Yes \\
+			
+\item $(\{ x \ty \typ{int}, y \ty \typ{int} \} \arrow \typ{int}) \subty (\{ x \ty 
+			\typ{int} \} \arrow \typ{int})$:
+			No\\
+			Consider 
+			
+			$$(\lambda r:\{x:\typ{int}, y:\typ{int}\}.r.x + r.y) \{x=5\}$$
+			
+			This application has type int according to our typing rules, but, much like
+			the last example, will get stuck during evaluation even though it isn't a
+			value.
+			
 \end{itemize}
 \end{exercise}
 
