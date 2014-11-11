@@ -2,7 +2,7 @@
 \documentclass[10pt]{article}
 
 \usepackage{../tex/jnf}
-\usepackage{alltt, enumerate}
+\usepackage{alltt, enumerate, bussproofs}
 
 \renewcommand{\labelenumi}{\textbf{(\alph{enumi})}}
 
@@ -245,7 +245,7 @@ Prove progress and preservation. \\
 \begin{enumerate}[\hspace{20pt}]
 
 \item 
-\underline{Proof: by induction on the typing derivation} \\
+\underline{Proof}: by induction on the typing derivation \\
 
 Assume that we have some expression $e$ that has type $\tau$. To get that type 
 judgement, we must have used one of our typing rules. \\
@@ -325,6 +325,102 @@ case, progress holds.
 \checkmark \checkmark
 \end{enumerate}
 
+\noindent To prove preservation, we'll need the following lemma: \\
+
+\noindent \underline{Lemma:} If $\Gamma \vdash e\ty\tau$ and $e = E[e']$ then $\exists \tau'. 
+\Gamma \vdash e' \ty \tau'$ \\
+
+\begin{enumerate}[\hspace{20pt}]
+	\item
+	\underline{Proof:} by structural induction on $E$ \\
+	
+	Assume $\Gamma \vdash e \ty \tau$ and $e = E[e']$. \\
+	
+	\underline{Case $E = [\cdot]$} \\
+	In this case $e = e'$, and since we already have $\Gamma \vdash e \ty \tau$ we 
+	know that $e'$ has type $\tau$ too. Consequently, $\exists \tau. \Gamma \vdash
+	e' \ty \tau'$ ($\tau'$ is just $\tau$). \checkmark \\
+	
+	\underline{Case $E = E'\text{ } e_{arg}$} \\
+	Here, $e = E[e'] = E'[e'] \text{ } e_{arg}$. Let's take a look at the derivation
+	of $E'[e'] \ty \tau$ to see if we can get more information about $E'[e']$. As a
+	side note, only T-App could have been used to produced this typing derivation,
+	since it's the only rule whose conclusion can match application expressions:
+	
+	\begin{prooftree}
+		\AxiomC{...}
+		\UnaryInfC{$\Gamma \vdash E'[e'] \ty \tau_{in} \rightarrow \tau$}
+		\AxiomC{...}
+		\UnaryInfC{$\Gamma \vdash e_{arg} \ty \tau$}
+		\BinaryInfC{$\Gamma \vdash E'[e'] e_{arg} \ty \tau$}
+	\end{prooftree}
+	
+	Notice that $E'[e']$ is smaller than $E'[e'] \text{ } e_{arg}$, has a type, and 
+	takes the form of an expression plugged into a context. We can 
+	apply our inductive hypothesis (the lemma) to claim that $\exists \tau'. e' \ty 	\tau'$. \checkmark \\
+	
+	\underline{Case $E = v E'$} \\
+	Observe that $e = E[e'] = v E'[e']$ and that the typing derivation for $\Gamma 
+	\vdash e \ty \tau$ implies $\Gamma \vdash E'[e'] \ty \tau$:
+	
+	\begin{prooftree}
+		\AxiomC{...}
+		\UnaryInfC{$\Gamma \vdash \ty \tau_{in} \rightarrow \tau$}
+		\AxiomC{...}
+		\UnaryInfC{$\Gamma \vdash E'[e'] \ty \tau$}
+		\BinaryInfC{$\Gamma \vdash v E'[e'] \ty \tau$}
+	\end{prooftree}
+	
+	Applying the inductive hypothesis to $E'[e']$, we can conclude that there is 
+	$\tau'$ such that $\Gamma \vdash e' \ty \tau'$ \\
+	
+	\underline{Case $E = \{l_1 = v_1, ... , l_{i-1} = v_{i-1}, l_i = E', l_{i+1} = 
+	e_{i+1}, ... , l_n = e_n\}$}\\
+	Here, we can see
+	$$e = E[e'] = \{..., l_i = E'[e'], ... \}$$
+	\begin{prooftree}
+		\AxiomC{...}
+		\UnaryInfC{$\forall j \in 1 .. n. \Gamma \vdash e_j \ty \tau_k$}
+		\UnaryInfC{$\Gamma \vdash \{l_1 = e_1, ..., l_i = E'[e'], ... l_n = e_n\} \ty \{l_1 \ty \tau_1, ... , l_i \ty \tau_i, ... , l_n \ty \tau_n\}$}
+	\end{prooftree}
+	
+	Since $\forall j \in 1 .. n. \Gamma \vdash e_j \ty \tau_k$, we know that $\Gamma
+	\vdash E'[e'] \ty \tau_i$. By the inductive hypothesis, $\exists \tau'. \Gamma 
+	\vdash e' \ty \tau'$ \checkmark \\
+	
+	\underline{Case $E = E'.l_i$}
+	In this case, $e = E[e'] = E'[e'].l_i$ and
+	
+	\begin{prooftree}
+		\AxiomC{...}
+		\UnaryInfC{$\Gamma \vdash E[e'] \ty \{l_1 \ty \tau_1, ... , l_n \ty \tau_n$} 
+		\UnaryInfC{$\Gamma \vdash E'[e'].l_i \ty \tau_i = \tau$}
+	\end{prooftree}
+	
+	And by the inductive hypothesis, $\exists \tau'. e':\tau$ \checkmark \\
+\end{enumerate}
+
+Using the structural induction principle, we can conclude that our lemma holds for
+all contexts in this variant of simply-typed lambda calculus. \\
+
+\noindent \underline{Preservation:} If $\vdash e \ty \tau$ and $e \rightarrow e'$ then $\vdash e' \ty \tau$ \\
+
+\begin{enumerate}[\hspace{20pt}]
+	\item
+	\underline{Proof:} by induction on the derivation of $e \rightarrow e'$ \\
+	
+	We'll start this proof by assuming $\vdash e \ty \tau$ and $e \rightarrow e'$,
+	and considering the possible final steps used in the derivation of 
+	$e \rightarrow e'$: 
+	
+	\underline{Case: Record-access} \\
+	
+	\underline{Case Context} \\
+	Matching off the evaluation rule for this case we know that $e = E[e_1]$,
+	$e' = E[e_2]$ and $e_1 \rightarrow e_2$. 
+	
+	\underline{$\beta$-reduction}\\
+\end{enumerate}
 \end{exercise}
 
 \begin{debriefing} \hfill\\[-4ex]
