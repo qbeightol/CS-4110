@@ -159,29 +159,6 @@ $\Lambda A. \lambda x:A. \lambda y:A. \lambda b:\text{bool}. \text{if } b \text{
   addition, if your answer is ``No'' give a counterexample that shows
   how type soundness would break.
 
-\begin{center}
-\begin{tabular}{c|l}
-	Subtyping Rule & Okay? \\
-	\hline 
-	$\typ{int} \subty \typ{unit}$ & Yes \\
-	
-	$\{ l : \top \} \subty \{ l : \typ{bool} \}$ & No--consider $(\lambda 4:\{l:
-	\typ{bool}\}.r.l) \{l = 5\}$. We can use our typing rules to conclude that this
-	expression has type $\typ{bool}$, but when we use our dynamic semantics to 
-	evaluate the expression, we'll get an $\typ{int}$, which isn't a subtype of 
-	$\typ{bool}$.\\ 
-	
-	$(\top \times \{ x \ty \typ{unit} \}) \subty (\{\} \times \top)$ & \\
-	
-	$(\{ x \ty \typ{int} \} \arrow \typ{int}) \subty (\{ x \ty \typ{int}, y \ty
-	\typ{int} \} \arrow \typ{int})$ & \\
-	
-	$(\{ x \ty \typ{int}, y \ty \typ{int} \} \arrow \typ{int}) \subty (\{ x \ty
-	\typ{int} \} \arrow \typ{int})$
-	
-\end{tabular}
-\end{center}
-
 \begin{itemize}
 \item $\typ{int} \subty \typ{unit}$: 
 			Yes \\
