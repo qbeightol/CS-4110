@@ -359,7 +359,7 @@ case, progress holds.
 	takes the form of an expression plugged into a context. We can 
 	apply our inductive hypothesis (the lemma) to claim that $\exists \tau'. e' \ty 	\tau'$. \checkmark \\
 	
-	\underline{Case $E = v E'$} \\
+	\underline{Case $E = v \text{ } E'$} \\
 	Observe that $e = E[e'] = v E'[e']$ and that the typing derivation for $\Gamma 
 	\vdash e \ty \tau$ implies $\Gamma \vdash E'[e'] \ty \tau$:
 	
@@ -414,12 +414,53 @@ all contexts in this variant of simply-typed lambda calculus. \\
 	$e \rightarrow e'$: 
 	
 	\underline{Case: Record-access} \\
+	Because the record access rule was used to derive $e \rightarrow e'$ we know that
+	$e = \{l_1 = v_1, ... , l_n = v_n\}.l_i$ and $e' = v_i$. By the form of typing
+	rules, we also know that the proof tree for $\vdash e \ty \tau$ must have
+	had the following structure:
+	
+	\begin{prooftree}
+		\AxiomC{...}
+		\UnaryInfC{$\forall j \in 1 .. n. \vdash v_j \ty \tau_j$}
+		\LeftLabel{T-RecordComposition}
+		\UnaryInfC{$\vdash \{l_1 = v_1, ..., l_n = v_n\} \{l_1 \ty \tau_1, ... l_n \ty 		\tau_n\}$}
+		\LeftLabel{T-RecordAccess}
+		\UnaryInfC{$\vdash \{l_1 = v_1, ..., l_n = v_n \}.l_i \ty \tau_i = \tau $}
+	\end{prooftree}
+	
+	Since we know $\forall j \in 1 .. n. \vdash v_j \ty \tau_j$, we know that $v_i
+	\ty \tau_i$, which in turn implies that $e' = v_i \ty \tau_i = \tau$. \checkmark 
+	\\
+	
 	
 	\underline{Case Context} \\
 	Matching off the evaluation rule for this case we know that $e = E[e_1]$,
-	$e' = E[e_2]$ and $e_1 \rightarrow e_2$. 
+	$e' = E[e_2]$ and $e_1 \rightarrow e_2$. Additionally, we can use the lemma
+	introduced at the start of the proof to conclude that $e_1$ has some type $\tau'$
+	and that, by the inductive hypothesis, $e_2$ shares that type. Finally, we can
+	use the Context lemma to prove that because $E[e_1] \ty \tau$, $e_1 \ty \tau'$, 
+	and $e_2 \ty \tau'$, then $E[e_2] \ty \tau$. \checkmark \\
 	
 	\underline{$\beta$-reduction}\\
+	In this case, $e = (\lambda x \ty \tau_{in}. e_{body}) v$ and $e' = e_{body}\{v/x
+	\}$.  Additionally, we know that the proof tree for the typing of e must have the
+	following form:
+	
+	\begin{prooftree}
+		\AxiomC{...}
+		\UnaryInfC{$x \ty \tau_{in} \vdash e_{body} \ty \tau $}
+		\LeftLabel{T-Abs}
+		\UnaryInfC{$\vdash (\lambda x \ty \tau_{in}. e_{body}) \ty \tau_{in}
+								\rightarrow \tau$}
+		\AxiomC{...}
+		\UnaryInfC{$\vdash v \ty \tau_{in}$}
+		\LeftLabel{T-App}
+		\BinaryInfC{$\vdash (\lambda x \ty \tau_{in}. e_{body}) v \ty \tau$}
+	\end{prooftree}
+	
+	Using the substitution lemma on the facts in this proof tree (specifically,
+	$x \ty \tau_{in} \vdash e_{body} \ty \tau $ and $\vdash v \ty \tau_{in}$) 
+	we can conclude that $e' = e_{body}\{v/x\} \ty \tau$. \checkmark
 \end{enumerate}
 \end{exercise}
 
