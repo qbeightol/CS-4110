@@ -21,7 +21,7 @@ Preservation holds. Preservation states that if $\vdash e: \tau$ and $e \rightar
 
 \item  Progress holds: we still have all the old evaluation rules and we haven't changed the type rules. Therefore, we can just re-use the old evaluation rules if necessary.\\
 
-Preservation breaks: consider $(4 + 5) : int$. Using the new rules, we have $(4 + 5) \rightarrow ()$, and $() : unit.$ Under preservation, if $4 + 5$ steps, it is expected to step to an expression of type $int,$ which we do not have. Therefore, preservation breaks.
+Preservation does not hold: consider $(4 + 5) : int$. Using the new rules, we have $(4 + 5) \rightarrow ()$, and $() : unit.$ Under preservation, if $4 + 5$ steps, it is expected to step to an expression of type $int,$ which we do not have. Therefore, preservation does not hold.
  
 \end{enumerate}
 \end{exercise}
@@ -92,7 +92,7 @@ TODO: what is the rule we use for the first case?\\
 By the inductive hypothesis, $\mathit{erase}(e_{poly}[\tau]\{v/x\}) = \mathit{erase}(e_{poly}[\tau])\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case and the proof. \checkmark\\
 
 
-Now, we return to our original proof: $e \arrow e'$ then
+Now, we return to our original proof: if $e \arrow e'$ then
 $\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$.\\
 
 {\sc case} $\beta$ {\sc -reduction}:\\
