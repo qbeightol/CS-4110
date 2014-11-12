@@ -17,7 +17,7 @@ Homework 8\\
 \begin{enumerate}
 \item   Progress does not hold. Progress states that if $\vdash e: \tau$ then e is either a value or $\exists e'. e \rightarrow e'.$ Consider ($\lambda x: unit \text{ } x) + 5$. This is not a value. So, we consider if it can step. We see that the expression is well-typed, because$\lambda x: unit \text{ } x$ has type $int$ according to our new rule. However, there is no value to which this steps. Therefore, our new rule breaks progress. \\
 
-Preservation holds. Preservation states that if $\vdash e: \tau$ and $e \rightarrow e'$ then $\vdash e': \tau$. We are changing the typing rule for a value, which doesn't step. 
+Preservation holds. Preservation states that if $\vdash e: \tau$ and $e \rightarrow e'$ then $\vdash e': \tau$. We are changing the typing rule for a value, which doesn't step. If we consider the case where $\lambda x: unit \text{ } x) + 5$ is the result of a function application, we could use the previous typing rules to show that preservation holds.
 
 \item  Progress holds: we still have all the old evaluation rules and we haven't changed the type rules. Therefore, we can just re-use the old evaluation rules if necessary.\\
 
@@ -89,7 +89,7 @@ TODO: what is the rule we use for the first case?\\
 \item $(\mathit{erase}(e_{poly}[\tau]))\{v/x\} = (\mathit{erase}(e_{poly}[\tau]) \lambda z.z)\{v/x\} = (\mathit{erase}(e_{poly}[\tau])\{v/x\} (\lambda z.z) \{v/x\}$\\
 \end{itemize}
 
-By the inductive hypothesis, $\mathit{erase}(e_{poly}[tau]\{v/x\}) = \mathit{erase}(e_{poly}[tau])\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case and the proof. \checkmark\\
+By the inductive hypothesis, $\mathit{erase}(e_{poly}[\tau]\{v/x\}) = \mathit{erase}(e_{poly}[\tau])\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case and the proof. \checkmark\\
 
 
 Now, we return to our original proof: $e \arrow e'$ then
