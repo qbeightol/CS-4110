@@ -43,13 +43,13 @@ Preservation does not hold: consider $(4 + 5) : int$. Using the new rules, we ha
 We prove that if $e \arrow e'$ then
 $\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$ by induction on the derivation of e.\\
 
-First, we prove the following lemma: $\mathit{erase}(e\{v/x\}) = \mathit{erase}(e)\{v/x\}$.\\
+First, we prove the following lemma: $\mathit{erase}(e\{v/x\}) = \mathit{erase}(e)\{\mathit{erase}(v)/x\}$.\\
 We proceed by structural induction on $e.$\\
 
 {\sc case} $e = y$:
 \begin{itemize}
 \item $\mathit{erase}(y \{v/x\}) = \mathit{erase}(y) = y.$
-\item $\mathit{erase}(y) \{v/x\} = (y)\{v/x\} = y.$\\
+\item $\mathit{erase}(y) \{\mathit{erase}(v) /x\} = (y)\{\mathit{erase} (v)/x\} = y.$\\
 
 \checkmark
 \end{itemize}
@@ -58,30 +58,30 @@ We proceed by structural induction on $e.$\\
 \begin{itemize}
 \item $\mathit{erase}(\lambda y: \tau. e_{body} \{v/x\}) = \mathit{erase}(\lambda y: \tau. e_{body})\{v/x\}$ 
 = $\lambda y. \mathit{erase}(e_{body} \{v/x\}).$\\
-\item $\mathit{erase}(\lambda y: \tau. e_{body}) \{v/x\} = (\lambda y: \tau. \mathit{erase} (e_{body})) \{v/x\} = \lambda y. \mathit{erase} (e_{body}) \{v/x\}.$\\
+\item $\mathit{erase}(\lambda y: \tau. e_{body}) \{\mathit{erase}(v)/x\} = (\lambda y: \tau. \mathit{erase} (e_{body})) \{\mathit{erase}(v)/x\} = \lambda y. \mathit{erase} (e_{body}) \{\mathit{erase} (v)/x\}.$\\
 
 \end{itemize}
 
-By the inductive hypothesis, $\mathit{erase}(e_{body}\{v/x\}) = \mathit{erase}(e_{body})\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case. \checkmark\\
+By the inductive hypothesis, $\mathit{erase}(e_{body}\{v/x\}) = \mathit{erase}(e_{body})\{\mathit{erase}(v)/x\}$. Therefore, our two expressions above are equal, which concludes this case. \checkmark\\
 
 {\sc case} $e = e_1e_2$:
 \begin{itemize}
 \item $\mathit{erase}((e_1e_2)\{v/x\}) = \mathit{erase}(e_1\{v/x\} \text{ } e_2\{v/x\}) =  \mathit{erase}(e_1\{v/x\})\text{ } \mathit{erase}(e_2\{v/x\})$
-\item $\mathit{erase}(e_1e_2)\{v/x\} =  [\mathit{erase}(e_1)\text{ } \mathit{erase}(e_2)] \{v/x\} = \mathit{erase}(e_1)\{v/x\} \text{ } \mathit{erase}(e_2)\{v/x\}$\\
+\item $\mathit{erase}(e_1e_2)\{\mathit{erase}(v)/x\} =  [\mathit{erase}(e_1)\text{ } \mathit{erase}(e_2)] \{\mathit{erase}(v)/x\} = \mathit{erase}(e_1)\{v/x\} \text{ } \mathit{erase}(e_2)\{\mathit{erase}(v)/x\}$\\
 \end{itemize}
 
-By the inductive hypothesis, $\mathit{erase}(e_1\{v/x\}) = \mathit{erase}(e_1)\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case. \checkmark\\
+By the inductive hypothesis, $\mathit{erase}(e_1\{v/x\}) = \mathit{erase}(e_1)\{\mathit{erase}(v)/x\}$. Therefore, our two expressions above are equal, which concludes this case. \checkmark\\
 
 {\sc case} $e = \Lambda X.e_{body}$: 
 \begin{itemize}
 \item $\mathit{erase}(\Lambda X.e_{body}\{v/x\}) = \lambda z. \mathit{erase}(e_{body}\{v/x\}) $
 %= (\lambda z. \mathit{erase}(e_{body})) \{v/x\}$
-\item $\mathit{erase}(\Lambda X.e_{body})\{v/x\} = (\lambda z. \mathit{erase}(e_{body}))\{v/x\}$ 
+\item $\mathit{erase}(\Lambda X.e_{body})\{\mathit{erase}(v)/x\} = (\lambda z. \mathit{erase}(e_{body}))\{\mathit{erase}(v)/x\}$ 
 %= (\lambda z. \mathit{erase}(e_{body})) \{v/x\}$\\
 
 \end{itemize}
 
-By the inductive hypothesis, $\mathit{erase}(e_{body}\{v/x\}) = \mathit{erase}(e_{body})\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case. \checkmark\\
+By the inductive hypothesis, $\mathit{erase}(e_{body}\{v/x\}) = \mathit{erase}(e_{body})\{\mathit{erase}(v)/x\}$. Therefore, our two expressions above are equal, which concludes this case. \checkmark\\
 
 
 {\sc case} $e = e_{poly}[\tau] $:\\
@@ -90,10 +90,10 @@ TODO: what is the rule we use for the first case?\\
 
 \begin{itemize}
 \item $\mathit{erase}((e_{poly}[\tau])\{v/x\}) = \mathit{erase}(e_{poly}\{v/x\}[\tau]) = \mathit{erase}(e_{poly} \{v/x\}) \lambda z.z$
-\item $(\mathit{erase}(e_{poly}[\tau]))\{v/x\} = (\mathit{erase}(e_{poly}[\tau]) \lambda z.z)\{v/x\} = (\mathit{erase}(e_{poly}[\tau])\{v/x\} (\lambda z.z) \{v/x\}$\\
+\item $(\mathit{erase}(e_{poly}[\tau]))\{\mathit{erase}(v)/x\} = (\mathit{erase}(e_{poly}[\tau]) \lambda z.z)\{\mathit{erase}(v)/x\} = (\mathit{erase}(e_{poly}[\tau])\{v/x\} (\lambda z.z) \{\mathit{erase}(v)/x\}$\\
 \end{itemize}
 
-By the inductive hypothesis, $\mathit{erase}(e_{poly}[\tau]\{v/x\}) = \mathit{erase}(e_{poly}[\tau])\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case and the proof. \checkmark\\
+By the inductive hypothesis, $\mathit{erase}(e_{poly}[\tau]\{v/x\}) = \mathit{erase}(e_{poly}[\tau])\{\mathit{erase}(v)/x\}$. Therefore, our two expressions above are equal, which concludes this case and the proof. \checkmark\\
 
 
 Now, we return to our original proof: if $e \arrow e'$ then
@@ -112,19 +112,28 @@ $\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$.\\
 
 \end{itemize}
 
-So, $\mathit{erase}(e) \Rightarrow \mathit{erase}(e').$ \checkmark \\
+So, $\mathit{erase}(e) \Rightarrow \mathit{erase}(e'). \checkmark$ \\
 
 {\sc case type-reduction}:
 
 \begin{itemize}
 \item $e = \Lambda X. e_{body} [\tau]$
 \item $e' = e_{body} \{\tau / x\}$
-\item $\mathit{erase}(e) = \mathit{erase}(\Lambda X. e_{body}[\tau]) = \mathit{erase}(\Lambda X. e_{body}) \lambda z.z = \lambda z.\mathit{erase}(e_{body}) \lambda z. z = \mathit{erase}(e_{body})$
-\item $\mathit{erase}(e') = \mathit{erase}(e_{body} \{\tau/x\})$ TODO complete this case
+\item $\mathit{erase}(e) = \mathit{erase}(\Lambda X. e_{body}[\tau]) = \mathit{erase}(\Lambda X. e_{body}) \lambda z.z = \lambda z.\mathit{erase}(e_{body}) \lambda z. z \rightarrow \mathit{erase}(e_{body})$
+\item $\mathit{erase}(e') = \mathit{erase}(e_{body} \{\tau/X\})$ TODO complete this case
 \end{itemize}
 
 
-{\sc case context}: TODO.\\
+{\sc case context}: 
+\begin{itemize}
+\item $e = E[e_1]$
+\item $e' = E[e_1']$
+\item $e \rightarrow e'$ (assume)
+\item $\mathit{erase}(e) = \mathit{erase}(E[e_1])$
+\item $\mathit{erase}(e') = \mathit{erase}(E[e_1'])$
+\end{itemize}
+
+By {\sc context}, $e_1 \rightarrow e_1'$. So, by the inductive hypothesis, $\mathit{erase}(e_1) \Rightarrow \mathit{erase}(e_1')$. Therefore, we may conclude that $\mathit{erase}(E[e_1]) \Rightarrow \mathit{erase}(E[e_1']). \texttt{ } \checkmark$ 
 
 
   
@@ -187,7 +196,7 @@ $\Lambda A. \lambda x:A. \lambda y:A. \lambda b:\text{bool}. \text{if } b \text{
 			when we evaluate the expression, we get stuck (the input record has no "x"
 			field) even though the expression isn't a value.\\
 			
-\item $(\top \times \{ x \ty \typ{unit} \}) \subty (\{\} \times \top)$"
+\item $(\top \times \{ x \ty \typ{unit} \}) \subty (\{\} \times \top)$:
 			Yes \\
 			
 			
