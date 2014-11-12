@@ -74,11 +74,15 @@ By the inductive hypothesis, $\mathit{erase}(e_1\{v/x\}) = \mathit{erase}(e_1)\{
 
 {\sc case} $e = \Lambda X.e_{body}$: TODO: check this case.
 \begin{itemize}
-\item $\mathit{erase}(\Lambda X.e_{body}\{v/x\}) = (\lambda z. \mathit{erase}(e_{body}))\{v/x\} = (\lambda z. \mathit{erase}(e_{body})) \{v/x\}$
-\item $\mathit{erase}(\Lambda X.e_{body})\{v/x\} = (\lambda z. \mathit{erase}(e_{body}))\{v/x\} = (\lambda z. \mathit{erase}(e_{body})) \{v/x\}$\\
+\item $\mathit{erase}(\Lambda X.e_{body}\{v/x\}) = \lambda z. \mathit{erase}(e_{body}\{v/x\}) $
+%= (\lambda z. \mathit{erase}(e_{body})) \{v/x\}$
+\item $\mathit{erase}(\Lambda X.e_{body})\{v/x\} = (\lambda z. \mathit{erase}(e_{body}))\{v/x\}$ 
+%= (\lambda z. \mathit{erase}(e_{body})) \{v/x\}$\\
 
-\checkmark
 \end{itemize}
+
+By the inductive hypothesis, $\mathit{erase}(e_{body}\{v/x\}) = \mathit{erase}(e_{body})\{v/x\}$. Therefore, our two expressions above are equal, which concludes this case. \checkmark\\
+
 
 {\sc case} $e = e_{poly}[\tau] $:\\
 
