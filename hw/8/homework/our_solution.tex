@@ -90,7 +90,7 @@ TODO: what is the rule we use for the first case?\\
 
 \begin{itemize}
 \item $\mathit{erase}((e_{poly}[\tau])\{v/x\}) = \mathit{erase}(e_{poly}\{v/x\}[\tau]) = \mathit{erase}(e_{poly} \{v/x\}) \lambda z.z$
-\item $(\mathit{erase}(e_{poly}[\tau]))\{\mathit{erase}(v)/x\} = (\mathit{erase}(e_{poly}[\tau]) \lambda z.z)\{\mathit{erase}(v)/x\} = (\mathit{erase}(e_{poly}[\tau])\{v/x\} (\lambda z.z) \{\mathit{erase}(v)/x\}$\\
+\item $(\mathit{erase}(e_{poly}[\tau]))\{\mathit{erase}(v)/x\} = (\mathit{erase}(e_{poly}[\tau]) \lambda z.z)\{\mathit{erase}(v)/x\} = \mathit{erase}(e_{poly}[\tau])\{v/x\} (\lambda z.z)$\\
 \end{itemize}
 
 By the inductive hypothesis, $\mathit{erase}(e_{poly}[\tau]\{v/x\}) = \mathit{erase}(e_{poly}[\tau])\{\mathit{erase}(v)/x\}$. Therefore, our two expressions above are equal, which concludes this case and the proof. \checkmark\\
