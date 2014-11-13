@@ -95,6 +95,111 @@ TODO: what is the rule we use for the first case?\\
 
 By the inductive hypothesis, $\mathit{erase}(e_{poly}[\tau]\{v/x\}) = \mathit{erase}(e_{poly}[\tau])\{\mathit{erase}(v)/x\}$. Therefore, our two expressions above are equal, which concludes this case and the proof. \checkmark\\
 
+Additionally, we'll prove another lemma: $erase(e\{\tau/X\}) = erase(e)$ \\
+
+\noindent \underline{Proof: by structural induction on $e$}
+\begin{enumerate}[\hspace{20pt}]
+	\item
+	\underline{Case $e = n$:}\\
+	$$\text{erase}(e\{\tau/ X\}) = \text{erase}(n\{\tau / X\}) = \text{erase}(n) 	\checkmark$$ \\
+	
+	\underline{Case $e = x$:}\\
+	$$\text{erase}(e\{\tau/ X\}) = \text{erase}(x\{\tau / X\}) = \text{erase}(x)
+	\checkmark$$ \\
+	
+	\underline{Case $e = \lambda x: \tau_{in}.e_{body}$:}\\
+	Here, we'll consider $\text{erase}(e\{\tau / X\})$ regardless of whether $
+	\tau_{in} = X$. Then we'll show that the lemma holds for lambda terms.
+	
+	\begin{enumerate}[\hspace{20pt}]
+	\item
+	\underline{Subcase $\tau_{in} = X$} \\
+	$$\text{erase}(e\{\tau / X\}) = \text{erase}(\lambda x:\tau.e_{body}\{\tau/X\}) 
+	= \lambda x.\text{erase}(e_{body}\{\tau/X\})$$ \\
+	
+	\underline{Subcase $\tau_{in} \neq X$} \\
+	$$\text{erase}(e\{\tau / X\}) = \text{erase}(\lambda x:\tau_{in}.e_{body}\{\tau/X	\}) 
+	= \lambda x.\text{erase}(e_{body}\{\tau/X\})$$ \\
+	\end{enumerate}
+	
+	Now we'll consider $\text{erase}(e)$:
+	
+	$$\text{erase}(e) = \text{erase}(\lambda x:\tau_{in}.e_{body}) = \lambda x.
+	\text{erase}(e_{body})$$
+	
+	By the inductive hypothesis, $\text{erase}(e_{body} \{\tau/X\}) = \text{erase}	
+	(e_{body})$, so $\text{erase}(e \{\tau/X\}) = \text{erase}(e)$, as desired.
+	\checkmark \\
+	
+	\underline{Subcase $e = e_1 \text{ } e_2$}\\
+	\begin{eqnarray*}
+		& & \text{erase}(e\{\tau / X\} \\
+		& = & \text{erase}((e_1 \text{ } e_2) \{\tau / X \})\\
+		& = & \text{erase}(e_1\{\tau / X\} \text{ } e_2\{\tau / X\}) \\
+		& = & \text{erase}(e_1\{\tau / X\}) \text{ } \text{erase}(e_2\{\tau / X\}) \\
+	\end{eqnarray*}
+	
+	\begin{eqnarray*}
+		& & \text{erase(e)} \\
+		& = & \text{erase}(e_1 \text{ } e_2) \\
+		& = & \text{erase}(e_1) \text{ } \text{erase}(e_2) \\
+	\end{eqnarray*}
+	
+	By the inductive hypothesis, $\text{erase}(e_1\{\tau / X\}) = \text{erase}(e_1)$ 
+	and $\text{erase}(e_2\{\tau / X\}) = \text{erase}(e_2)$ so 
+	$\text{erase}(e\{\tau / X\}) = \text{erase}(e)$ \checkmark \\
+	
+	\underline{Case $e = \Lambda Y.e_{body}$:} \\
+	
+	\begin{enumerate}[\hspace{20pt}]
+		\item 
+		\underline{Subcase $X = Y$:} \\
+		$$\text{erase}(e\{\tau / X\}) = \text{erase}(e = \Lambda \tau.e_{body}\{\tau / 
+		X\}) = \lambda z. (\text{erase}(e_{body}\{\tau / X\})$$
+		
+		\underline{Subcase $X \neq Y$:} \\
+		$$\text{erase}(e\{\tau / X\}) = \text{erase}(e = \Lambda Y.e_{body}\{\tau / 
+		X\}) = \lambda z. (\text{erase}(e_{body}\{\tau / X\})$$
+	\end{enumerate}
+	
+	Regardless of whether $X = Y$, $\text{erase}(e\{\tau / X\}) = \lambda z. 
+	(\text{erase}(e_{body}\{\tau / X\})$.
+	
+	$$\text{erase}(\Lambda Y.e_{body}) = \lambda z.\text{erase}(e_{body})$$
+	
+	By the inductive hypothesis, $\text{erase}(e_{body}\{\tau / X\}) = \text{erase}
+	(e_{body})$, so the lemma holds in this case as well. \checkmark \\
+	
+	\underline{Case $e = e_{poly} [\tau]$:} \\
+	
+	$\text{erase}(e\{\tau / X\}) = \text{erase}((e_{poly} [\tau']) \{\tau / X \})$
+	
+	\begin{enumerate}[\hspace{20pt}]
+		\item
+		\underline{Subcase $\tau' = X$:}
+		$$\text{erase}(e\{\tau / X\}) = \text{erase}(e_{poly}\{\tau / X\} [\tau]) = 
+		\text{erase}(e_{poly}\{\tau / X\}) (\lambda x.x)$$
+		
+		\underline{Subcase $\tau' \neq X$:} \\
+		$$\text{erase}(e\{\tau / X\}) = \text{erase}(e_{poly}\{\tau / X\} [\tau']) = 
+		\text{erase}(e_{poly}\{\tau / X\}) (\lambda x.x)$$
+	\end{enumerate}
+	
+	Again, $\text{erase}(e\{\tau / X\})$ is the same in both subcases.
+	
+	$$\text{erase}(e) = \text{erase}(e_{poly} [\tau']) = \text{erase}(e_{poly}) 
+	(\lambda x.x)$$
+	
+	Using the inductive hypothesis, we can conclude that $\text{erase}(e_{poly}) = 
+	\text{erase}(e_{poly}\{\tau / X\})$. So the lemma holds in this case as well.
+	\checkmark \\
+	
+\end{enumerate}
+
+By the structural induction principle, $erase(e\{\tau/X\}) = erase(e)$ for all 
+$e$, $\tau$, and $X$. \\
+
+
 
 Now, we return to our original proof: if $e \arrow e'$ then
 $\mathit{erase}(e) \Rightarrow \mathit{erase}(e')$.\\
