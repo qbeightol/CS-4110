@@ -1,0 +1,71 @@
+\documentclass[10pt, oneside]{article}
+
+\usepackage{amssymb, amsmath, enumerate, fancyhdr, geometry, listings, stmaryrd}
+\geometry{letterpaper}
+\pagestyle{fancy}
+
+\lhead{Ameya Acharya (apa52) and Quinn Beightol (qeb2)}
+\rhead{CS4110: Homework 9}
+
+
+\begin{document}
+
+\begin{enumerate}[1.]
+% Exercise 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\item
+	\begin{lstlisting}[language = ML]
+let fib : int -> int = 
+  let f : (int -> int) ref ref = ref (ref (fun (n: int) -> 42)) in 
+  f := ref (fun (n: int) -> 
+              let (r: int) = 
+                if n = 0 then 1
+                else if n = 1 then 1
+                else !(!f) (n - 1) + !(!f) (n - 2) in
+              let (old_fib: int -> int) = !(!f) in
+              f := ref (fun (x: int) -> if x = n then r else old_fib x);
+              r
+  );
+  !(!f);
+	\end{lstlisting}
+
+% Exercise 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\item
+	\begin{enumerate}[(a)]
+		\item Idea: we could encode bottom as $\forall \alpha. \alpha$ (the idea being
+					that, like $\bot$, this type cannot be inhabited), which in turn 
+					allows us to define $\neg \phi$ as $\phi \rightarrow \bot = \phi
+					\rightarrow \forall \alpha. \alpha$.
+					
+					Using that encoding we could write: 
+					$$\phi \vee \psi \equiv \neg (\neg \phi \wedge \neg \psi)
+						\equiv ([\phi \rightarrow \forall \alpha. \alpha] \times [\psi \rightarrow \forall \alpha. \alpha]) \rightarrow \forall \alpha. \alpha$$
+						
+					Another Idea: maybe we could use unit instead of bottom?
+		\item
+		\begin{eqnarray*}
+			\mathcal{T} \llbracket \textsf{unit} \rrbracket & = & \textsf{unit} \\
+			\mathcal{T} \llbracket \tau_1 \rightarrow \tau_2 \rrbracket & = & \mathcal{T} \llbracket \tau_1 \rrbracket \rightarrow \mathcal{T} \llbracket \tau_2 \rrbracket \\
+			\mathcal{T} \llbracket \tau_1 + \tau_2 \rrbracket & = & ([\mathcal{T} \llbracket \tau_1 \rrbracket \rightarrow \forall \alpha. \alpha] \times [\mathcal{T} \llbracket \tau_2 \rrbracket \rightarrow \forall \alpha. \alpha]) \rightarrow \forall \alpha. \alpha \\
+		\end{eqnarray*}
+		\item
+		\begin{eqnarray*}
+			\mathcal{E} \llbracket \textsf{inl}_{\tau_1 + \tau_2} \rrbracket & = & \lambda e_1. \lambda p. (\#1 \text{ } p) \text{ } e_1\\
+			\mathcal{E} \llbracket \textsf{inr}_{\tau_1 + \tau_2} \rrbracket & = & \lambda e_2. \lambda p. (\#2 \text{ } p) \text{ } e_2\\
+			\mathcal{E} \llbracket \textsf{case } e_0 \textsf{ of } e_1 \mid e_2 \rrbracket & = & e_0 \text{ } (\lambda x. e_1 \text{ } x, \lambda y. e_2 \text{ } y)\\
+		\end{eqnarray*}
+	\end{enumerate}
+
+% Exercise 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\item
+	\begin{enumerate}[(a)]
+		\item
+		$$E ::= ... \mid \texttt{throw } E \mid \texttt{try }\{E\} \texttt{ catch } (C x) \{e\} $$
+		
+		idea: it seems like we should have a separate rule for evaluating try 
+		expressions once the first sub-expression reaches a value.
+		\item
+		\item
+	\end{enumerate}
+\end{enumerate}
+
+\end{document}
