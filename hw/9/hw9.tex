@@ -1,6 +1,6 @@
 \documentclass[10pt, oneside]{article}
 
-\usepackage{amssymb, amsmath, enumerate, fancyhdr, geometry, listings, stmaryrd}
+\usepackage{amssymb, amsmath, bussproofs, enumerate, fancyhdr, geometry, listings, stmaryrd}
 \geometry{letterpaper}
 \pagestyle{fancy}
 
@@ -70,11 +70,56 @@ let fib : int -> int =
 		\item
 		$$E ::= ... \mid \texttt{throw } E \mid \texttt{try }\{E\} \texttt{ catch } (C x) \{e\} $$
 		
-		idea: it seems like we should have a separate rule for evaluating try 
-		expressions once the first sub-expression reaches a value.
+		
+		%\begin{prooftree}
+		%\AxiomC{}
+		%\UnaryInfC{\text{try \{throw new D v\} catch (C x) \{e\} \rightarrow e \{new D v / x \}} E}
+		%\end{prooftree}
+		
+		\begin{prooftree}
+		\AxiomC{$ D \leq C $}
+		\UnaryInfC{$\texttt{try } \{ \texttt{throw new } D \text{ }  v \} \texttt{catch} (C \text{ } x) \{e\} \rightarrow \{\texttt{(new } D \text{ } v) / x \} $}
+	\end{prooftree}
+	
+	\begin{prooftree}
+		\AxiomC{$ D \nleq C $}
+		\UnaryInfC{$\texttt{try } \{ \texttt{throw new } D \text{ }  v \} \texttt{catch} (C \text{ } x) \{e\} \rightarrow \texttt{throw new } D  \text{ } v$}
+	\end{prooftree}
+	
+	\begin{prooftree}
+		\AxiomC{}
+		\UnaryInfC{$\texttt{try } \{ v \} \texttt{ catch} (C \text{ } x) \{e\} \rightarrow  v$}
+	\end{prooftree}
+
+
 		\item
 		\item
 	\end{enumerate}
 \end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
