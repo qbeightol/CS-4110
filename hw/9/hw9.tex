@@ -91,9 +91,21 @@ let fib : int -> int =
 		\UnaryInfC{$\texttt{try } \{ v \} \texttt{ catch} (C \text{ } x) \{e\} \rightarrow  v$}
 	\end{prooftree}
 
-
 		\item
-		\item
+		\begin{prooftree}
+		\AxiomC{}
+		\UnaryInfC{$ (D) \texttt{ new } \{ C \text {  } v \} \rightarrow   \texttt{ throw ClassCastException} $}
+	\end{prooftree}
+		
+		\item Progress:\\
+		
+		Let $e$ be an expression such that $\vdash e: C.$ Then either:\\
+		\begin{enumerate}
+		\item $e$ is a value,
+		\item there exists an expression $e'$ such that $e \rightarrow e'$, or
+		\item $e$ throws an exception.
+		\end{enumerate}
+		
 	\end{enumerate}
 \end{enumerate}
 
