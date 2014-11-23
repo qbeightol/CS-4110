@@ -31,27 +31,36 @@ let fib : int -> int =
 % Exercise 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\item
 	\begin{enumerate}[(a)]
-		\item Idea: we could encode bottom as $\forall \alpha. \alpha$ (the idea being
-					that, like $\bot$, this type cannot be inhabited), which in turn 
-					allows us to define $\neg \phi$ as $\phi \rightarrow \bot = \phi
-					\rightarrow \forall \alpha. \alpha$.
-					
-					Using that encoding we could write: 
-					$$\phi \vee \psi \equiv \neg (\neg \phi \wedge \neg \psi)
-						\equiv ([\phi \rightarrow \forall \alpha. \alpha] \times [\psi \rightarrow \forall \alpha. \alpha]) \rightarrow \forall \alpha. \alpha$$
-						
-					Another Idea: maybe we could use unit instead of bottom?
+		\item 
+		$$\phi \vee \psi \equiv \neg (\neg \phi \wedge \neg \psi) \equiv \forall P. ([\phi \rightarrow P] \wedge [\psi \rightarrow P]) \rightarrow P$$
+%					Idea: we could encode bottom as $\forall \alpha. \alpha$ (the idea being
+%					that, like $\bot$, this type cannot be inhabited), which in turn 
+%					allows us to define $\neg \phi$ as $\phi \rightarrow \bot = \phi
+%					\rightarrow \forall \alpha. \alpha$.
+%					
+%					Using that encoding we could write: 
+%					$$\phi \vee \psi \equiv \neg (\neg \phi \wedge \neg \psi)
+%						\equiv ([\phi \rightarrow \forall \alpha. \alpha] \times [\psi \rightarrow \forall \alpha. \alpha]) \rightarrow \forall \alpha. \alpha$$
+%						
+%					Another Idea: maybe we could use unit instead of bottom?
 		\item
-		\begin{eqnarray*}
+%		\begin{eqnarray*}
+%			\mathcal{T} \llbracket \textsf{unit} \rrbracket & = & \textsf{unit} \\
+%			\mathcal{T} \llbracket \tau_1 \rightarrow \tau_2 \rrbracket & = & \mathcal{T} \llbracket \tau_1 \rrbracket \rightarrow \mathcal{T} \llbracket \tau_2 \rrbracket \\
+%			\mathcal{T} \llbracket \tau_1 + \tau_2 \rrbracket & = & ([\mathcal{T} \llbracket \tau_1 \rrbracket \rightarrow \forall \alpha. \alpha] \times [\mathcal{T} \llbracket \tau_2 \rrbracket \rightarrow \forall \alpha. \alpha]) \rightarrow \forall \alpha. \alpha \\
+%		\end{eqnarray*}
+		
+				\begin{eqnarray*}
 			\mathcal{T} \llbracket \textsf{unit} \rrbracket & = & \textsf{unit} \\
 			\mathcal{T} \llbracket \tau_1 \rightarrow \tau_2 \rrbracket & = & \mathcal{T} \llbracket \tau_1 \rrbracket \rightarrow \mathcal{T} \llbracket \tau_2 \rrbracket \\
-			\mathcal{T} \llbracket \tau_1 + \tau_2 \rrbracket & = & ([\mathcal{T} \llbracket \tau_1 \rrbracket \rightarrow \forall \alpha. \alpha] \times [\mathcal{T} \llbracket \tau_2 \rrbracket \rightarrow \forall \alpha. \alpha]) \rightarrow \forall \alpha. \alpha \\
+			\mathcal{T} \llbracket \tau_1 + \tau_2 \rrbracket & = & \forall \alpha. ([\mathcal{T}\llbracket \tau_1 \rrbracket \rightarrow \alpha] \times [\mathcal{T} \llbracket \tau_2 \rrbracket \rightarrow \alpha]) \rightarrow \alpha \\
 		\end{eqnarray*}
+		
 		\item
 		\begin{eqnarray*}
-			\mathcal{E} \llbracket \textsf{inl}_{\tau_1 + \tau_2} \rrbracket & = & \lambda e_1. \lambda p. (\#1 \text{ } p) \text{ } e_1\\
-			\mathcal{E} \llbracket \textsf{inr}_{\tau_1 + \tau_2} \rrbracket & = & \lambda e_2. \lambda p. (\#2 \text{ } p) \text{ } e_2\\
-			\mathcal{E} \llbracket \textsf{case } e_0 \textsf{ of } e_1 \mid e_2 \rrbracket & = & e_0 \text{ } (\lambda x. e_1 \text{ } x, \lambda y. e_2 \text{ } y)\\
+			\mathcal{E} \llbracket \textsf{inl}_{\tau_1 + \tau_2} \rrbracket & = & \Lambda \alpha. \lambda e_1:\mathcal{T} \llbracket \tau_1 \rrbracket.\lambda p: (\mathcal{T}\llbracket \tau_1 \rrbracket \rightarrow \alpha) \times (\mathcal{T} \llbracket \tau_2 \rrbracket \rightarrow \alpha). (\#1 \text{ } p) \text{ } e_1\\
+			\mathcal{E} \llbracket \textsf{inr}_{\tau_1 + \tau_2} \rrbracket & = & \Lambda \alpha. \lambda e_2:\mathcal{T} \llbracket \tau_2 \rrbracket.\lambda p: (\mathcal{T}\llbracket \tau_1 \rrbracket \rightarrow \alpha) \times (\mathcal{T} \llbracket \tau_2 \rrbracket \rightarrow \alpha). (\#2 \text{ } p) \text{ } e_2\\
+			\mathcal{E} \llbracket \textsf{case } e_0 \textsf{ of } e_1 \mid e_2 \rrbracket & = & e_0 [\tau_{out}] \text{ } (\lambda x. e_1 \text{ } x, \lambda y. e_2 \text{ } y) \text{ where $\tau_{out}$ is the translated return type of $e_1$ and $e_2$}\\
 		\end{eqnarray*}
 	\end{enumerate}
 
